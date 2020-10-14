@@ -12,11 +12,11 @@ reserved = {'zeros' : 'ZEROS',
             'for' : 'FOR',
             'while' : 'WHILE'}
 
-tokens = ['COMMENT', 'MPLUS', 'MMINUS', 'MTIMES', 'MDIVIDE', 'INTNUMBER',
+tokens = ['MPLUS', 'MMINUS', 'MTIMES', 'MDIVIDE', 'INTNUMBER',
           'ASSIGNPLUS', 'ASSIGNMINUS', 'ASSIGNTIMES', 'ASSIGNDIVIDE',
           'LEQ', 'EQ', 'GEQ', 'NEQ', 'FLOATNUMBER', 'STRING', 'ID'] + list(reserved.values())
 
-t_COMMENT = r'\#.*'         # Jeszcze pomijamy komentarzy
+
 t_MPLUS = r'\.\+'
 t_MMINUS = r'\.-'
 t_MTIMES = r'\.\*'
@@ -33,15 +33,14 @@ t_NEQ = r'!='
 
 literals = "+-*/()[]{}=<>,;:'"
 
+def t_FLOATNUMBER(t):       # Jeszcze nie wiem co zrobic z 60.52E2 (16 linijka)
+    r'\.\d+|\d+\.\d*'
+    t.value = float(t.value)
+    return t
 
 def t_INTNUMBER(t):
     r'\d+'
     t.value = int(t.value)
-    return t
-
-def t_FLOATNUMBER(t):       # Jeszcze nie wiem co zrobic z 60.52E2 (16 linijka)
-    r'\.\d+|\d+\.\d*'
-    t.value = float(t.value)
     return t
 
 def t_STRING(t):
@@ -53,6 +52,10 @@ def t_ID(t):
     r'[a-zA-Z_]\w*'
     t.type = reserved.get(t.value, 'ID')
     return t
+
+def t_COMMENT(t):
+    r'\#.*'
+    pass
 
 
 t_ignore = '  \t'
