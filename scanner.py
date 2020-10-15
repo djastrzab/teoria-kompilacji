@@ -33,8 +33,8 @@ t_NEQ = r'!='
 
 literals = "+-*/()[]{}=<>,;:'"
 
-def t_FLOATNUMBER(t):       # Jeszcze nie wiem co zrobic z 60.52E2 (16 linijka)
-    r'\.\d+|\d+\.\d*'
+def t_FLOATNUMBER(t):
+    r'\.\d+E?\d+|\d+\.\d*(E\d+)?'
     t.value = float(t.value)
     return t
 
