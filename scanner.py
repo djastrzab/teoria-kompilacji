@@ -1,21 +1,20 @@
 import ply.lex as lex
 
-reserved = {'zeros' : 'ZEROS',
-            'eye' : 'EYE',
-            'ones' : 'ONES',
-            'break' : 'BREAK',
-            'continue' : 'CONTINUE',
-            'return' : 'RETURN',
-            'print' : 'PRINT',
-            'if' : 'IF',
-            'else' : 'ELSE',
-            'for' : 'FOR',
-            'while' : 'WHILE'}
+reserved = {'zeros': 'ZEROS',
+            'eye': 'EYE',
+            'ones': 'ONES',
+            'break': 'BREAK',
+            'continue': 'CONTINUE',
+            'return': 'RETURN',
+            'print': 'PRINT',
+            'if': 'IF',
+            'else': 'ELSE',
+            'for': 'FOR',
+            'while': 'WHILE'}
 
 tokens = ['MPLUS', 'MMINUS', 'MTIMES', 'MDIVIDE', 'INTNUMBER',
           'ASSIGNPLUS', 'ASSIGNMINUS', 'ASSIGNTIMES', 'ASSIGNDIVIDE',
           'LEQ', 'EQ', 'GEQ', 'NEQ', 'FLOATNUMBER', 'STRING', 'ID'] + list(reserved.values())
-
 
 t_MPLUS = r'\.\+'
 t_MMINUS = r'\.-'
@@ -30,28 +29,32 @@ t_EQ = r'=='
 t_GEQ = r'>='
 t_NEQ = r'!='
 
-
 literals = "+-*/()[]{}=<>,;:'"
+
 
 def t_FLOATNUMBER(t):
     r'\.\d+E?\d+|\d+\.\d*(E\d+)?'
     t.value = float(t.value)
     return t
 
+
 def t_INTNUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
 
 def t_STRING(t):
     r'".*"'
     t.value = str(t.value)
     return t
 
+
 def t_ID(t):
     r'[a-zA-Z_]\w*'
     t.type = reserved.get(t.value, 'ID')
     return t
+
 
 def t_COMMENT(t):
     r'\#.*'
@@ -66,9 +69,23 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
+tmp_line = 0
+tmp_error_counter = 0
+
+
 def t_error(t):
-    print
-    "Illegal character '%s'" % t.value[0]
+    global tmp_line, tmp_error_counter;
+    if t.lexer.lineno == tmp_line:
+        t.lexer.skip(1)
+        tmp_error_counter += 1
+    else:
+        if (tmp_error_counter > 1):
+            print( str(tmp_error_counter) + " Illegal characters at line '%s'" % t.lexer.lineno)
+        else:
+            print("Illegal character at line '%s'" % t.lexer.lineno)
+        tmp_line = t.lexer.lineno
+        tmp_error_counter = 0
+
     t.lexer.skip(1)
 
 
