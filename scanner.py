@@ -69,27 +69,34 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
-tmp_line = 0
-tmp_error_counter = 0
-tmp_str_unknown_ch = ""
-
-
 def t_error(t):
-    global tmp_line, tmp_error_counter, tmp_str_unknown_ch
-    if tmp_line == 0:
-        tmp_line = t.lexer.lineno
-        tmp_error_counter = 1
+    if(t):
+        print("!(%d)!: Illegal token '%s'!" % (t.lexer.lineno, t.value[0]))
     else:
-        if t.lexer.lineno > tmp_line:
-            if tmp_error_counter > 1:
-                print(str(tmp_error_counter) + " Illegal characters at line '%s'" % tmp_line)
-            else:
-                print("Illegal character at line '%s'" % tmp_line)
-            tmp_line = t.lexer.lineno
-            tmp_error_counter = 1
-        else:
-            tmp_error_counter += 1
+        print("Unexpected end of input!")
     t.lexer.skip(1)
+
+# tmp_line = 0
+# tmp_error_counter = 0
+# tmp_str_unknown_ch = ""
+
+
+# def t_error(t):
+#     global tmp_line, tmp_error_counter, tmp_str_unknown_ch
+#     if tmp_line == 0:
+#         tmp_line = t.lexer.lineno
+#         tmp_error_counter = 1
+#     else:
+#         if t.lexer.lineno > tmp_line:
+#             if tmp_error_counter > 1:
+#                 print(str(tmp_error_counter) + " Illegal characters at line '%s'" % tmp_line)
+#             else:
+#                 print("Illegal character at line '%s'" % tmp_line)
+#             tmp_line = t.lexer.lineno
+#             tmp_error_counter = 1
+#         else:
+#             tmp_error_counter += 1
+#     t.lexer.skip(1)
 
 
 def find_column(input, token):
