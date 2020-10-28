@@ -45,10 +45,9 @@ def t_INTNUMBER(t):
 
 
 def t_STRING(t):
-    r'".*"'
+    r'".*?"'
     t.value = str(t.value)
     return t
-
 
 def t_ID(t):
     r'[a-zA-Z_]\w*'
