@@ -1,0 +1,2 @@
+# special functions, initializations
+A = zeros(5);

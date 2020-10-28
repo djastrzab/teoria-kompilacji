@@ -20,20 +20,20 @@ def p_error(p):
         print("Unexpected end of input")
 
 
-def p_program(p):
-    """program : instructions_opt"""
+def p_binary_operators(p):
+    """expression : expression '+' expression
+                  | expression '-' expression
+                  | INTNUMBER"""
+    if p[2] == '+':
+        p[0] = p[1] + p[3]
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
 
-def p_instructions_opt_1(p):
-    """instructions_opt : instructions """
+def p_term_assign(p):
+    """term : ID '=' reserved"""
+    p[0] = p[2]
 
-def p_instructions_opt_2(p):
-    """instructions_opt : """
 
-def p_instructions_1(p):
-    """instructions : instructions instruction """
-
-def p_instructions_2(p):
-    """instructions : instruction """
 
 # to finish the grammar
 # ....
