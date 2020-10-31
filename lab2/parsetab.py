@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "left+-ASSIGNDIVIDE ASSIGNMINUS ASSIGNPLUS ASSIGNTIMES BREAK CONTINUE ELSE EQ EYE FLOATNUMBER FOR GEQ ID IF INTNUMBER LEQ MDIVIDE MMINUS MPLUS MTIMES NEQ ONES PRINT RETURN STRING WHILE ZEROSexpression : expression '+' expression\n                  | expression '-' expression\n                  | INTNUMBER"
+_lr_signature = "right=ASSIGNPLUSASSIGNMINUSASSIGNTIMESASSIGNDIVIDEleft+-left*/ASSIGNDIVIDE ASSIGNMINUS ASSIGNPLUS ASSIGNTIMES BREAK CONTINUE ELSE EQ EYE FLOATNUMBER FOR GEQ ID IF INTNUMBER LEQ MDIVIDE MMINUS MPLUS MTIMES NEQ ONES PRINT RETURN STRING WHILE ZEROSSTATEMENT : STATEMENT STATEMENT      \n                | ID ASSIGNSTATMENT ';'\n                | EXPR ';'\n                | '{' STATEMENT '}'\n                | LOOPEXPR\n                | IFEXPR\n                | RETURN EXPR ';'ASSIGNSTATMENT : '=' EXPR\n                    | ASSIGNPLUS ARITHMETICEXPR\n                    | ASSIGNMINUS ARITHMETICEXPR\n                    | ASSIGNTIMES ARITHMETICEXPR\n                    | ASSIGNDIVIDE ARITHMETICEXPREXPR : ARITHMETICEXPR\n            | MATRIXEXPRARITHMETICEXPR : ID\n                    | ARITHMETICEXPR '+' ARITHMETICEXPR\n                    | ARITHMETICEXPR '-' ARITHMETICEXPR\n                    | ARITHMETICEXPR '*' ARITHMETICEXPR\n                    | ARITHMETICEXPR '/' ARITHMETICEXPR\n                    | INTNUMBER\n                    | FLOATNUMBERLOOPEXPR : IDIFEXPR : IDMATRIXEXPR : ID"
     
-_lr_action_items = {'INTNUMBER':([0,3,4,],[2,2,2,]),'$end':([1,2,5,6,],[0,-3,-1,-2,]),'+':([1,2,5,6,],[3,-3,-1,-2,]),'-':([1,2,5,6,],[4,-3,-1,-2,]),}
+_lr_action_items = {'ID':([0,1,2,4,5,6,7,12,14,15,16,17,18,19,20,23,24,25,26,27,34,35,],[2,2,-22,2,-5,-6,22,2,22,30,30,30,30,-3,2,30,30,30,30,-2,-4,-7,]),'{':([0,1,2,4,5,6,12,19,20,27,34,35,],[4,4,-22,4,-5,-6,4,-3,4,-2,-4,-7,]),'RETURN':([0,1,2,4,5,6,12,19,20,27,34,35,],[7,7,-22,7,-5,-6,7,-3,7,-2,-4,-7,]),'INTNUMBER':([0,1,2,4,5,6,7,12,14,15,16,17,18,19,20,23,24,25,26,27,34,35,],[10,10,-22,10,-5,-6,10,10,10,10,10,10,10,-3,10,10,10,10,10,-2,-4,-7,]),'FLOATNUMBER':([0,1,2,4,5,6,7,12,14,15,16,17,18,19,20,23,24,25,26,27,34,35,],[11,11,-22,11,-5,-6,11,11,11,11,11,11,11,-3,11,11,11,11,11,-2,-4,-7,]),'$end':([1,2,5,6,12,19,27,34,35,],[0,-22,-5,-6,-1,-3,-2,-4,-7,]),'}':([2,5,6,12,19,20,27,34,35,],[-22,-5,-6,-1,-3,34,-2,-4,-7,]),'+':([2,8,10,11,22,29,30,31,32,33,36,37,38,39,],[-15,23,-20,-21,-15,23,-15,23,23,23,-16,-17,-18,-19,]),'-':([2,8,10,11,22,29,30,31,32,33,36,37,38,39,],[-15,24,-20,-21,-15,24,-15,24,24,24,-16,-17,-18,-19,]),'*':([2,8,10,11,22,29,30,31,32,33,36,37,38,39,],[-15,25,-20,-21,-15,25,-15,25,25,25,25,25,-18,-19,]),'/':([2,8,10,11,22,29,30,31,32,33,36,37,38,39,],[-15,26,-20,-21,-15,26,-15,26,26,26,26,26,-18,-19,]),';':([2,3,8,9,10,11,13,21,22,28,29,30,31,32,33,36,37,38,39,],[-15,19,-13,-14,-20,-21,27,35,-15,-8,-9,-15,-10,-11,-12,-16,-17,-18,-19,]),'=':([2,],[14,]),'ASSIGNPLUS':([2,],[15,]),'ASSIGNMINUS':([2,],[16,]),'ASSIGNTIMES':([2,],[17,]),'ASSIGNDIVIDE':([2,],[18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,3,4,],[1,5,6,]),}
+_lr_goto_items = {'STATEMENT':([0,1,4,12,20,],[1,12,20,12,12,]),'EXPR':([0,1,4,7,12,14,20,],[3,3,3,21,3,28,3,]),'LOOPEXPR':([0,1,4,12,20,],[5,5,5,5,5,]),'IFEXPR':([0,1,4,12,20,],[6,6,6,6,6,]),'ARITHMETICEXPR':([0,1,4,7,12,14,15,16,17,18,20,23,24,25,26,],[8,8,8,8,8,8,29,31,32,33,8,36,37,38,39,]),'MATRIXEXPR':([0,1,4,7,12,14,20,],[9,9,9,9,9,9,9,]),'ASSIGNSTATMENT':([2,],[13,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,8 +26,29 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression + expression','expression',3,'p_binary_operators','Mparser.py',24),
-  ('expression -> expression - expression','expression',3,'p_binary_operators','Mparser.py',25),
-  ('expression -> INTNUMBER','expression',1,'p_binary_operators','Mparser.py',26),
+  ("S' -> STATEMENT","S'",1,None,None,None),
+  ('STATEMENT -> STATEMENT STATEMENT','STATEMENT',2,'p_start','Mparser.py',27),
+  ('STATEMENT -> ID ASSIGNSTATMENT ;','STATEMENT',3,'p_start','Mparser.py',28),
+  ('STATEMENT -> EXPR ;','STATEMENT',2,'p_start','Mparser.py',29),
+  ('STATEMENT -> { STATEMENT }','STATEMENT',3,'p_start','Mparser.py',30),
+  ('STATEMENT -> LOOPEXPR','STATEMENT',1,'p_start','Mparser.py',31),
+  ('STATEMENT -> IFEXPR','STATEMENT',1,'p_start','Mparser.py',32),
+  ('STATEMENT -> RETURN EXPR ;','STATEMENT',3,'p_start','Mparser.py',33),
+  ('ASSIGNSTATMENT -> = EXPR','ASSIGNSTATMENT',2,'p_assignstatement','Mparser.py',44),
+  ('ASSIGNSTATMENT -> ASSIGNPLUS ARITHMETICEXPR','ASSIGNSTATMENT',2,'p_assignstatement','Mparser.py',45),
+  ('ASSIGNSTATMENT -> ASSIGNMINUS ARITHMETICEXPR','ASSIGNSTATMENT',2,'p_assignstatement','Mparser.py',46),
+  ('ASSIGNSTATMENT -> ASSIGNTIMES ARITHMETICEXPR','ASSIGNSTATMENT',2,'p_assignstatement','Mparser.py',47),
+  ('ASSIGNSTATMENT -> ASSIGNDIVIDE ARITHMETICEXPR','ASSIGNSTATMENT',2,'p_assignstatement','Mparser.py',48),
+  ('EXPR -> ARITHMETICEXPR','EXPR',1,'p_expr','Mparser.py',55),
+  ('EXPR -> MATRIXEXPR','EXPR',1,'p_expr','Mparser.py',56),
+  ('ARITHMETICEXPR -> ID','ARITHMETICEXPR',1,'p_arithmeticexpr','Mparser.py',60),
+  ('ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR','ARITHMETICEXPR',3,'p_arithmeticexpr','Mparser.py',61),
+  ('ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR','ARITHMETICEXPR',3,'p_arithmeticexpr','Mparser.py',62),
+  ('ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR','ARITHMETICEXPR',3,'p_arithmeticexpr','Mparser.py',63),
+  ('ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR','ARITHMETICEXPR',3,'p_arithmeticexpr','Mparser.py',64),
+  ('ARITHMETICEXPR -> INTNUMBER','ARITHMETICEXPR',1,'p_arithmeticexpr','Mparser.py',65),
+  ('ARITHMETICEXPR -> FLOATNUMBER','ARITHMETICEXPR',1,'p_arithmeticexpr','Mparser.py',66),
+  ('LOOPEXPR -> ID','LOOPEXPR',1,'p_loopexpr','Mparser.py',74),
+  ('IFEXPR -> ID','IFEXPR',1,'p_ifexpr','Mparser.py',78),
+  ('MATRIXEXPR -> ID','MATRIXEXPR',1,'p_matrixexpr','Mparser.py',82),
 ]

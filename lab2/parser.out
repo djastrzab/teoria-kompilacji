@@ -2,16 +2,11 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    ASSIGNDIVIDE
-    ASSIGNMINUS
-    ASSIGNPLUS
-    ASSIGNTIMES
     BREAK
     CONTINUE
     ELSE
     EQ
     EYE
-    FLOATNUMBER
     FOR
     GEQ
     IF
@@ -23,39 +18,61 @@ Unused terminals:
     NEQ
     ONES
     PRINT
-    RETURN
     STRING
     WHILE
     ZEROS
 
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> expression + expression
-Rule 2     expression -> expression - expression
-Rule 3     expression -> INTNUMBER
-Rule 4     term -> ID = reserved
+Rule 0     S' -> STATEMENT
+Rule 1     STATEMENT -> STATEMENT STATEMENT
+Rule 2     STATEMENT -> ID ASSIGNSTATMENT ;
+Rule 3     STATEMENT -> EXPR ;
+Rule 4     STATEMENT -> { STATEMENT }
+Rule 5     STATEMENT -> LOOPEXPR
+Rule 6     STATEMENT -> IFEXPR
+Rule 7     STATEMENT -> RETURN EXPR ;
+Rule 8     ASSIGNSTATMENT -> = EXPR
+Rule 9     ASSIGNSTATMENT -> ASSIGNPLUS ARITHMETICEXPR
+Rule 10    ASSIGNSTATMENT -> ASSIGNMINUS ARITHMETICEXPR
+Rule 11    ASSIGNSTATMENT -> ASSIGNTIMES ARITHMETICEXPR
+Rule 12    ASSIGNSTATMENT -> ASSIGNDIVIDE ARITHMETICEXPR
+Rule 13    EXPR -> ARITHMETICEXPR
+Rule 14    EXPR -> MATRIXEXPR
+Rule 15    ARITHMETICEXPR -> ID
+Rule 16    ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR
+Rule 17    ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR
+Rule 18    ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR
+Rule 19    ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR
+Rule 20    ARITHMETICEXPR -> INTNUMBER
+Rule 21    ARITHMETICEXPR -> FLOATNUMBER
+Rule 22    LOOPEXPR -> ID
+Rule 23    IFEXPR -> ID
+Rule 24    MATRIXEXPR -> ID
 
 Terminals, with rules where they appear
 
-+                    : 1
--                    : 2
-=                    : 4
-ASSIGNDIVIDE         : 
-ASSIGNMINUS          : 
-ASSIGNPLUS           : 
-ASSIGNTIMES          : 
+*                    : 18
++                    : 16
+-                    : 17
+/                    : 19
+;                    : 2 3 7
+=                    : 8
+ASSIGNDIVIDE         : 12
+ASSIGNMINUS          : 10
+ASSIGNPLUS           : 9
+ASSIGNTIMES          : 11
 BREAK                : 
 CONTINUE             : 
 ELSE                 : 
 EQ                   : 
 EYE                  : 
-FLOATNUMBER          : 
+FLOATNUMBER          : 21
 FOR                  : 
 GEQ                  : 
-ID                   : 4
+ID                   : 2 15 22 23 24
 IF                   : 
-INTNUMBER            : 3
+INTNUMBER            : 20
 LEQ                  : 
 MDIVIDE              : 
 MMINUS               : 
@@ -64,15 +81,781 @@ MTIMES               :
 NEQ                  : 
 ONES                 : 
 PRINT                : 
-RETURN               : 
+RETURN               : 7
 STRING               : 
 WHILE                : 
 ZEROS                : 
 error                : 
+{                    : 4
+}                    : 4
 
 Nonterminals, with rules where they appear
 
-expression           : 1 1 2 2 0
-reserved             : 4
-term                 : 
+ARITHMETICEXPR       : 9 10 11 12 13 16 16 17 17 18 18 19 19
+ASSIGNSTATMENT       : 2
+EXPR                 : 3 7 8
+IFEXPR               : 6
+LOOPEXPR             : 5
+MATRIXEXPR           : 14
+STATEMENT            : 1 1 4 0
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . STATEMENT
+    (1) STATEMENT -> . STATEMENT STATEMENT
+    (2) STATEMENT -> . ID ASSIGNSTATMENT ;
+    (3) STATEMENT -> . EXPR ;
+    (4) STATEMENT -> . { STATEMENT }
+    (5) STATEMENT -> . LOOPEXPR
+    (6) STATEMENT -> . IFEXPR
+    (7) STATEMENT -> . RETURN EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (22) LOOPEXPR -> . ID
+    (23) IFEXPR -> . ID
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    ID              shift and go to state 2
+    {               shift and go to state 4
+    RETURN          shift and go to state 7
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    STATEMENT                      shift and go to state 1
+    EXPR                           shift and go to state 3
+    LOOPEXPR                       shift and go to state 5
+    IFEXPR                         shift and go to state 6
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 1
+
+    (0) S' -> STATEMENT .
+    (1) STATEMENT -> STATEMENT . STATEMENT
+    (1) STATEMENT -> . STATEMENT STATEMENT
+    (2) STATEMENT -> . ID ASSIGNSTATMENT ;
+    (3) STATEMENT -> . EXPR ;
+    (4) STATEMENT -> . { STATEMENT }
+    (5) STATEMENT -> . LOOPEXPR
+    (6) STATEMENT -> . IFEXPR
+    (7) STATEMENT -> . RETURN EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (22) LOOPEXPR -> . ID
+    (23) IFEXPR -> . ID
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    ID              shift and go to state 2
+    {               shift and go to state 4
+    RETURN          shift and go to state 7
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    STATEMENT                      shift and go to state 12
+    EXPR                           shift and go to state 3
+    LOOPEXPR                       shift and go to state 5
+    IFEXPR                         shift and go to state 6
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 2
+
+    (2) STATEMENT -> ID . ASSIGNSTATMENT ;
+    (22) LOOPEXPR -> ID .
+    (23) IFEXPR -> ID .
+    (15) ARITHMETICEXPR -> ID .
+    (24) MATRIXEXPR -> ID .
+    (8) ASSIGNSTATMENT -> . = EXPR
+    (9) ASSIGNSTATMENT -> . ASSIGNPLUS ARITHMETICEXPR
+    (10) ASSIGNSTATMENT -> . ASSIGNMINUS ARITHMETICEXPR
+    (11) ASSIGNSTATMENT -> . ASSIGNTIMES ARITHMETICEXPR
+    (12) ASSIGNSTATMENT -> . ASSIGNDIVIDE ARITHMETICEXPR
+
+  ! reduce/reduce conflict for ID resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for { resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for RETURN resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for INTNUMBER resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for FLOATNUMBER resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for $end resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for } resolved using rule 22 (LOOPEXPR -> ID .)
+  ! reduce/reduce conflict for ; resolved using rule 15 (ARITHMETICEXPR -> ID .)
+    ID              reduce using rule 22 (LOOPEXPR -> ID .)
+    {               reduce using rule 22 (LOOPEXPR -> ID .)
+    RETURN          reduce using rule 22 (LOOPEXPR -> ID .)
+    INTNUMBER       reduce using rule 22 (LOOPEXPR -> ID .)
+    FLOATNUMBER     reduce using rule 22 (LOOPEXPR -> ID .)
+    $end            reduce using rule 22 (LOOPEXPR -> ID .)
+    }               reduce using rule 22 (LOOPEXPR -> ID .)
+    +               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    -               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    *               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    /               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    ;               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    =               shift and go to state 14
+    ASSIGNPLUS      shift and go to state 15
+    ASSIGNMINUS     shift and go to state 16
+    ASSIGNTIMES     shift and go to state 17
+    ASSIGNDIVIDE    shift and go to state 18
+
+  ! ID              [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! {               [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! RETURN          [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! INTNUMBER       [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! FLOATNUMBER     [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! $end            [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! }               [ reduce using rule 23 (IFEXPR -> ID .) ]
+  ! ;               [ reduce using rule 24 (MATRIXEXPR -> ID .) ]
+
+    ASSIGNSTATMENT                 shift and go to state 13
+
+state 3
+
+    (3) STATEMENT -> EXPR . ;
+
+    ;               shift and go to state 19
+
+
+state 4
+
+    (4) STATEMENT -> { . STATEMENT }
+    (1) STATEMENT -> . STATEMENT STATEMENT
+    (2) STATEMENT -> . ID ASSIGNSTATMENT ;
+    (3) STATEMENT -> . EXPR ;
+    (4) STATEMENT -> . { STATEMENT }
+    (5) STATEMENT -> . LOOPEXPR
+    (6) STATEMENT -> . IFEXPR
+    (7) STATEMENT -> . RETURN EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (22) LOOPEXPR -> . ID
+    (23) IFEXPR -> . ID
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    ID              shift and go to state 2
+    {               shift and go to state 4
+    RETURN          shift and go to state 7
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    STATEMENT                      shift and go to state 20
+    EXPR                           shift and go to state 3
+    LOOPEXPR                       shift and go to state 5
+    IFEXPR                         shift and go to state 6
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 5
+
+    (5) STATEMENT -> LOOPEXPR .
+
+    ID              reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    {               reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    RETURN          reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    INTNUMBER       reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    FLOATNUMBER     reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    $end            reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+    }               reduce using rule 5 (STATEMENT -> LOOPEXPR .)
+
+
+state 6
+
+    (6) STATEMENT -> IFEXPR .
+
+    ID              reduce using rule 6 (STATEMENT -> IFEXPR .)
+    {               reduce using rule 6 (STATEMENT -> IFEXPR .)
+    RETURN          reduce using rule 6 (STATEMENT -> IFEXPR .)
+    INTNUMBER       reduce using rule 6 (STATEMENT -> IFEXPR .)
+    FLOATNUMBER     reduce using rule 6 (STATEMENT -> IFEXPR .)
+    $end            reduce using rule 6 (STATEMENT -> IFEXPR .)
+    }               reduce using rule 6 (STATEMENT -> IFEXPR .)
+
+
+state 7
+
+    (7) STATEMENT -> RETURN . EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    ID              shift and go to state 22
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    EXPR                           shift and go to state 21
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 8
+
+    (13) EXPR -> ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    ;               reduce using rule 13 (EXPR -> ARITHMETICEXPR .)
+    +               shift and go to state 23
+    -               shift and go to state 24
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+
+state 9
+
+    (14) EXPR -> MATRIXEXPR .
+
+    ;               reduce using rule 14 (EXPR -> MATRIXEXPR .)
+
+
+state 10
+
+    (20) ARITHMETICEXPR -> INTNUMBER .
+
+    +               reduce using rule 20 (ARITHMETICEXPR -> INTNUMBER .)
+    -               reduce using rule 20 (ARITHMETICEXPR -> INTNUMBER .)
+    *               reduce using rule 20 (ARITHMETICEXPR -> INTNUMBER .)
+    /               reduce using rule 20 (ARITHMETICEXPR -> INTNUMBER .)
+    ;               reduce using rule 20 (ARITHMETICEXPR -> INTNUMBER .)
+
+
+state 11
+
+    (21) ARITHMETICEXPR -> FLOATNUMBER .
+
+    +               reduce using rule 21 (ARITHMETICEXPR -> FLOATNUMBER .)
+    -               reduce using rule 21 (ARITHMETICEXPR -> FLOATNUMBER .)
+    *               reduce using rule 21 (ARITHMETICEXPR -> FLOATNUMBER .)
+    /               reduce using rule 21 (ARITHMETICEXPR -> FLOATNUMBER .)
+    ;               reduce using rule 21 (ARITHMETICEXPR -> FLOATNUMBER .)
+
+
+state 12
+
+    (1) STATEMENT -> STATEMENT STATEMENT .
+    (1) STATEMENT -> STATEMENT . STATEMENT
+    (1) STATEMENT -> . STATEMENT STATEMENT
+    (2) STATEMENT -> . ID ASSIGNSTATMENT ;
+    (3) STATEMENT -> . EXPR ;
+    (4) STATEMENT -> . { STATEMENT }
+    (5) STATEMENT -> . LOOPEXPR
+    (6) STATEMENT -> . IFEXPR
+    (7) STATEMENT -> . RETURN EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (22) LOOPEXPR -> . ID
+    (23) IFEXPR -> . ID
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for { resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for INTNUMBER resolved as shift
+  ! shift/reduce conflict for FLOATNUMBER resolved as shift
+    $end            reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .)
+    }               reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .)
+    ID              shift and go to state 2
+    {               shift and go to state 4
+    RETURN          shift and go to state 7
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+  ! ID              [ reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .) ]
+  ! {               [ reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .) ]
+  ! RETURN          [ reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .) ]
+  ! INTNUMBER       [ reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .) ]
+  ! FLOATNUMBER     [ reduce using rule 1 (STATEMENT -> STATEMENT STATEMENT .) ]
+
+    STATEMENT                      shift and go to state 12
+    EXPR                           shift and go to state 3
+    LOOPEXPR                       shift and go to state 5
+    IFEXPR                         shift and go to state 6
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 13
+
+    (2) STATEMENT -> ID ASSIGNSTATMENT . ;
+
+    ;               shift and go to state 27
+
+
+state 14
+
+    (8) ASSIGNSTATMENT -> = . EXPR
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    ID              shift and go to state 22
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    EXPR                           shift and go to state 28
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 15
+
+    (9) ASSIGNSTATMENT -> ASSIGNPLUS . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 29
+
+state 16
+
+    (10) ASSIGNSTATMENT -> ASSIGNMINUS . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 31
+
+state 17
+
+    (11) ASSIGNSTATMENT -> ASSIGNTIMES . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 32
+
+state 18
+
+    (12) ASSIGNSTATMENT -> ASSIGNDIVIDE . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 33
+
+state 19
+
+    (3) STATEMENT -> EXPR ; .
+
+    ID              reduce using rule 3 (STATEMENT -> EXPR ; .)
+    {               reduce using rule 3 (STATEMENT -> EXPR ; .)
+    RETURN          reduce using rule 3 (STATEMENT -> EXPR ; .)
+    INTNUMBER       reduce using rule 3 (STATEMENT -> EXPR ; .)
+    FLOATNUMBER     reduce using rule 3 (STATEMENT -> EXPR ; .)
+    $end            reduce using rule 3 (STATEMENT -> EXPR ; .)
+    }               reduce using rule 3 (STATEMENT -> EXPR ; .)
+
+
+state 20
+
+    (4) STATEMENT -> { STATEMENT . }
+    (1) STATEMENT -> STATEMENT . STATEMENT
+    (1) STATEMENT -> . STATEMENT STATEMENT
+    (2) STATEMENT -> . ID ASSIGNSTATMENT ;
+    (3) STATEMENT -> . EXPR ;
+    (4) STATEMENT -> . { STATEMENT }
+    (5) STATEMENT -> . LOOPEXPR
+    (6) STATEMENT -> . IFEXPR
+    (7) STATEMENT -> . RETURN EXPR ;
+    (13) EXPR -> . ARITHMETICEXPR
+    (14) EXPR -> . MATRIXEXPR
+    (22) LOOPEXPR -> . ID
+    (23) IFEXPR -> . ID
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+    (24) MATRIXEXPR -> . ID
+
+    }               shift and go to state 34
+    ID              shift and go to state 2
+    {               shift and go to state 4
+    RETURN          shift and go to state 7
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    STATEMENT                      shift and go to state 12
+    EXPR                           shift and go to state 3
+    LOOPEXPR                       shift and go to state 5
+    IFEXPR                         shift and go to state 6
+    ARITHMETICEXPR                 shift and go to state 8
+    MATRIXEXPR                     shift and go to state 9
+
+state 21
+
+    (7) STATEMENT -> RETURN EXPR . ;
+
+    ;               shift and go to state 35
+
+
+state 22
+
+    (15) ARITHMETICEXPR -> ID .
+    (24) MATRIXEXPR -> ID .
+
+  ! reduce/reduce conflict for ; resolved using rule 15 (ARITHMETICEXPR -> ID .)
+    +               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    -               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    *               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    /               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    ;               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+
+  ! ;               [ reduce using rule 24 (MATRIXEXPR -> ID .) ]
+
+
+state 23
+
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR + . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 36
+
+state 24
+
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR - . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 37
+
+state 25
+
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR * . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 38
+
+state 26
+
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR / . ARITHMETICEXPR
+    (15) ARITHMETICEXPR -> . ID
+    (16) ARITHMETICEXPR -> . ARITHMETICEXPR + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> . ARITHMETICEXPR - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> . ARITHMETICEXPR * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> . ARITHMETICEXPR / ARITHMETICEXPR
+    (20) ARITHMETICEXPR -> . INTNUMBER
+    (21) ARITHMETICEXPR -> . FLOATNUMBER
+
+    ID              shift and go to state 30
+    INTNUMBER       shift and go to state 10
+    FLOATNUMBER     shift and go to state 11
+
+    ARITHMETICEXPR                 shift and go to state 39
+
+state 27
+
+    (2) STATEMENT -> ID ASSIGNSTATMENT ; .
+
+    ID              reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    {               reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    RETURN          reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    INTNUMBER       reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    FLOATNUMBER     reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    $end            reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+    }               reduce using rule 2 (STATEMENT -> ID ASSIGNSTATMENT ; .)
+
+
+state 28
+
+    (8) ASSIGNSTATMENT -> = EXPR .
+
+    ;               reduce using rule 8 (ASSIGNSTATMENT -> = EXPR .)
+
+
+state 29
+
+    (9) ASSIGNSTATMENT -> ASSIGNPLUS ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    ;               reduce using rule 9 (ASSIGNSTATMENT -> ASSIGNPLUS ARITHMETICEXPR .)
+    +               shift and go to state 23
+    -               shift and go to state 24
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+
+state 30
+
+    (15) ARITHMETICEXPR -> ID .
+
+    +               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    -               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    *               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    /               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+    ;               reduce using rule 15 (ARITHMETICEXPR -> ID .)
+
+
+state 31
+
+    (10) ASSIGNSTATMENT -> ASSIGNMINUS ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    ;               reduce using rule 10 (ASSIGNSTATMENT -> ASSIGNMINUS ARITHMETICEXPR .)
+    +               shift and go to state 23
+    -               shift and go to state 24
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+
+state 32
+
+    (11) ASSIGNSTATMENT -> ASSIGNTIMES ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    ;               reduce using rule 11 (ASSIGNSTATMENT -> ASSIGNTIMES ARITHMETICEXPR .)
+    +               shift and go to state 23
+    -               shift and go to state 24
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+
+state 33
+
+    (12) ASSIGNSTATMENT -> ASSIGNDIVIDE ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    ;               reduce using rule 12 (ASSIGNSTATMENT -> ASSIGNDIVIDE ARITHMETICEXPR .)
+    +               shift and go to state 23
+    -               shift and go to state 24
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+
+state 34
+
+    (4) STATEMENT -> { STATEMENT } .
+
+    ID              reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    {               reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    RETURN          reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    INTNUMBER       reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    FLOATNUMBER     reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    $end            reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+    }               reduce using rule 4 (STATEMENT -> { STATEMENT } .)
+
+
+state 35
+
+    (7) STATEMENT -> RETURN EXPR ; .
+
+    ID              reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    {               reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    RETURN          reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    INTNUMBER       reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    FLOATNUMBER     reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    $end            reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+    }               reduce using rule 7 (STATEMENT -> RETURN EXPR ; .)
+
+
+state 36
+
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    +               reduce using rule 16 (ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .)
+    -               reduce using rule 16 (ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .)
+    ;               reduce using rule 16 (ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .)
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+  ! *               [ reduce using rule 16 (ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .) ]
+  ! /               [ reduce using rule 16 (ARITHMETICEXPR -> ARITHMETICEXPR + ARITHMETICEXPR .) ]
+  ! +               [ shift and go to state 23 ]
+  ! -               [ shift and go to state 24 ]
+
+
+state 37
+
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    +               reduce using rule 17 (ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .)
+    -               reduce using rule 17 (ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .)
+    ;               reduce using rule 17 (ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .)
+    *               shift and go to state 25
+    /               shift and go to state 26
+
+  ! *               [ reduce using rule 17 (ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .) ]
+  ! /               [ reduce using rule 17 (ARITHMETICEXPR -> ARITHMETICEXPR - ARITHMETICEXPR .) ]
+  ! +               [ shift and go to state 23 ]
+  ! -               [ shift and go to state 24 ]
+
+
+state 38
+
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    +               reduce using rule 18 (ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .)
+    -               reduce using rule 18 (ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .)
+    *               reduce using rule 18 (ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .)
+    /               reduce using rule 18 (ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .)
+    ;               reduce using rule 18 (ARITHMETICEXPR -> ARITHMETICEXPR * ARITHMETICEXPR .)
+
+  ! +               [ shift and go to state 23 ]
+  ! -               [ shift and go to state 24 ]
+  ! *               [ shift and go to state 25 ]
+  ! /               [ shift and go to state 26 ]
+
+
+state 39
+
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .
+    (16) ARITHMETICEXPR -> ARITHMETICEXPR . + ARITHMETICEXPR
+    (17) ARITHMETICEXPR -> ARITHMETICEXPR . - ARITHMETICEXPR
+    (18) ARITHMETICEXPR -> ARITHMETICEXPR . * ARITHMETICEXPR
+    (19) ARITHMETICEXPR -> ARITHMETICEXPR . / ARITHMETICEXPR
+
+    +               reduce using rule 19 (ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .)
+    -               reduce using rule 19 (ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .)
+    *               reduce using rule 19 (ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .)
+    /               reduce using rule 19 (ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .)
+    ;               reduce using rule 19 (ARITHMETICEXPR -> ARITHMETICEXPR / ARITHMETICEXPR .)
+
+  ! +               [ shift and go to state 23 ]
+  ! -               [ shift and go to state 24 ]
+  ! *               [ shift and go to state 25 ]
+  ! /               [ shift and go to state 26 ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ID in state 12 resolved as shift
+WARNING: shift/reduce conflict for { in state 12 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 12 resolved as shift
+WARNING: shift/reduce conflict for INTNUMBER in state 12 resolved as shift
+WARNING: shift/reduce conflict for FLOATNUMBER in state 12 resolved as shift
+WARNING: reduce/reduce conflict in state 2 resolved using rule (LOOPEXPR -> ID)
+WARNING: rejected rule (IFEXPR -> ID) in state 2
+WARNING: reduce/reduce conflict in state 2 resolved using rule (ARITHMETICEXPR -> ID)
+WARNING: rejected rule (MATRIXEXPR -> ID) in state 2
+WARNING: reduce/reduce conflict in state 22 resolved using rule (ARITHMETICEXPR -> ID)
+WARNING: rejected rule (MATRIXEXPR -> ID) in state 22
+WARNING: Rule (IFEXPR -> ID) is never reduced
+WARNING: Rule (MATRIXEXPR -> ID) is never reduced

@@ -1,2 +1,9 @@
 # special functions, initializations
-A = zeros(5);
+# A = zeros(5);
+1 * 2;
+C += B + A ;  # add B to C 
+C -= B ;  # substract B from C 
+C *= A ;  # multiply A with C
+C /= A ;  # divide A by C
+A = 1 + 2;
+1 * 2;
