@@ -13,10 +13,13 @@ precedence = (
     ("right", '=', "ASSIGNPLUS", "ASSIGNMINUS", "ASSIGNTIMES", "ASSIGNDIVIDE"),
     ("nonassoc", "IFX"),
     ("nonassoc", "ELSE"),
-    ("nonassoc", '(', ')'),
     ("nonassoc", '<', '>', "EQ", "NEQ", "LEQ", "GEQ"),
+    ("nonassoc", '(', ')'),
     ("left", '+', '-'),
     ("left", '*', '/'),
+    ("left", "UNARYR"),
+    ("right", "UNARY"),
+    
    # to fill ...
 )
 
@@ -28,7 +31,6 @@ def p_error(p):
         print("Unexpected end of input")
 
 def p_start(p):
-    # LOL - MORESTATEMENTS STATEMENT jest kluczowe by to wgl moglo dzialac XDDDD (bez tego nie umie to ogarnac wiecej niz 1 instrukcji)
     """MORESTATEMENTS : STATEMENT
                     |  STATEMENT MORESTATEMENTS
                     | '{' MORESTATEMENTS '}'"""
@@ -39,29 +41,37 @@ def p_statement(p):
                 | EXPR ';'
                 | RETURNSTATEMENT ';'
                 | ASSIGNSTATEMENT ';'
-                | PRINTSTATEMENT ';'
-                | BREAK ';'
-                | CONTINUE ';'""" # Dwa ostatnie na pewno nie powinny tu byc, bo CONTINUE i BREAK powinny sie pojawiac tylko w petlach
+                | PRINTSTATEMENT ';'"""
 
 def p_return_statement(p):
-    """RETURNSTATEMENT : RETURN
+    """RETURNSTATEMENT : RETURN 
                         | RETURN EXPR"""
 
 def p_print_statement(p):
-    """PRINTSTATEMENT : PRINT PRINTABLE"""
+    """PRINTSTATEMENT : PRINT PRINTABLES"""
+
+def p_printables(p):
+    """PRINTABLES : PRINTABLE
+                | PRINTABLES ',' PRINTABLE"""
 
 def p_pritable(p):
-    """PRINTABLE : PRINTABLE ',' PRINTABLE
-                | ARITHMETICOPERATION
+    """PRINTABLE : ARITHMETICOPERATION
                 | LOGICALEXPR
                 | STRING"""
 
 def p_assign_statement(p):
-    """ASSIGNSTATEMENT : ID '=' EXPR
-                        | ID ASSIGNPLUS EXPR
-                        | ID ASSIGNMINUS EXPR
-                        | ID ASSIGNTIMES EXPR
-                        | ID ASSIGNDIVIDE EXPR"""
+    """ASSIGNSTATEMENT : ASSIGNABLE '=' EXPR
+                        | ASSIGNABLE ASSIGNPLUS EXPR
+                        | ASSIGNABLE ASSIGNMINUS EXPR
+                        | ASSIGNABLE ASSIGNTIMES EXPR
+                        | ASSIGNABLE ASSIGNDIVIDE EXPR"""
+
+def p_assignable(p):
+    """ASSIGNABLE : ID
+                    | MATRIXACCESS"""
+
+def p_matrix_access(p):
+    """MATRIXACCESS : ID '[' ARITHMETICOPERATION ',' ARITHMETICOPERATION ']'"""
 
 def p_expr(p):
     """EXPR : ARITHMETICOPERATION
@@ -78,7 +88,7 @@ def p_logical_expr(p):
                     | ARITHMETICOPERATION GEQ ARITHMETICOPERATION"""
 
 def p_arithmetic_op(p):
-    """ARITHMETICOPERATION : ID
+    """ARITHMETICOPERATION : ASSIGNABLE
                         | INTNUMBER
                         | FLOATNUMBER
                         | '(' ARITHMETICOPERATION ')' 
@@ -86,17 +96,7 @@ def p_arithmetic_op(p):
                         | ARITHMETICOPERATION '-' ARITHMETICOPERATION
                         | ARITHMETICOPERATION '*' ARITHMETICOPERATION
                         | ARITHMETICOPERATION '/' ARITHMETICOPERATION
-                        | '-' ARITHMETICOPERATION"""
-
-def p_matrix_op(p):
-    """MATRIXOPERATION : ID
-                        | '(' MATRIXOPERATION ')'
-                        | MATRIXOPERATION "\'"
-                        | MATRIXOPERATION MPLUS MATRIXOPERATION
-                        | MATRIXOPERATION MMINUS MATRIXOPERATION
-                        | MATRIXOPERATION MTIMES MATRIXOPERATION
-                        | MATRIXOPERATION MDIVIDE MATRIXOPERATION
-                        | SPECIALMATRIXWORD '(' ARITHMETICOPERATION ')'"""
+                        | '-' ARITHMETICOPERATION %prec UNARY"""
 
 def p_special_matrix_word(p):
     """SPECIALMATRIXWORD : ZEROS
@@ -112,18 +112,53 @@ def p_loop(p):
             | WHILELOOP"""
 
 def p_for_loop(p):
-    """FORLOOP : FOR ID '=' RANGEOPERATOR MORESTATEMENTS"""
+    """FORLOOP : FOR ID '=' RANGEOPERATOR LOOPSTATEMENT
+                | FOR ID '=' RANGEOPERATOR '{' LOOPSTATEMENTS '}' """
 
 def p_while_loop(p):
-    """WHILELOOP : WHILE '(' LOGICALEXPR ')' MORESTATEMENTS"""
+    """WHILELOOP : WHILE '(' LOGICALEXPR ')' LOOPSTATEMENT
+                | WHILE '(' LOGICALEXPR ')' '{' LOOPSTATEMENTS '}'"""
+
+def p_loop_statements(p):
+    """LOOPSTATEMENTS : LOOPSTATEMENT
+                        | LOOPSTATEMENT LOOPSTATEMENTS
+                        | '{' LOOPSTATEMENTS '}'
+                        """
+
+def p_loop_statement(p):
+    """LOOPSTATEMENT : IFSTATEMENTWITHLOOPSTATEMENTS
+                    | LOOP
+                    | EXPR ';'
+                    | RETURNSTATEMENT ';'
+                    | ASSIGNSTATEMENT ';'
+                    | PRINTSTATEMENT ';'
+                    | BREAK ';'
+                    | CONTINUE ';'"""
+
+def p_matrix_op(p):
+    """MATRIXOPERATION : ID
+                        | '[' MATRIXINITIALIZER ']'
+                        | '(' MATRIXOPERATION ')'
+                        | MATRIXOPERATION "\'" %prec UNARYR
+                        | MATRIXOPERATION MPLUS MATRIXOPERATION
+                        | MATRIXOPERATION MMINUS MATRIXOPERATION
+                        | MATRIXOPERATION MTIMES MATRIXOPERATION
+                        | MATRIXOPERATION MDIVIDE MATRIXOPERATION
+                        | SPECIALMATRIXWORD '(' ARITHMETICOPERATION ')'"""
+
+def p_if_statement_with_loop_statements(p):
+    """IFSTATEMENTWITHLOOPSTATEMENTS : IF '(' LOGICALEXPR ')' LOOPSTATEMENTS %prec IFX
+                                    | IF '(' LOGICALEXPR ')' LOOPSTATEMENTS ELSE LOOPSTATEMENTS"""
 
 def p_range_op(p):
     """RANGEOPERATOR : ARITHMETICOPERATION ':' ARITHMETICOPERATION """
 
-# Na pewno trzeba cos z listami/macierzami jeszcze zrobic bo zapis [1, 2, 3] nie jest wgl czytany
+def p_matrix_initializer(p):
+    """MATRIXINITIALIZER : '[' INNERLIST  ']'
+                        | MATRIXINITIALIZER ',' '[' INNERLIST ']' """
 
-
-
-
+def p_innerlist(p):
+    """INNERLIST : EXPR  
+                | INNERLIST ',' EXPR"""
 
 parser = yacc.yacc()
