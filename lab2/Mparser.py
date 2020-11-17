@@ -17,7 +17,7 @@ precedence = (
     ("nonassoc", '(', ')'),
     ("left", '+', '-'),
     ("left", '*', '/'),
-    ("left", "UNARYR"),
+    ("left", "\'"),
     ("right", "UNARY"),
     
    # to fill ...
@@ -31,6 +31,10 @@ def p_error(p):
         print("Unexpected end of input")
 
 def p_start(p):
+    """START : 
+            | MORESTATEMENTS"""
+
+def p_more_statements(p):
     """MORESTATEMENTS : STATEMENT
                     |  STATEMENT MORESTATEMENTS
                     | '{' MORESTATEMENTS '}'"""
@@ -139,7 +143,7 @@ def p_matrix_op(p):
     """MATRIXOPERATION : ID
                         | '[' MATRIXINITIALIZER ']'
                         | '(' MATRIXOPERATION ')'
-                        | MATRIXOPERATION "\'" %prec UNARYR
+                        | MATRIXOPERATION "\'"
                         | MATRIXOPERATION MPLUS MATRIXOPERATION
                         | MATRIXOPERATION MMINUS MATRIXOPERATION
                         | MATRIXOPERATION MTIMES MATRIXOPERATION
