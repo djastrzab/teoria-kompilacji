@@ -158,7 +158,7 @@ def p_matrix_initializer(p):
                         | MATRIXINITIALIZER ',' '[' INNERLIST ']' """
 
 def p_innerlist(p):
-    """INNERLIST : EXPR  
-                | INNERLIST ',' EXPR"""
+    """INNERLIST : ARITHMETICOPERATION  
+                | INNERLIST ',' ARITHMETICOPERATION"""
 
 parser = yacc.yacc()
