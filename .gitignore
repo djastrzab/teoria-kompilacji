@@ -3,8 +3,11 @@ venv/*
 __pycache__/*
 .idea/*
 lab1/venv/*
-lab1/venv/*
+lab1/__pycache__/*
 lab1/.idea/*
 lab2/venv/*
-lab2/venv/*
+lab2/__pycache__/*
 lab2/.idea/*
+lab3/venv/*
+lab3/__pycache__/*
+lab3/.idea/*
