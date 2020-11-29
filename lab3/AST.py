@@ -1,12 +1,13 @@
 
 
-class Node(object):
+class Node:
     pass
 
 
 class IntNum(Node):
     def __init__(self, value):
         self.value = value
+        self.type="IntNum"
 
 class FloatNum(Node):
 

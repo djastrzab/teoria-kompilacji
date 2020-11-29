@@ -133,5 +133,5 @@ def p_innerlist(p):
                 | innerlist ',' expr"""
 
 parser = yacc.yacc()
-Mparser.py
-Wyświetlam Mparser.py.
+#Mparser.py
+#Wyświetlam Mparser.py.

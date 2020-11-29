@@ -12,12 +12,14 @@ class TreePrinter:
 
     @addToClass(AST.Node)
     def printTree(self, indent=0):
+
         raise Exception("printTree not defined in class " + self.__class__.__name__)
 
 
     @addToClass(AST.IntNum)
     def printTree(self, indent=0):
-        pass
+        print(self.type,self.value)
+        #pass
         # fill in the body
 
 
