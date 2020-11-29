@@ -84,19 +84,17 @@ def p_assign_statement(p):
                         | assignable ASSIGNMINUS expr
                         | assignable ASSIGNTIMES expr
                         | assignable ASSIGNDIVIDE expr"""
-    p[0] = p[3]
+    p[0] = AST.BinExpr(p[2], p[1], p[3])
 
 
 def p_assignable(p):
     """assignable : ID
-                    | matrixaccess"""
+                    | ID '[' expr ',' expr ']'"""
+    if len(p) == 2:
+        p[0] = AST.Variable(p[1])
 
 
-def p_matrix_access(p):
-    """matrixaccess : ID '[' expr ',' expr ']'"""
-
-
-def p_expr(p):
+def p_expr_bin(p):
     """expr : assignable
             | INTNUMBER
             | FLOATNUMBER
@@ -120,7 +118,10 @@ def p_expr(p):
             | expr LEQ expr
             | expr GEQ expr
             """
-    p[0] = AST.IntNum(p[1])
+    if len(p) == 4:                 # trzeba bedzie to porozdzielac na mniejsze pod funkcje, bo nawiasy tez podchodza pod tego if'a
+        p[0] = AST.BinExpr(p[2], p[1], p[3])
+    else:   p[0] = AST.IntNum(p[1])
+
 
 
 def p_special_matrix_word(p):

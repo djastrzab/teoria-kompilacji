@@ -18,9 +18,20 @@ class TreePrinter:
 
     @addToClass(AST.IntNum)
     def printTree(self, indent=0):
-        print(self.type,self.value)
+        # print(self.type,self.value)
+        print("| " * indent + str(self.value))
         #pass
         # fill in the body
+
+    @addToClass(AST.Variable)
+    def printTree(self, indent=0):
+        print("| " * indent + self.name)
+
+    @addToClass(AST.BinExpr)
+    def printTree(self, indent=0):
+        print("| " * indent + self.op)
+        self.left.printTree(indent + 1)
+        self.right.printTree(indent + 1)
 
 
     @addToClass(AST.Error)
