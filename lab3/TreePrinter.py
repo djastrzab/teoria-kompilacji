@@ -12,8 +12,10 @@ class TreePrinter:
 
     @addToClass(AST.Node)
     def printTree(self, indent=0):
+        self.left.printTree()
+        self.right.printTree()
 
-        raise Exception("printTree not defined in class " + self.__class__.__name__)
+        #raise Exception("printTree not defined in class " + self.__class__.__name__)
 
 
     @addToClass(AST.IntNum)
@@ -34,6 +36,11 @@ class TreePrinter:
         self.right.printTree(indent + 1)
 
     @addToClass(AST.MatWord)
+    def printTree(self, indent=0):
+        print("| " * indent + self.word)
+        self.value.printTree(indent + 1)
+
+    @addToClass(AST.ReturnStatement)
     def printTree(self, indent=0):
         print("| " * indent + self.word)
         self.value.printTree(indent + 1)

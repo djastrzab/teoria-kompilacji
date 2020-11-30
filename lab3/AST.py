@@ -1,7 +1,9 @@
 
 
 class Node:
-    pass
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
 
 
 class IntNum(Node):
@@ -28,6 +30,11 @@ class BinExpr(Node):
 
 class MatWord(Node):
     def __init__(self, word, value):
+        self.word = word
+        self.value = value
+
+class ReturnStatement(Node):
+    def __init__(self, word, value=None):
         self.word = word
         self.value = value
 

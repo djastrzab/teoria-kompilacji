@@ -42,7 +42,7 @@ def p_more_statements(p):
     if len(p) == 2:
         p[0] = p[1]
     elif len(p) == 3:
-        p[0] = (p[1], p[2])
+        p[0] = AST.Node(p[1], p[2])
     else:
         p[0] = p[2]
 
@@ -63,9 +63,9 @@ def p_return_statement(p):
     """returnstatement : RETURN 
                         | RETURN expr"""
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = AST.ReturnStatement(p[1])
     else:
-        p[0] = (p[1], p[2])
+        p[0] = AST.ReturnStatement(p[1], p[2])
 
 
 def p_print_statement(p):
