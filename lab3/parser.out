@@ -20,7 +20,7 @@ Rule 14    returnstatement -> RETURN
 Rule 15    returnstatement -> RETURN expr
 Rule 16    printstatement -> PRINT printables
 Rule 17    printables -> printable
-Rule 18    printables -> printables , printable
+Rule 18    printables -> printable , printables
 Rule 19    printable -> expr
 Rule 20    printable -> STRING
 Rule 21    assignstatement -> assignable = expr
@@ -33,11 +33,11 @@ Rule 27    assignable -> ID [ expr , expr ]
 Rule 28    expr -> assignable
 Rule 29    expr -> INTNUMBER
 Rule 30    expr -> FLOATNUMBER
-Rule 31    expr -> [ matrixinitializer ]
-Rule 32    expr -> specialmatrixword ( expr )
-Rule 33    expr -> - expr
-Rule 34    expr -> expr '
-Rule 35    expr -> ( expr )
+Rule 31    expr -> - expr
+Rule 32    expr -> expr '
+Rule 33    expr -> specialmatrixword ( expr )
+Rule 34    expr -> ( expr )
+Rule 35    expr -> [ matrixinitializer ]
 Rule 36    expr -> expr + expr
 Rule 37    expr -> expr - expr
 Rule 38    expr -> expr * expr
@@ -69,13 +69,13 @@ Rule 63    innerlist -> innerlist , expr
 
 Terminals, with rules where they appear
 
-'                    : 34
-(                    : 32 35 53 54 58
-)                    : 32 35 53 54 58
+'                    : 32
+(                    : 33 34 53 54 58
+)                    : 33 34 53 54 58
 *                    : 38
 +                    : 36
 ,                    : 18 27 61 63
--                    : 33 37
+-                    : 31 37
 /                    : 39
 :                    : 59
 ;                    : 8 9 10 11 12 13
@@ -109,8 +109,8 @@ RETURN               : 14 15
 STRING               : 20
 WHILE                : 58
 ZEROS                : 50
-[                    : 27 31 60 61
-]                    : 27 31 60 61
+[                    : 27 35 60 61
+]                    : 27 35 60 61
 error                : 
 {                    : 5
 }                    : 5
@@ -119,19 +119,19 @@ Nonterminals, with rules where they appear
 
 assignable           : 21 22 23 24 25 28
 assignstatement      : 10
-expr                 : 8 15 19 21 22 23 24 25 27 27 32 33 34 35 36 36 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 53 54 58 59 59 62 63
+expr                 : 8 15 19 21 22 23 24 25 27 27 31 32 33 34 36 36 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 53 54 58 59 59 62 63
 forloop              : 55
 ifstatement          : 6
 innerlist            : 60 61 63
 loop                 : 7
-matrixinitializer    : 31 61
+matrixinitializer    : 35 61
 morestatements       : 2 4 5 53 54 54 57 58
 printable            : 17 18
 printables           : 16 18
 printstatement       : 11
 rangeoperator        : 57
 returnstatement      : 9
-specialmatrixword    : 32
+specialmatrixword    : 33
 start                : 0
 statement            : 3 4
 whileloop            : 56
@@ -161,11 +161,11 @@ state 0
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -203,9 +203,9 @@ state 0
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -264,11 +264,11 @@ state 3
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -305,9 +305,9 @@ state 3
   ! shift/reduce conflict for IF resolved as shift
   ! shift/reduce conflict for INTNUMBER resolved as shift
   ! shift/reduce conflict for FLOATNUMBER resolved as shift
-  ! shift/reduce conflict for [ resolved as shift
   ! shift/reduce conflict for - resolved as shift
   ! shift/reduce conflict for ( resolved as shift
+  ! shift/reduce conflict for [ resolved as shift
   ! shift/reduce conflict for RETURN resolved as shift
   ! shift/reduce conflict for PRINT resolved as shift
   ! shift/reduce conflict for FOR resolved as shift
@@ -325,9 +325,9 @@ state 3
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -343,9 +343,9 @@ state 3
   ! IF              [ reduce using rule 3 (morestatements -> statement .) ]
   ! INTNUMBER       [ reduce using rule 3 (morestatements -> statement .) ]
   ! FLOATNUMBER     [ reduce using rule 3 (morestatements -> statement .) ]
-  ! [               [ reduce using rule 3 (morestatements -> statement .) ]
   ! -               [ reduce using rule 3 (morestatements -> statement .) ]
   ! (               [ reduce using rule 3 (morestatements -> statement .) ]
+  ! [               [ reduce using rule 3 (morestatements -> statement .) ]
   ! RETURN          [ reduce using rule 3 (morestatements -> statement .) ]
   ! PRINT           [ reduce using rule 3 (morestatements -> statement .) ]
   ! FOR             [ reduce using rule 3 (morestatements -> statement .) ]
@@ -389,11 +389,11 @@ state 4
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -430,9 +430,9 @@ state 4
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -465,9 +465,9 @@ state 5
     IF              reduce using rule 6 (statement -> ifstatement .)
     INTNUMBER       reduce using rule 6 (statement -> ifstatement .)
     FLOATNUMBER     reduce using rule 6 (statement -> ifstatement .)
-    [               reduce using rule 6 (statement -> ifstatement .)
     -               reduce using rule 6 (statement -> ifstatement .)
     (               reduce using rule 6 (statement -> ifstatement .)
+    [               reduce using rule 6 (statement -> ifstatement .)
     RETURN          reduce using rule 6 (statement -> ifstatement .)
     PRINT           reduce using rule 6 (statement -> ifstatement .)
     FOR             reduce using rule 6 (statement -> ifstatement .)
@@ -491,9 +491,9 @@ state 6
     IF              reduce using rule 7 (statement -> loop .)
     INTNUMBER       reduce using rule 7 (statement -> loop .)
     FLOATNUMBER     reduce using rule 7 (statement -> loop .)
-    [               reduce using rule 7 (statement -> loop .)
     -               reduce using rule 7 (statement -> loop .)
     (               reduce using rule 7 (statement -> loop .)
+    [               reduce using rule 7 (statement -> loop .)
     RETURN          reduce using rule 7 (statement -> loop .)
     PRINT           reduce using rule 7 (statement -> loop .)
     FOR             reduce using rule 7 (statement -> loop .)
@@ -510,7 +510,7 @@ state 6
 state 7
 
     (8) statement -> expr . ;
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -589,15 +589,15 @@ state 13
 
 state 14
 
-    (35) expr -> ( . expr )
+    (34) expr -> ( . expr )
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -620,9 +620,9 @@ state 14
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -642,9 +642,9 @@ state 15
     IF              reduce using rule 55 (loop -> forloop .)
     INTNUMBER       reduce using rule 55 (loop -> forloop .)
     FLOATNUMBER     reduce using rule 55 (loop -> forloop .)
-    [               reduce using rule 55 (loop -> forloop .)
     -               reduce using rule 55 (loop -> forloop .)
     (               reduce using rule 55 (loop -> forloop .)
+    [               reduce using rule 55 (loop -> forloop .)
     RETURN          reduce using rule 55 (loop -> forloop .)
     PRINT           reduce using rule 55 (loop -> forloop .)
     FOR             reduce using rule 55 (loop -> forloop .)
@@ -668,9 +668,9 @@ state 16
     IF              reduce using rule 56 (loop -> whileloop .)
     INTNUMBER       reduce using rule 56 (loop -> whileloop .)
     FLOATNUMBER     reduce using rule 56 (loop -> whileloop .)
-    [               reduce using rule 56 (loop -> whileloop .)
     -               reduce using rule 56 (loop -> whileloop .)
     (               reduce using rule 56 (loop -> whileloop .)
+    [               reduce using rule 56 (loop -> whileloop .)
     RETURN          reduce using rule 56 (loop -> whileloop .)
     PRINT           reduce using rule 56 (loop -> whileloop .)
     FOR             reduce using rule 56 (loop -> whileloop .)
@@ -746,8 +746,8 @@ state 18
     IF              reduce using rule 29 (expr -> INTNUMBER .)
     INTNUMBER       reduce using rule 29 (expr -> INTNUMBER .)
     FLOATNUMBER     reduce using rule 29 (expr -> INTNUMBER .)
-    [               reduce using rule 29 (expr -> INTNUMBER .)
     (               reduce using rule 29 (expr -> INTNUMBER .)
+    [               reduce using rule 29 (expr -> INTNUMBER .)
     RETURN          reduce using rule 29 (expr -> INTNUMBER .)
     PRINT           reduce using rule 29 (expr -> INTNUMBER .)
     FOR             reduce using rule 29 (expr -> INTNUMBER .)
@@ -788,8 +788,8 @@ state 19
     IF              reduce using rule 30 (expr -> FLOATNUMBER .)
     INTNUMBER       reduce using rule 30 (expr -> FLOATNUMBER .)
     FLOATNUMBER     reduce using rule 30 (expr -> FLOATNUMBER .)
-    [               reduce using rule 30 (expr -> FLOATNUMBER .)
     (               reduce using rule 30 (expr -> FLOATNUMBER .)
+    [               reduce using rule 30 (expr -> FLOATNUMBER .)
     RETURN          reduce using rule 30 (expr -> FLOATNUMBER .)
     PRINT           reduce using rule 30 (expr -> FLOATNUMBER .)
     FOR             reduce using rule 30 (expr -> FLOATNUMBER .)
@@ -802,32 +802,15 @@ state 19
 
 state 20
 
-    (31) expr -> [ . matrixinitializer ]
-    (60) matrixinitializer -> . [ innerlist ]
-    (61) matrixinitializer -> . matrixinitializer , [ innerlist ]
-
-    [               shift and go to state 62
-
-    matrixinitializer              shift and go to state 63
-
-state 21
-
-    (32) expr -> specialmatrixword . ( expr )
-
-    (               shift and go to state 64
-
-
-state 22
-
-    (33) expr -> - . expr
+    (31) expr -> - . expr
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -850,17 +833,34 @@ state 22
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
     EYE             shift and go to state 30
 
-    expr                           shift and go to state 65
+    expr                           shift and go to state 62
     assignable                     shift and go to state 56
     specialmatrixword              shift and go to state 21
+
+state 21
+
+    (33) expr -> specialmatrixword . ( expr )
+
+    (               shift and go to state 63
+
+
+state 22
+
+    (35) expr -> [ . matrixinitializer ]
+    (60) matrixinitializer -> . [ innerlist ]
+    (61) matrixinitializer -> . matrixinitializer , [ innerlist ]
+
+    [               shift and go to state 64
+
+    matrixinitializer              shift and go to state 65
 
 state 23
 
@@ -869,11 +869,11 @@ state 23
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -897,9 +897,9 @@ state 23
     ;               reduce using rule 14 (returnstatement -> RETURN .)
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -913,17 +913,17 @@ state 24
 
     (16) printstatement -> PRINT . printables
     (17) printables -> . printable
-    (18) printables -> . printables , printable
+    (18) printables -> . printable , printables
     (19) printable -> . expr
     (20) printable -> . STRING
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -947,9 +947,9 @@ state 24
     STRING          shift and go to state 70
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1060,9 +1060,9 @@ state 31
     IF              reduce using rule 4 (morestatements -> statement morestatements .)
     INTNUMBER       reduce using rule 4 (morestatements -> statement morestatements .)
     FLOATNUMBER     reduce using rule 4 (morestatements -> statement morestatements .)
-    [               reduce using rule 4 (morestatements -> statement morestatements .)
     -               reduce using rule 4 (morestatements -> statement morestatements .)
     (               reduce using rule 4 (morestatements -> statement morestatements .)
+    [               reduce using rule 4 (morestatements -> statement morestatements .)
     RETURN          reduce using rule 4 (morestatements -> statement morestatements .)
     PRINT           reduce using rule 4 (morestatements -> statement morestatements .)
     FOR             reduce using rule 4 (morestatements -> statement morestatements .)
@@ -1090,9 +1090,9 @@ state 33
     IF              reduce using rule 8 (statement -> expr ; .)
     INTNUMBER       reduce using rule 8 (statement -> expr ; .)
     FLOATNUMBER     reduce using rule 8 (statement -> expr ; .)
-    [               reduce using rule 8 (statement -> expr ; .)
     -               reduce using rule 8 (statement -> expr ; .)
     (               reduce using rule 8 (statement -> expr ; .)
+    [               reduce using rule 8 (statement -> expr ; .)
     RETURN          reduce using rule 8 (statement -> expr ; .)
     PRINT           reduce using rule 8 (statement -> expr ; .)
     FOR             reduce using rule 8 (statement -> expr ; .)
@@ -1108,44 +1108,44 @@ state 33
 
 state 34
 
-    (34) expr -> expr ' .
+    (32) expr -> expr ' .
 
-    ;               reduce using rule 34 (expr -> expr ' .)
-    '               reduce using rule 34 (expr -> expr ' .)
-    +               reduce using rule 34 (expr -> expr ' .)
-    -               reduce using rule 34 (expr -> expr ' .)
-    *               reduce using rule 34 (expr -> expr ' .)
-    /               reduce using rule 34 (expr -> expr ' .)
-    MPLUS           reduce using rule 34 (expr -> expr ' .)
-    MMINUS          reduce using rule 34 (expr -> expr ' .)
-    MTIMES          reduce using rule 34 (expr -> expr ' .)
-    MDIVIDE         reduce using rule 34 (expr -> expr ' .)
-    EQ              reduce using rule 34 (expr -> expr ' .)
-    NEQ             reduce using rule 34 (expr -> expr ' .)
-    >               reduce using rule 34 (expr -> expr ' .)
-    <               reduce using rule 34 (expr -> expr ' .)
-    LEQ             reduce using rule 34 (expr -> expr ' .)
-    GEQ             reduce using rule 34 (expr -> expr ' .)
-    )               reduce using rule 34 (expr -> expr ' .)
-    ,               reduce using rule 34 (expr -> expr ' .)
-    ]               reduce using rule 34 (expr -> expr ' .)
-    :               reduce using rule 34 (expr -> expr ' .)
-    {               reduce using rule 34 (expr -> expr ' .)
-    BREAK           reduce using rule 34 (expr -> expr ' .)
-    CONTINUE        reduce using rule 34 (expr -> expr ' .)
-    IF              reduce using rule 34 (expr -> expr ' .)
-    INTNUMBER       reduce using rule 34 (expr -> expr ' .)
-    FLOATNUMBER     reduce using rule 34 (expr -> expr ' .)
-    [               reduce using rule 34 (expr -> expr ' .)
-    (               reduce using rule 34 (expr -> expr ' .)
-    RETURN          reduce using rule 34 (expr -> expr ' .)
-    PRINT           reduce using rule 34 (expr -> expr ' .)
-    FOR             reduce using rule 34 (expr -> expr ' .)
-    WHILE           reduce using rule 34 (expr -> expr ' .)
-    ID              reduce using rule 34 (expr -> expr ' .)
-    ZEROS           reduce using rule 34 (expr -> expr ' .)
-    ONES            reduce using rule 34 (expr -> expr ' .)
-    EYE             reduce using rule 34 (expr -> expr ' .)
+    ;               reduce using rule 32 (expr -> expr ' .)
+    '               reduce using rule 32 (expr -> expr ' .)
+    +               reduce using rule 32 (expr -> expr ' .)
+    -               reduce using rule 32 (expr -> expr ' .)
+    *               reduce using rule 32 (expr -> expr ' .)
+    /               reduce using rule 32 (expr -> expr ' .)
+    MPLUS           reduce using rule 32 (expr -> expr ' .)
+    MMINUS          reduce using rule 32 (expr -> expr ' .)
+    MTIMES          reduce using rule 32 (expr -> expr ' .)
+    MDIVIDE         reduce using rule 32 (expr -> expr ' .)
+    EQ              reduce using rule 32 (expr -> expr ' .)
+    NEQ             reduce using rule 32 (expr -> expr ' .)
+    >               reduce using rule 32 (expr -> expr ' .)
+    <               reduce using rule 32 (expr -> expr ' .)
+    LEQ             reduce using rule 32 (expr -> expr ' .)
+    GEQ             reduce using rule 32 (expr -> expr ' .)
+    )               reduce using rule 32 (expr -> expr ' .)
+    ,               reduce using rule 32 (expr -> expr ' .)
+    ]               reduce using rule 32 (expr -> expr ' .)
+    :               reduce using rule 32 (expr -> expr ' .)
+    {               reduce using rule 32 (expr -> expr ' .)
+    BREAK           reduce using rule 32 (expr -> expr ' .)
+    CONTINUE        reduce using rule 32 (expr -> expr ' .)
+    IF              reduce using rule 32 (expr -> expr ' .)
+    INTNUMBER       reduce using rule 32 (expr -> expr ' .)
+    FLOATNUMBER     reduce using rule 32 (expr -> expr ' .)
+    (               reduce using rule 32 (expr -> expr ' .)
+    [               reduce using rule 32 (expr -> expr ' .)
+    RETURN          reduce using rule 32 (expr -> expr ' .)
+    PRINT           reduce using rule 32 (expr -> expr ' .)
+    FOR             reduce using rule 32 (expr -> expr ' .)
+    WHILE           reduce using rule 32 (expr -> expr ' .)
+    ID              reduce using rule 32 (expr -> expr ' .)
+    ZEROS           reduce using rule 32 (expr -> expr ' .)
+    ONES            reduce using rule 32 (expr -> expr ' .)
+    EYE             reduce using rule 32 (expr -> expr ' .)
 
 
 state 35
@@ -1154,11 +1154,11 @@ state 35
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1181,9 +1181,9 @@ state 35
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1199,11 +1199,11 @@ state 36
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1226,9 +1226,9 @@ state 36
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1244,11 +1244,11 @@ state 37
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1271,9 +1271,9 @@ state 37
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1289,11 +1289,11 @@ state 38
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1316,9 +1316,9 @@ state 38
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1334,11 +1334,11 @@ state 39
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1361,9 +1361,9 @@ state 39
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1379,11 +1379,11 @@ state 40
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1406,9 +1406,9 @@ state 40
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1424,11 +1424,11 @@ state 41
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1451,9 +1451,9 @@ state 41
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1469,11 +1469,11 @@ state 42
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1496,9 +1496,9 @@ state 42
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1514,11 +1514,11 @@ state 43
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1541,9 +1541,9 @@ state 43
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1559,11 +1559,11 @@ state 44
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1586,9 +1586,9 @@ state 44
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1604,11 +1604,11 @@ state 45
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1631,9 +1631,9 @@ state 45
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1649,11 +1649,11 @@ state 46
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1676,9 +1676,9 @@ state 46
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1694,11 +1694,11 @@ state 47
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1721,9 +1721,9 @@ state 47
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1739,11 +1739,11 @@ state 48
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1766,9 +1766,9 @@ state 48
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1788,9 +1788,9 @@ state 49
     IF              reduce using rule 9 (statement -> returnstatement ; .)
     INTNUMBER       reduce using rule 9 (statement -> returnstatement ; .)
     FLOATNUMBER     reduce using rule 9 (statement -> returnstatement ; .)
-    [               reduce using rule 9 (statement -> returnstatement ; .)
     -               reduce using rule 9 (statement -> returnstatement ; .)
     (               reduce using rule 9 (statement -> returnstatement ; .)
+    [               reduce using rule 9 (statement -> returnstatement ; .)
     RETURN          reduce using rule 9 (statement -> returnstatement ; .)
     PRINT           reduce using rule 9 (statement -> returnstatement ; .)
     FOR             reduce using rule 9 (statement -> returnstatement ; .)
@@ -1814,9 +1814,9 @@ state 50
     IF              reduce using rule 10 (statement -> assignstatement ; .)
     INTNUMBER       reduce using rule 10 (statement -> assignstatement ; .)
     FLOATNUMBER     reduce using rule 10 (statement -> assignstatement ; .)
-    [               reduce using rule 10 (statement -> assignstatement ; .)
     -               reduce using rule 10 (statement -> assignstatement ; .)
     (               reduce using rule 10 (statement -> assignstatement ; .)
+    [               reduce using rule 10 (statement -> assignstatement ; .)
     RETURN          reduce using rule 10 (statement -> assignstatement ; .)
     PRINT           reduce using rule 10 (statement -> assignstatement ; .)
     FOR             reduce using rule 10 (statement -> assignstatement ; .)
@@ -1840,9 +1840,9 @@ state 51
     IF              reduce using rule 11 (statement -> printstatement ; .)
     INTNUMBER       reduce using rule 11 (statement -> printstatement ; .)
     FLOATNUMBER     reduce using rule 11 (statement -> printstatement ; .)
-    [               reduce using rule 11 (statement -> printstatement ; .)
     -               reduce using rule 11 (statement -> printstatement ; .)
     (               reduce using rule 11 (statement -> printstatement ; .)
+    [               reduce using rule 11 (statement -> printstatement ; .)
     RETURN          reduce using rule 11 (statement -> printstatement ; .)
     PRINT           reduce using rule 11 (statement -> printstatement ; .)
     FOR             reduce using rule 11 (statement -> printstatement ; .)
@@ -1866,9 +1866,9 @@ state 52
     IF              reduce using rule 12 (statement -> BREAK ; .)
     INTNUMBER       reduce using rule 12 (statement -> BREAK ; .)
     FLOATNUMBER     reduce using rule 12 (statement -> BREAK ; .)
-    [               reduce using rule 12 (statement -> BREAK ; .)
     -               reduce using rule 12 (statement -> BREAK ; .)
     (               reduce using rule 12 (statement -> BREAK ; .)
+    [               reduce using rule 12 (statement -> BREAK ; .)
     RETURN          reduce using rule 12 (statement -> BREAK ; .)
     PRINT           reduce using rule 12 (statement -> BREAK ; .)
     FOR             reduce using rule 12 (statement -> BREAK ; .)
@@ -1892,9 +1892,9 @@ state 53
     IF              reduce using rule 13 (statement -> CONTINUE ; .)
     INTNUMBER       reduce using rule 13 (statement -> CONTINUE ; .)
     FLOATNUMBER     reduce using rule 13 (statement -> CONTINUE ; .)
-    [               reduce using rule 13 (statement -> CONTINUE ; .)
     -               reduce using rule 13 (statement -> CONTINUE ; .)
     (               reduce using rule 13 (statement -> CONTINUE ; .)
+    [               reduce using rule 13 (statement -> CONTINUE ; .)
     RETURN          reduce using rule 13 (statement -> CONTINUE ; .)
     PRINT           reduce using rule 13 (statement -> CONTINUE ; .)
     FOR             reduce using rule 13 (statement -> CONTINUE ; .)
@@ -1915,11 +1915,11 @@ state 54
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -1942,9 +1942,9 @@ state 54
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -1956,8 +1956,8 @@ state 54
 
 state 55
 
-    (35) expr -> ( expr . )
-    (34) expr -> expr . '
+    (34) expr -> ( expr . )
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2021,8 +2021,8 @@ state 56
     IF              reduce using rule 28 (expr -> assignable .)
     INTNUMBER       reduce using rule 28 (expr -> assignable .)
     FLOATNUMBER     reduce using rule 28 (expr -> assignable .)
-    [               reduce using rule 28 (expr -> assignable .)
     (               reduce using rule 28 (expr -> assignable .)
+    [               reduce using rule 28 (expr -> assignable .)
     RETURN          reduce using rule 28 (expr -> assignable .)
     PRINT           reduce using rule 28 (expr -> assignable .)
     FOR             reduce using rule 28 (expr -> assignable .)
@@ -2039,11 +2039,11 @@ state 57
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2066,9 +2066,9 @@ state 57
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2084,11 +2084,11 @@ state 58
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2111,9 +2111,9 @@ state 58
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2129,11 +2129,11 @@ state 59
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2156,9 +2156,9 @@ state 59
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2174,11 +2174,11 @@ state 60
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2201,9 +2201,9 @@ state 60
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2219,11 +2219,11 @@ state 61
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2246,9 +2246,9 @@ state 61
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2260,110 +2260,8 @@ state 61
 
 state 62
 
-    (60) matrixinitializer -> [ . innerlist ]
-    (62) innerlist -> . expr
-    (63) innerlist -> . innerlist , expr
-    (28) expr -> . assignable
-    (29) expr -> . INTNUMBER
-    (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
-    (36) expr -> . expr + expr
-    (37) expr -> . expr - expr
-    (38) expr -> . expr * expr
-    (39) expr -> . expr / expr
-    (40) expr -> . expr MPLUS expr
-    (41) expr -> . expr MMINUS expr
-    (42) expr -> . expr MTIMES expr
-    (43) expr -> . expr MDIVIDE expr
-    (44) expr -> . expr EQ expr
-    (45) expr -> . expr NEQ expr
-    (46) expr -> . expr > expr
-    (47) expr -> . expr < expr
-    (48) expr -> . expr LEQ expr
-    (49) expr -> . expr GEQ expr
-    (26) assignable -> . ID
-    (27) assignable -> . ID [ expr , expr ]
-    (50) specialmatrixword -> . ZEROS
-    (51) specialmatrixword -> . ONES
-    (52) specialmatrixword -> . EYE
-
-    INTNUMBER       shift and go to state 18
-    FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
-    (               shift and go to state 14
-    ID              shift and go to state 26
-    ZEROS           shift and go to state 28
-    ONES            shift and go to state 29
-    EYE             shift and go to state 30
-
-    innerlist                      shift and go to state 96
-    expr                           shift and go to state 97
-    assignable                     shift and go to state 56
-    specialmatrixword              shift and go to state 21
-
-state 63
-
-    (31) expr -> [ matrixinitializer . ]
-    (61) matrixinitializer -> matrixinitializer . , [ innerlist ]
-
-    ]               shift and go to state 98
-    ,               shift and go to state 99
-
-
-state 64
-
-    (32) expr -> specialmatrixword ( . expr )
-    (28) expr -> . assignable
-    (29) expr -> . INTNUMBER
-    (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
-    (36) expr -> . expr + expr
-    (37) expr -> . expr - expr
-    (38) expr -> . expr * expr
-    (39) expr -> . expr / expr
-    (40) expr -> . expr MPLUS expr
-    (41) expr -> . expr MMINUS expr
-    (42) expr -> . expr MTIMES expr
-    (43) expr -> . expr MDIVIDE expr
-    (44) expr -> . expr EQ expr
-    (45) expr -> . expr NEQ expr
-    (46) expr -> . expr > expr
-    (47) expr -> . expr < expr
-    (48) expr -> . expr LEQ expr
-    (49) expr -> . expr GEQ expr
-    (26) assignable -> . ID
-    (27) assignable -> . ID [ expr , expr ]
-    (50) specialmatrixword -> . ZEROS
-    (51) specialmatrixword -> . ONES
-    (52) specialmatrixword -> . EYE
-
-    INTNUMBER       shift and go to state 18
-    FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
-    (               shift and go to state 14
-    ID              shift and go to state 26
-    ZEROS           shift and go to state 28
-    ONES            shift and go to state 29
-    EYE             shift and go to state 30
-
-    specialmatrixword              shift and go to state 21
-    expr                           shift and go to state 100
-    assignable                     shift and go to state 56
-
-state 65
-
-    (33) expr -> - expr .
-    (34) expr -> expr . '
+    (31) expr -> - expr .
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2379,42 +2277,42 @@ state 65
     (48) expr -> expr . LEQ expr
     (49) expr -> expr . GEQ expr
 
-    ;               reduce using rule 33 (expr -> - expr .)
-    '               reduce using rule 33 (expr -> - expr .)
-    +               reduce using rule 33 (expr -> - expr .)
-    -               reduce using rule 33 (expr -> - expr .)
-    *               reduce using rule 33 (expr -> - expr .)
-    /               reduce using rule 33 (expr -> - expr .)
-    MPLUS           reduce using rule 33 (expr -> - expr .)
-    MMINUS          reduce using rule 33 (expr -> - expr .)
-    MTIMES          reduce using rule 33 (expr -> - expr .)
-    MDIVIDE         reduce using rule 33 (expr -> - expr .)
-    EQ              reduce using rule 33 (expr -> - expr .)
-    NEQ             reduce using rule 33 (expr -> - expr .)
-    >               reduce using rule 33 (expr -> - expr .)
-    <               reduce using rule 33 (expr -> - expr .)
-    LEQ             reduce using rule 33 (expr -> - expr .)
-    GEQ             reduce using rule 33 (expr -> - expr .)
-    )               reduce using rule 33 (expr -> - expr .)
-    ,               reduce using rule 33 (expr -> - expr .)
-    ]               reduce using rule 33 (expr -> - expr .)
-    :               reduce using rule 33 (expr -> - expr .)
-    {               reduce using rule 33 (expr -> - expr .)
-    BREAK           reduce using rule 33 (expr -> - expr .)
-    CONTINUE        reduce using rule 33 (expr -> - expr .)
-    IF              reduce using rule 33 (expr -> - expr .)
-    INTNUMBER       reduce using rule 33 (expr -> - expr .)
-    FLOATNUMBER     reduce using rule 33 (expr -> - expr .)
-    [               reduce using rule 33 (expr -> - expr .)
-    (               reduce using rule 33 (expr -> - expr .)
-    RETURN          reduce using rule 33 (expr -> - expr .)
-    PRINT           reduce using rule 33 (expr -> - expr .)
-    FOR             reduce using rule 33 (expr -> - expr .)
-    WHILE           reduce using rule 33 (expr -> - expr .)
-    ID              reduce using rule 33 (expr -> - expr .)
-    ZEROS           reduce using rule 33 (expr -> - expr .)
-    ONES            reduce using rule 33 (expr -> - expr .)
-    EYE             reduce using rule 33 (expr -> - expr .)
+    ;               reduce using rule 31 (expr -> - expr .)
+    '               reduce using rule 31 (expr -> - expr .)
+    +               reduce using rule 31 (expr -> - expr .)
+    -               reduce using rule 31 (expr -> - expr .)
+    *               reduce using rule 31 (expr -> - expr .)
+    /               reduce using rule 31 (expr -> - expr .)
+    MPLUS           reduce using rule 31 (expr -> - expr .)
+    MMINUS          reduce using rule 31 (expr -> - expr .)
+    MTIMES          reduce using rule 31 (expr -> - expr .)
+    MDIVIDE         reduce using rule 31 (expr -> - expr .)
+    EQ              reduce using rule 31 (expr -> - expr .)
+    NEQ             reduce using rule 31 (expr -> - expr .)
+    >               reduce using rule 31 (expr -> - expr .)
+    <               reduce using rule 31 (expr -> - expr .)
+    LEQ             reduce using rule 31 (expr -> - expr .)
+    GEQ             reduce using rule 31 (expr -> - expr .)
+    )               reduce using rule 31 (expr -> - expr .)
+    ,               reduce using rule 31 (expr -> - expr .)
+    ]               reduce using rule 31 (expr -> - expr .)
+    :               reduce using rule 31 (expr -> - expr .)
+    {               reduce using rule 31 (expr -> - expr .)
+    BREAK           reduce using rule 31 (expr -> - expr .)
+    CONTINUE        reduce using rule 31 (expr -> - expr .)
+    IF              reduce using rule 31 (expr -> - expr .)
+    INTNUMBER       reduce using rule 31 (expr -> - expr .)
+    FLOATNUMBER     reduce using rule 31 (expr -> - expr .)
+    (               reduce using rule 31 (expr -> - expr .)
+    [               reduce using rule 31 (expr -> - expr .)
+    RETURN          reduce using rule 31 (expr -> - expr .)
+    PRINT           reduce using rule 31 (expr -> - expr .)
+    FOR             reduce using rule 31 (expr -> - expr .)
+    WHILE           reduce using rule 31 (expr -> - expr .)
+    ID              reduce using rule 31 (expr -> - expr .)
+    ZEROS           reduce using rule 31 (expr -> - expr .)
+    ONES            reduce using rule 31 (expr -> - expr .)
+    EYE             reduce using rule 31 (expr -> - expr .)
 
   ! '               [ shift and go to state 34 ]
   ! +               [ shift and go to state 35 ]
@@ -2433,10 +2331,112 @@ state 65
   ! GEQ             [ shift and go to state 48 ]
 
 
+state 63
+
+    (33) expr -> specialmatrixword ( . expr )
+    (28) expr -> . assignable
+    (29) expr -> . INTNUMBER
+    (30) expr -> . FLOATNUMBER
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
+    (36) expr -> . expr + expr
+    (37) expr -> . expr - expr
+    (38) expr -> . expr * expr
+    (39) expr -> . expr / expr
+    (40) expr -> . expr MPLUS expr
+    (41) expr -> . expr MMINUS expr
+    (42) expr -> . expr MTIMES expr
+    (43) expr -> . expr MDIVIDE expr
+    (44) expr -> . expr EQ expr
+    (45) expr -> . expr NEQ expr
+    (46) expr -> . expr > expr
+    (47) expr -> . expr < expr
+    (48) expr -> . expr LEQ expr
+    (49) expr -> . expr GEQ expr
+    (26) assignable -> . ID
+    (27) assignable -> . ID [ expr , expr ]
+    (50) specialmatrixword -> . ZEROS
+    (51) specialmatrixword -> . ONES
+    (52) specialmatrixword -> . EYE
+
+    INTNUMBER       shift and go to state 18
+    FLOATNUMBER     shift and go to state 19
+    -               shift and go to state 20
+    (               shift and go to state 14
+    [               shift and go to state 22
+    ID              shift and go to state 26
+    ZEROS           shift and go to state 28
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+
+    specialmatrixword              shift and go to state 21
+    expr                           shift and go to state 96
+    assignable                     shift and go to state 56
+
+state 64
+
+    (60) matrixinitializer -> [ . innerlist ]
+    (62) innerlist -> . expr
+    (63) innerlist -> . innerlist , expr
+    (28) expr -> . assignable
+    (29) expr -> . INTNUMBER
+    (30) expr -> . FLOATNUMBER
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
+    (36) expr -> . expr + expr
+    (37) expr -> . expr - expr
+    (38) expr -> . expr * expr
+    (39) expr -> . expr / expr
+    (40) expr -> . expr MPLUS expr
+    (41) expr -> . expr MMINUS expr
+    (42) expr -> . expr MTIMES expr
+    (43) expr -> . expr MDIVIDE expr
+    (44) expr -> . expr EQ expr
+    (45) expr -> . expr NEQ expr
+    (46) expr -> . expr > expr
+    (47) expr -> . expr < expr
+    (48) expr -> . expr LEQ expr
+    (49) expr -> . expr GEQ expr
+    (26) assignable -> . ID
+    (27) assignable -> . ID [ expr , expr ]
+    (50) specialmatrixword -> . ZEROS
+    (51) specialmatrixword -> . ONES
+    (52) specialmatrixword -> . EYE
+
+    INTNUMBER       shift and go to state 18
+    FLOATNUMBER     shift and go to state 19
+    -               shift and go to state 20
+    (               shift and go to state 14
+    [               shift and go to state 22
+    ID              shift and go to state 26
+    ZEROS           shift and go to state 28
+    ONES            shift and go to state 29
+    EYE             shift and go to state 30
+
+    innerlist                      shift and go to state 97
+    expr                           shift and go to state 98
+    assignable                     shift and go to state 56
+    specialmatrixword              shift and go to state 21
+
+state 65
+
+    (35) expr -> [ matrixinitializer . ]
+    (61) matrixinitializer -> matrixinitializer . , [ innerlist ]
+
+    ]               shift and go to state 99
+    ,               shift and go to state 100
+
+
 state 66
 
     (15) returnstatement -> RETURN expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2473,24 +2473,23 @@ state 66
 state 67
 
     (16) printstatement -> PRINT printables .
-    (18) printables -> printables . , printable
 
     ;               reduce using rule 16 (printstatement -> PRINT printables .)
-    ,               shift and go to state 101
 
 
 state 68
 
     (17) printables -> printable .
+    (18) printables -> printable . , printables
 
-    ,               reduce using rule 17 (printables -> printable .)
     ;               reduce using rule 17 (printables -> printable .)
+    ,               shift and go to state 101
 
 
 state 69
 
     (19) printable -> expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2546,11 +2545,11 @@ state 72
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2573,9 +2572,9 @@ state 72
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2591,11 +2590,11 @@ state 73
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -2618,9 +2617,9 @@ state 73
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -2643,9 +2642,9 @@ state 74
     IF              reduce using rule 5 (morestatements -> { morestatements } .)
     INTNUMBER       reduce using rule 5 (morestatements -> { morestatements } .)
     FLOATNUMBER     reduce using rule 5 (morestatements -> { morestatements } .)
-    [               reduce using rule 5 (morestatements -> { morestatements } .)
     -               reduce using rule 5 (morestatements -> { morestatements } .)
     (               reduce using rule 5 (morestatements -> { morestatements } .)
+    [               reduce using rule 5 (morestatements -> { morestatements } .)
     RETURN          reduce using rule 5 (morestatements -> { morestatements } .)
     PRINT           reduce using rule 5 (morestatements -> { morestatements } .)
     FOR             reduce using rule 5 (morestatements -> { morestatements } .)
@@ -2659,7 +2658,7 @@ state 74
 state 75
 
     (36) expr -> expr + expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2698,8 +2697,8 @@ state 75
     IF              reduce using rule 36 (expr -> expr + expr .)
     INTNUMBER       reduce using rule 36 (expr -> expr + expr .)
     FLOATNUMBER     reduce using rule 36 (expr -> expr + expr .)
-    [               reduce using rule 36 (expr -> expr + expr .)
     (               reduce using rule 36 (expr -> expr + expr .)
+    [               reduce using rule 36 (expr -> expr + expr .)
     RETURN          reduce using rule 36 (expr -> expr + expr .)
     PRINT           reduce using rule 36 (expr -> expr + expr .)
     FOR             reduce using rule 36 (expr -> expr + expr .)
@@ -2732,7 +2731,7 @@ state 75
 state 76
 
     (37) expr -> expr - expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2771,8 +2770,8 @@ state 76
     IF              reduce using rule 37 (expr -> expr - expr .)
     INTNUMBER       reduce using rule 37 (expr -> expr - expr .)
     FLOATNUMBER     reduce using rule 37 (expr -> expr - expr .)
-    [               reduce using rule 37 (expr -> expr - expr .)
     (               reduce using rule 37 (expr -> expr - expr .)
+    [               reduce using rule 37 (expr -> expr - expr .)
     RETURN          reduce using rule 37 (expr -> expr - expr .)
     PRINT           reduce using rule 37 (expr -> expr - expr .)
     FOR             reduce using rule 37 (expr -> expr - expr .)
@@ -2805,7 +2804,7 @@ state 76
 state 77
 
     (38) expr -> expr * expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2846,8 +2845,8 @@ state 77
     IF              reduce using rule 38 (expr -> expr * expr .)
     INTNUMBER       reduce using rule 38 (expr -> expr * expr .)
     FLOATNUMBER     reduce using rule 38 (expr -> expr * expr .)
-    [               reduce using rule 38 (expr -> expr * expr .)
     (               reduce using rule 38 (expr -> expr * expr .)
+    [               reduce using rule 38 (expr -> expr * expr .)
     RETURN          reduce using rule 38 (expr -> expr * expr .)
     PRINT           reduce using rule 38 (expr -> expr * expr .)
     FOR             reduce using rule 38 (expr -> expr * expr .)
@@ -2878,7 +2877,7 @@ state 77
 state 78
 
     (39) expr -> expr / expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2919,8 +2918,8 @@ state 78
     IF              reduce using rule 39 (expr -> expr / expr .)
     INTNUMBER       reduce using rule 39 (expr -> expr / expr .)
     FLOATNUMBER     reduce using rule 39 (expr -> expr / expr .)
-    [               reduce using rule 39 (expr -> expr / expr .)
     (               reduce using rule 39 (expr -> expr / expr .)
+    [               reduce using rule 39 (expr -> expr / expr .)
     RETURN          reduce using rule 39 (expr -> expr / expr .)
     PRINT           reduce using rule 39 (expr -> expr / expr .)
     FOR             reduce using rule 39 (expr -> expr / expr .)
@@ -2951,7 +2950,7 @@ state 78
 state 79
 
     (40) expr -> expr MPLUS expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -2993,8 +2992,8 @@ state 79
     IF              reduce using rule 40 (expr -> expr MPLUS expr .)
     INTNUMBER       reduce using rule 40 (expr -> expr MPLUS expr .)
     FLOATNUMBER     reduce using rule 40 (expr -> expr MPLUS expr .)
-    [               reduce using rule 40 (expr -> expr MPLUS expr .)
     (               reduce using rule 40 (expr -> expr MPLUS expr .)
+    [               reduce using rule 40 (expr -> expr MPLUS expr .)
     RETURN          reduce using rule 40 (expr -> expr MPLUS expr .)
     PRINT           reduce using rule 40 (expr -> expr MPLUS expr .)
     FOR             reduce using rule 40 (expr -> expr MPLUS expr .)
@@ -3039,7 +3038,7 @@ state 79
 state 80
 
     (41) expr -> expr MMINUS expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3081,8 +3080,8 @@ state 80
     IF              reduce using rule 41 (expr -> expr MMINUS expr .)
     INTNUMBER       reduce using rule 41 (expr -> expr MMINUS expr .)
     FLOATNUMBER     reduce using rule 41 (expr -> expr MMINUS expr .)
-    [               reduce using rule 41 (expr -> expr MMINUS expr .)
     (               reduce using rule 41 (expr -> expr MMINUS expr .)
+    [               reduce using rule 41 (expr -> expr MMINUS expr .)
     RETURN          reduce using rule 41 (expr -> expr MMINUS expr .)
     PRINT           reduce using rule 41 (expr -> expr MMINUS expr .)
     FOR             reduce using rule 41 (expr -> expr MMINUS expr .)
@@ -3127,7 +3126,7 @@ state 80
 state 81
 
     (42) expr -> expr MTIMES expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3169,8 +3168,8 @@ state 81
     IF              reduce using rule 42 (expr -> expr MTIMES expr .)
     INTNUMBER       reduce using rule 42 (expr -> expr MTIMES expr .)
     FLOATNUMBER     reduce using rule 42 (expr -> expr MTIMES expr .)
-    [               reduce using rule 42 (expr -> expr MTIMES expr .)
     (               reduce using rule 42 (expr -> expr MTIMES expr .)
+    [               reduce using rule 42 (expr -> expr MTIMES expr .)
     RETURN          reduce using rule 42 (expr -> expr MTIMES expr .)
     PRINT           reduce using rule 42 (expr -> expr MTIMES expr .)
     FOR             reduce using rule 42 (expr -> expr MTIMES expr .)
@@ -3215,7 +3214,7 @@ state 81
 state 82
 
     (43) expr -> expr MDIVIDE expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3257,8 +3256,8 @@ state 82
     IF              reduce using rule 43 (expr -> expr MDIVIDE expr .)
     INTNUMBER       reduce using rule 43 (expr -> expr MDIVIDE expr .)
     FLOATNUMBER     reduce using rule 43 (expr -> expr MDIVIDE expr .)
-    [               reduce using rule 43 (expr -> expr MDIVIDE expr .)
     (               reduce using rule 43 (expr -> expr MDIVIDE expr .)
+    [               reduce using rule 43 (expr -> expr MDIVIDE expr .)
     RETURN          reduce using rule 43 (expr -> expr MDIVIDE expr .)
     PRINT           reduce using rule 43 (expr -> expr MDIVIDE expr .)
     FOR             reduce using rule 43 (expr -> expr MDIVIDE expr .)
@@ -3303,7 +3302,7 @@ state 82
 state 83
 
     (44) expr -> expr EQ expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3340,8 +3339,8 @@ state 83
     IF              reduce using rule 44 (expr -> expr EQ expr .)
     INTNUMBER       reduce using rule 44 (expr -> expr EQ expr .)
     FLOATNUMBER     reduce using rule 44 (expr -> expr EQ expr .)
-    [               reduce using rule 44 (expr -> expr EQ expr .)
     (               reduce using rule 44 (expr -> expr EQ expr .)
+    [               reduce using rule 44 (expr -> expr EQ expr .)
     RETURN          reduce using rule 44 (expr -> expr EQ expr .)
     PRINT           reduce using rule 44 (expr -> expr EQ expr .)
     FOR             reduce using rule 44 (expr -> expr EQ expr .)
@@ -3376,7 +3375,7 @@ state 83
 state 84
 
     (45) expr -> expr NEQ expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3413,8 +3412,8 @@ state 84
     IF              reduce using rule 45 (expr -> expr NEQ expr .)
     INTNUMBER       reduce using rule 45 (expr -> expr NEQ expr .)
     FLOATNUMBER     reduce using rule 45 (expr -> expr NEQ expr .)
-    [               reduce using rule 45 (expr -> expr NEQ expr .)
     (               reduce using rule 45 (expr -> expr NEQ expr .)
+    [               reduce using rule 45 (expr -> expr NEQ expr .)
     RETURN          reduce using rule 45 (expr -> expr NEQ expr .)
     PRINT           reduce using rule 45 (expr -> expr NEQ expr .)
     FOR             reduce using rule 45 (expr -> expr NEQ expr .)
@@ -3449,7 +3448,7 @@ state 84
 state 85
 
     (46) expr -> expr > expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3486,8 +3485,8 @@ state 85
     IF              reduce using rule 46 (expr -> expr > expr .)
     INTNUMBER       reduce using rule 46 (expr -> expr > expr .)
     FLOATNUMBER     reduce using rule 46 (expr -> expr > expr .)
-    [               reduce using rule 46 (expr -> expr > expr .)
     (               reduce using rule 46 (expr -> expr > expr .)
+    [               reduce using rule 46 (expr -> expr > expr .)
     RETURN          reduce using rule 46 (expr -> expr > expr .)
     PRINT           reduce using rule 46 (expr -> expr > expr .)
     FOR             reduce using rule 46 (expr -> expr > expr .)
@@ -3522,7 +3521,7 @@ state 85
 state 86
 
     (47) expr -> expr < expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3559,8 +3558,8 @@ state 86
     IF              reduce using rule 47 (expr -> expr < expr .)
     INTNUMBER       reduce using rule 47 (expr -> expr < expr .)
     FLOATNUMBER     reduce using rule 47 (expr -> expr < expr .)
-    [               reduce using rule 47 (expr -> expr < expr .)
     (               reduce using rule 47 (expr -> expr < expr .)
+    [               reduce using rule 47 (expr -> expr < expr .)
     RETURN          reduce using rule 47 (expr -> expr < expr .)
     PRINT           reduce using rule 47 (expr -> expr < expr .)
     FOR             reduce using rule 47 (expr -> expr < expr .)
@@ -3595,7 +3594,7 @@ state 86
 state 87
 
     (48) expr -> expr LEQ expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3632,8 +3631,8 @@ state 87
     IF              reduce using rule 48 (expr -> expr LEQ expr .)
     INTNUMBER       reduce using rule 48 (expr -> expr LEQ expr .)
     FLOATNUMBER     reduce using rule 48 (expr -> expr LEQ expr .)
-    [               reduce using rule 48 (expr -> expr LEQ expr .)
     (               reduce using rule 48 (expr -> expr LEQ expr .)
+    [               reduce using rule 48 (expr -> expr LEQ expr .)
     RETURN          reduce using rule 48 (expr -> expr LEQ expr .)
     PRINT           reduce using rule 48 (expr -> expr LEQ expr .)
     FOR             reduce using rule 48 (expr -> expr LEQ expr .)
@@ -3668,7 +3667,7 @@ state 87
 state 88
 
     (49) expr -> expr GEQ expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3705,8 +3704,8 @@ state 88
     IF              reduce using rule 49 (expr -> expr GEQ expr .)
     INTNUMBER       reduce using rule 49 (expr -> expr GEQ expr .)
     FLOATNUMBER     reduce using rule 49 (expr -> expr GEQ expr .)
-    [               reduce using rule 49 (expr -> expr GEQ expr .)
     (               reduce using rule 49 (expr -> expr GEQ expr .)
+    [               reduce using rule 49 (expr -> expr GEQ expr .)
     RETURN          reduce using rule 49 (expr -> expr GEQ expr .)
     PRINT           reduce using rule 49 (expr -> expr GEQ expr .)
     FOR             reduce using rule 49 (expr -> expr GEQ expr .)
@@ -3742,7 +3741,7 @@ state 89
 
     (53) ifstatement -> IF ( expr . ) morestatements
     (54) ifstatement -> IF ( expr . ) morestatements ELSE morestatements
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3778,50 +3777,50 @@ state 89
 
 state 90
 
-    (35) expr -> ( expr ) .
+    (34) expr -> ( expr ) .
 
-    ;               reduce using rule 35 (expr -> ( expr ) .)
-    '               reduce using rule 35 (expr -> ( expr ) .)
-    +               reduce using rule 35 (expr -> ( expr ) .)
-    -               reduce using rule 35 (expr -> ( expr ) .)
-    *               reduce using rule 35 (expr -> ( expr ) .)
-    /               reduce using rule 35 (expr -> ( expr ) .)
-    MPLUS           reduce using rule 35 (expr -> ( expr ) .)
-    MMINUS          reduce using rule 35 (expr -> ( expr ) .)
-    MTIMES          reduce using rule 35 (expr -> ( expr ) .)
-    MDIVIDE         reduce using rule 35 (expr -> ( expr ) .)
-    EQ              reduce using rule 35 (expr -> ( expr ) .)
-    NEQ             reduce using rule 35 (expr -> ( expr ) .)
-    >               reduce using rule 35 (expr -> ( expr ) .)
-    <               reduce using rule 35 (expr -> ( expr ) .)
-    LEQ             reduce using rule 35 (expr -> ( expr ) .)
-    GEQ             reduce using rule 35 (expr -> ( expr ) .)
-    )               reduce using rule 35 (expr -> ( expr ) .)
-    ,               reduce using rule 35 (expr -> ( expr ) .)
-    ]               reduce using rule 35 (expr -> ( expr ) .)
-    :               reduce using rule 35 (expr -> ( expr ) .)
-    {               reduce using rule 35 (expr -> ( expr ) .)
-    BREAK           reduce using rule 35 (expr -> ( expr ) .)
-    CONTINUE        reduce using rule 35 (expr -> ( expr ) .)
-    IF              reduce using rule 35 (expr -> ( expr ) .)
-    INTNUMBER       reduce using rule 35 (expr -> ( expr ) .)
-    FLOATNUMBER     reduce using rule 35 (expr -> ( expr ) .)
-    [               reduce using rule 35 (expr -> ( expr ) .)
-    (               reduce using rule 35 (expr -> ( expr ) .)
-    RETURN          reduce using rule 35 (expr -> ( expr ) .)
-    PRINT           reduce using rule 35 (expr -> ( expr ) .)
-    FOR             reduce using rule 35 (expr -> ( expr ) .)
-    WHILE           reduce using rule 35 (expr -> ( expr ) .)
-    ID              reduce using rule 35 (expr -> ( expr ) .)
-    ZEROS           reduce using rule 35 (expr -> ( expr ) .)
-    ONES            reduce using rule 35 (expr -> ( expr ) .)
-    EYE             reduce using rule 35 (expr -> ( expr ) .)
+    ;               reduce using rule 34 (expr -> ( expr ) .)
+    '               reduce using rule 34 (expr -> ( expr ) .)
+    +               reduce using rule 34 (expr -> ( expr ) .)
+    -               reduce using rule 34 (expr -> ( expr ) .)
+    *               reduce using rule 34 (expr -> ( expr ) .)
+    /               reduce using rule 34 (expr -> ( expr ) .)
+    MPLUS           reduce using rule 34 (expr -> ( expr ) .)
+    MMINUS          reduce using rule 34 (expr -> ( expr ) .)
+    MTIMES          reduce using rule 34 (expr -> ( expr ) .)
+    MDIVIDE         reduce using rule 34 (expr -> ( expr ) .)
+    EQ              reduce using rule 34 (expr -> ( expr ) .)
+    NEQ             reduce using rule 34 (expr -> ( expr ) .)
+    >               reduce using rule 34 (expr -> ( expr ) .)
+    <               reduce using rule 34 (expr -> ( expr ) .)
+    LEQ             reduce using rule 34 (expr -> ( expr ) .)
+    GEQ             reduce using rule 34 (expr -> ( expr ) .)
+    )               reduce using rule 34 (expr -> ( expr ) .)
+    ,               reduce using rule 34 (expr -> ( expr ) .)
+    ]               reduce using rule 34 (expr -> ( expr ) .)
+    :               reduce using rule 34 (expr -> ( expr ) .)
+    {               reduce using rule 34 (expr -> ( expr ) .)
+    BREAK           reduce using rule 34 (expr -> ( expr ) .)
+    CONTINUE        reduce using rule 34 (expr -> ( expr ) .)
+    IF              reduce using rule 34 (expr -> ( expr ) .)
+    INTNUMBER       reduce using rule 34 (expr -> ( expr ) .)
+    FLOATNUMBER     reduce using rule 34 (expr -> ( expr ) .)
+    (               reduce using rule 34 (expr -> ( expr ) .)
+    [               reduce using rule 34 (expr -> ( expr ) .)
+    RETURN          reduce using rule 34 (expr -> ( expr ) .)
+    PRINT           reduce using rule 34 (expr -> ( expr ) .)
+    FOR             reduce using rule 34 (expr -> ( expr ) .)
+    WHILE           reduce using rule 34 (expr -> ( expr ) .)
+    ID              reduce using rule 34 (expr -> ( expr ) .)
+    ZEROS           reduce using rule 34 (expr -> ( expr ) .)
+    ONES            reduce using rule 34 (expr -> ( expr ) .)
+    EYE             reduce using rule 34 (expr -> ( expr ) .)
 
 
 state 91
 
     (21) assignstatement -> assignable = expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3858,7 +3857,7 @@ state 91
 state 92
 
     (22) assignstatement -> assignable ASSIGNPLUS expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3895,7 +3894,7 @@ state 92
 state 93
 
     (23) assignstatement -> assignable ASSIGNMINUS expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3932,7 +3931,7 @@ state 93
 state 94
 
     (24) assignstatement -> assignable ASSIGNTIMES expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -3969,7 +3968,7 @@ state 94
 state 95
 
     (25) assignstatement -> assignable ASSIGNDIVIDE expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4005,17 +4004,54 @@ state 95
 
 state 96
 
-    (60) matrixinitializer -> [ innerlist . ]
-    (63) innerlist -> innerlist . , expr
+    (33) expr -> specialmatrixword ( expr . )
+    (32) expr -> expr . '
+    (36) expr -> expr . + expr
+    (37) expr -> expr . - expr
+    (38) expr -> expr . * expr
+    (39) expr -> expr . / expr
+    (40) expr -> expr . MPLUS expr
+    (41) expr -> expr . MMINUS expr
+    (42) expr -> expr . MTIMES expr
+    (43) expr -> expr . MDIVIDE expr
+    (44) expr -> expr . EQ expr
+    (45) expr -> expr . NEQ expr
+    (46) expr -> expr . > expr
+    (47) expr -> expr . < expr
+    (48) expr -> expr . LEQ expr
+    (49) expr -> expr . GEQ expr
 
-    ]               shift and go to state 106
-    ,               shift and go to state 107
+    )               shift and go to state 106
+    '               shift and go to state 34
+    +               shift and go to state 35
+    -               shift and go to state 36
+    *               shift and go to state 37
+    /               shift and go to state 38
+    MPLUS           shift and go to state 39
+    MMINUS          shift and go to state 40
+    MTIMES          shift and go to state 41
+    MDIVIDE         shift and go to state 42
+    EQ              shift and go to state 43
+    NEQ             shift and go to state 44
+    >               shift and go to state 45
+    <               shift and go to state 46
+    LEQ             shift and go to state 47
+    GEQ             shift and go to state 48
 
 
 state 97
 
+    (60) matrixinitializer -> [ innerlist . ]
+    (63) innerlist -> innerlist . , expr
+
+    ]               shift and go to state 107
+    ,               shift and go to state 108
+
+
+state 98
+
     (62) innerlist -> expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4050,105 +4086,70 @@ state 97
     GEQ             shift and go to state 48
 
 
-state 98
-
-    (31) expr -> [ matrixinitializer ] .
-
-    ;               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    '               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    +               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    -               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    *               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    /               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    MPLUS           reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    MMINUS          reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    MTIMES          reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    MDIVIDE         reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    EQ              reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    NEQ             reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    >               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    <               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    LEQ             reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    GEQ             reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    )               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    ,               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    ]               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    :               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    {               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    BREAK           reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    CONTINUE        reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    IF              reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    INTNUMBER       reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    FLOATNUMBER     reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    [               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    (               reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    RETURN          reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    PRINT           reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    FOR             reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    WHILE           reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    ID              reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    ZEROS           reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    ONES            reduce using rule 31 (expr -> [ matrixinitializer ] .)
-    EYE             reduce using rule 31 (expr -> [ matrixinitializer ] .)
-
-
 state 99
 
-    (61) matrixinitializer -> matrixinitializer , . [ innerlist ]
+    (35) expr -> [ matrixinitializer ] .
 
-    [               shift and go to state 108
+    ;               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    '               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    +               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    -               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    *               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    /               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    MPLUS           reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    MMINUS          reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    MTIMES          reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    MDIVIDE         reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    EQ              reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    NEQ             reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    >               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    <               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    LEQ             reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    GEQ             reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    )               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    ,               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    ]               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    :               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    {               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    BREAK           reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    CONTINUE        reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    IF              reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    INTNUMBER       reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    FLOATNUMBER     reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    (               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    [               reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    RETURN          reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    PRINT           reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    FOR             reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    WHILE           reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    ID              reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    ZEROS           reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    ONES            reduce using rule 35 (expr -> [ matrixinitializer ] .)
+    EYE             reduce using rule 35 (expr -> [ matrixinitializer ] .)
 
 
 state 100
 
-    (32) expr -> specialmatrixword ( expr . )
-    (34) expr -> expr . '
-    (36) expr -> expr . + expr
-    (37) expr -> expr . - expr
-    (38) expr -> expr . * expr
-    (39) expr -> expr . / expr
-    (40) expr -> expr . MPLUS expr
-    (41) expr -> expr . MMINUS expr
-    (42) expr -> expr . MTIMES expr
-    (43) expr -> expr . MDIVIDE expr
-    (44) expr -> expr . EQ expr
-    (45) expr -> expr . NEQ expr
-    (46) expr -> expr . > expr
-    (47) expr -> expr . < expr
-    (48) expr -> expr . LEQ expr
-    (49) expr -> expr . GEQ expr
+    (61) matrixinitializer -> matrixinitializer , . [ innerlist ]
 
-    )               shift and go to state 109
-    '               shift and go to state 34
-    +               shift and go to state 35
-    -               shift and go to state 36
-    *               shift and go to state 37
-    /               shift and go to state 38
-    MPLUS           shift and go to state 39
-    MMINUS          shift and go to state 40
-    MTIMES          shift and go to state 41
-    MDIVIDE         shift and go to state 42
-    EQ              shift and go to state 43
-    NEQ             shift and go to state 44
-    >               shift and go to state 45
-    <               shift and go to state 46
-    LEQ             shift and go to state 47
-    GEQ             shift and go to state 48
+    [               shift and go to state 109
 
 
 state 101
 
-    (18) printables -> printables , . printable
+    (18) printables -> printable , . printables
+    (17) printables -> . printable
+    (18) printables -> . printable , printables
     (19) printable -> . expr
     (20) printable -> . STRING
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4172,15 +4173,16 @@ state 101
     STRING          shift and go to state 70
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
     EYE             shift and go to state 30
 
-    printable                      shift and go to state 110
+    printable                      shift and go to state 68
+    printables                     shift and go to state 110
     expr                           shift and go to state 69
     assignable                     shift and go to state 56
     specialmatrixword              shift and go to state 21
@@ -4192,11 +4194,11 @@ state 102
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4219,9 +4221,9 @@ state 102
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -4235,7 +4237,7 @@ state 102
 state 103
 
     (27) assignable -> ID [ expr . , expr ]
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4272,7 +4274,7 @@ state 103
 state 104
 
     (58) whileloop -> WHILE ( expr . ) morestatements
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4328,11 +4330,11 @@ state 105
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4369,9 +4371,9 @@ state 105
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -4396,23 +4398,65 @@ state 105
 
 state 106
 
+    (33) expr -> specialmatrixword ( expr ) .
+
+    ;               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    '               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    +               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    -               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    *               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    /               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    MPLUS           reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    MMINUS          reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    MTIMES          reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    MDIVIDE         reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    EQ              reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    NEQ             reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    >               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    <               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    LEQ             reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    GEQ             reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    )               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    ,               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    ]               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    :               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    {               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    BREAK           reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    CONTINUE        reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    IF              reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    INTNUMBER       reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    FLOATNUMBER     reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    (               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    [               reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    RETURN          reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    PRINT           reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    FOR             reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    WHILE           reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    ID              reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    ZEROS           reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    ONES            reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+    EYE             reduce using rule 33 (expr -> specialmatrixword ( expr ) .)
+
+
+state 107
+
     (60) matrixinitializer -> [ innerlist ] .
 
     ]               reduce using rule 60 (matrixinitializer -> [ innerlist ] .)
     ,               reduce using rule 60 (matrixinitializer -> [ innerlist ] .)
 
 
-state 107
+state 108
 
     (63) innerlist -> innerlist , . expr
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4435,9 +4479,9 @@ state 107
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -4447,7 +4491,7 @@ state 107
     assignable                     shift and go to state 56
     specialmatrixword              shift and go to state 21
 
-state 108
+state 109
 
     (61) matrixinitializer -> matrixinitializer , [ . innerlist ]
     (62) innerlist -> . expr
@@ -4455,11 +4499,11 @@ state 108
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4482,67 +4526,24 @@ state 108
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
     EYE             shift and go to state 30
 
     innerlist                      shift and go to state 117
-    expr                           shift and go to state 97
+    expr                           shift and go to state 98
     assignable                     shift and go to state 56
     specialmatrixword              shift and go to state 21
 
-state 109
-
-    (32) expr -> specialmatrixword ( expr ) .
-
-    ;               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    '               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    +               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    -               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    *               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    /               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    MPLUS           reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    MMINUS          reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    MTIMES          reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    MDIVIDE         reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    EQ              reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    NEQ             reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    >               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    <               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    LEQ             reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    GEQ             reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    )               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    ,               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    ]               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    :               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    {               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    BREAK           reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    CONTINUE        reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    IF              reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    INTNUMBER       reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    FLOATNUMBER     reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    [               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    (               reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    RETURN          reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    PRINT           reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    FOR             reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    WHILE           reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    ID              reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    ZEROS           reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    ONES            reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-    EYE             reduce using rule 32 (expr -> specialmatrixword ( expr ) .)
-
-
 state 110
 
-    (18) printables -> printables , printable .
+    (18) printables -> printable , printables .
 
-    ,               reduce using rule 18 (printables -> printables , printable .)
-    ;               reduce using rule 18 (printables -> printables , printable .)
+    ;               reduce using rule 18 (printables -> printable , printables .)
 
 
 state 111
@@ -4566,11 +4567,11 @@ state 111
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4607,9 +4608,9 @@ state 111
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -4635,7 +4636,7 @@ state 111
 state 112
 
     (59) rangeoperator -> expr . : expr
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4675,11 +4676,11 @@ state 113
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4702,9 +4703,9 @@ state 113
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -4735,11 +4736,11 @@ state 114
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4776,9 +4777,9 @@ state 114
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -4812,9 +4813,9 @@ state 115
     IF              reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     INTNUMBER       reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     FLOATNUMBER     reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
-    [               reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     -               reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     (               reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
+    [               reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     RETURN          reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     PRINT           reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
     FOR             reduce using rule 53 (ifstatement -> IF ( expr ) morestatements .)
@@ -4833,7 +4834,7 @@ state 115
 state 116
 
     (63) innerlist -> innerlist , expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4874,7 +4875,7 @@ state 117
     (63) innerlist -> innerlist . , expr
 
     ]               shift and go to state 123
-    ,               shift and go to state 107
+    ,               shift and go to state 108
 
 
 state 118
@@ -4887,9 +4888,9 @@ state 118
     IF              reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     INTNUMBER       reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     FLOATNUMBER     reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
-    [               reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     -               reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     (               reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
+    [               reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     RETURN          reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     PRINT           reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
     FOR             reduce using rule 57 (forloop -> FOR ID = rangeoperator morestatements .)
@@ -4909,11 +4910,11 @@ state 119
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -4936,9 +4937,9 @@ state 119
 
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     ID              shift and go to state 26
     ZEROS           shift and go to state 28
     ONES            shift and go to state 29
@@ -4951,7 +4952,7 @@ state 119
 state 120
 
     (27) assignable -> ID [ expr , expr . ]
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -4995,9 +4996,9 @@ state 121
     IF              reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     INTNUMBER       reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     FLOATNUMBER     reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
-    [               reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     -               reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     (               reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
+    [               reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     RETURN          reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     PRINT           reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
     FOR             reduce using rule 58 (whileloop -> WHILE ( expr ) morestatements .)
@@ -5032,11 +5033,11 @@ state 122
     (28) expr -> . assignable
     (29) expr -> . INTNUMBER
     (30) expr -> . FLOATNUMBER
-    (31) expr -> . [ matrixinitializer ]
-    (32) expr -> . specialmatrixword ( expr )
-    (33) expr -> . - expr
-    (34) expr -> . expr '
-    (35) expr -> . ( expr )
+    (31) expr -> . - expr
+    (32) expr -> . expr '
+    (33) expr -> . specialmatrixword ( expr )
+    (34) expr -> . ( expr )
+    (35) expr -> . [ matrixinitializer ]
     (36) expr -> . expr + expr
     (37) expr -> . expr - expr
     (38) expr -> . expr * expr
@@ -5073,9 +5074,9 @@ state 122
     IF              shift and go to state 13
     INTNUMBER       shift and go to state 18
     FLOATNUMBER     shift and go to state 19
-    [               shift and go to state 20
-    -               shift and go to state 22
+    -               shift and go to state 20
     (               shift and go to state 14
+    [               shift and go to state 22
     RETURN          shift and go to state 23
     PRINT           shift and go to state 24
     FOR             shift and go to state 25
@@ -5109,7 +5110,7 @@ state 123
 state 124
 
     (59) rangeoperator -> expr : expr .
-    (34) expr -> expr . '
+    (32) expr -> expr . '
     (36) expr -> expr . + expr
     (37) expr -> expr . - expr
     (38) expr -> expr . * expr
@@ -5132,8 +5133,8 @@ state 124
     IF              reduce using rule 59 (rangeoperator -> expr : expr .)
     INTNUMBER       reduce using rule 59 (rangeoperator -> expr : expr .)
     FLOATNUMBER     reduce using rule 59 (rangeoperator -> expr : expr .)
-    [               reduce using rule 59 (rangeoperator -> expr : expr .)
     (               reduce using rule 59 (rangeoperator -> expr : expr .)
+    [               reduce using rule 59 (rangeoperator -> expr : expr .)
     RETURN          reduce using rule 59 (rangeoperator -> expr : expr .)
     PRINT           reduce using rule 59 (rangeoperator -> expr : expr .)
     FOR             reduce using rule 59 (rangeoperator -> expr : expr .)
@@ -5196,8 +5197,8 @@ state 125
     IF              reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     INTNUMBER       reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     FLOATNUMBER     reduce using rule 27 (assignable -> ID [ expr , expr ] .)
-    [               reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     (               reduce using rule 27 (assignable -> ID [ expr , expr ] .)
+    [               reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     RETURN          reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     PRINT           reduce using rule 27 (assignable -> ID [ expr , expr ] .)
     FOR             reduce using rule 27 (assignable -> ID [ expr , expr ] .)
@@ -5218,9 +5219,9 @@ state 126
     IF              reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     INTNUMBER       reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     FLOATNUMBER     reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
-    [               reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     -               reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     (               reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
+    [               reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     RETURN          reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     PRINT           reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
     FOR             reduce using rule 54 (ifstatement -> IF ( expr ) morestatements ELSE morestatements .)
@@ -5242,9 +5243,9 @@ WARNING: shift/reduce conflict for CONTINUE in state 3 resolved as shift
 WARNING: shift/reduce conflict for IF in state 3 resolved as shift
 WARNING: shift/reduce conflict for INTNUMBER in state 3 resolved as shift
 WARNING: shift/reduce conflict for FLOATNUMBER in state 3 resolved as shift
-WARNING: shift/reduce conflict for [ in state 3 resolved as shift
 WARNING: shift/reduce conflict for - in state 3 resolved as shift
 WARNING: shift/reduce conflict for ( in state 3 resolved as shift
+WARNING: shift/reduce conflict for [ in state 3 resolved as shift
 WARNING: shift/reduce conflict for RETURN in state 3 resolved as shift
 WARNING: shift/reduce conflict for PRINT in state 3 resolved as shift
 WARNING: shift/reduce conflict for FOR in state 3 resolved as shift

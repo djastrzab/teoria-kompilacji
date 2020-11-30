@@ -70,16 +70,24 @@ def p_return_statement(p):
 
 def p_print_statement(p):
     """printstatement : PRINT printables"""
-
+    p[0] = AST.PrintStatement(p[2])
 
 def p_printables(p):
     """printables : printable
-                | printables ',' printable"""
+                | printable ',' printables"""
+    if len(p) == 2:
+        p[0] = AST.Printable(p[1])
+    else:
+        p[0] = AST.Printable(p[1], p[3])
 
 
-def p_pritable(p):
-    """printable : expr
-                | STRING"""
+def p_pritable1(p):         # Fajnie by bylo porozdzielac niektore produkcje na takie podfunkcje
+    """printable : expr"""
+    p[0] = p[1]
+
+def p_pritable2(p):         # Wtedy nie trzeba kombinowac z niektrorymi if'ami
+    """printable : STRING"""
+    p[0] = AST.String(p[1])
 
 
 def p_assign_statement(p):
@@ -96,17 +104,21 @@ def p_assignable(p):
                     | ID '[' expr ',' expr ']'"""
     if len(p) == 2:
         p[0] = AST.Variable(p[1])
+    else:
+        p[0] = AST.BinExpr(p[1] + "[,]", p[3], p[5])
 
+def p_expr1(p):
+    """expr :  assignable"""
+    p[0] = p[1]
 
-def p_expr_bin(p):
-    """expr : assignable
-            | INTNUMBER
+def p_expr2(p):
+    """expr :  INTNUMBER
             | FLOATNUMBER
-            | '[' matrixinitializer ']'
-            | specialmatrixword '(' expr ')'
             | '-' expr %prec UNARY
             | expr "\'"
+            | specialmatrixword '(' expr ')'
             | '(' expr ')' 
+            | '[' matrixinitializer ']'
             | expr '+' expr
             | expr '-' expr
             | expr '*' expr
@@ -124,15 +136,19 @@ def p_expr_bin(p):
             """
     if len(p)==5:
         p[0] = AST.MatWord(p[1], p[3])
-    elif len(p) == 4:  # trzeba bedzie to porozdzielac na mniejsze pod funkcje, bo nawiasy tez podchodza pod tego if'a
+    elif len(p) == 4:
         if p[1] == '(' or p[1] == '[' or p[1] == '{':
             p[0] = p[2]
         else:
             p[0] = AST.BinExpr(p[2], p[1], p[3])
-
+    elif len(p) == 3:
+        if p[1] == '-':
+            p[0] = AST.UnaryMinus(p[2])
+        else:
+            p[0] = AST.UnaryTranspose(p[1])
     else:
-        p[0] = AST.IntNum(p[1])
-
+        p[0] = AST.IntNum(p[1])     # Chyba sensownie jest porozdzielac to na podfunkcje bo tu nie wychwycimy czy to int czy float
+                                    # Alternatywnie mozna zrobic jeden wezel w drzwie na liczby (int i float)
 
 def p_special_matrix_word(p):
     """specialmatrixword : ZEROS
@@ -149,10 +165,12 @@ def p_if_statement(p):
 def p_loop(p):
     """loop : forloop
             | whileloop"""
+    p[0] = p[1]
 
 
 def p_for_loop(p):
     """forloop : FOR ID '=' rangeoperator morestatements"""
+    p[0] = AST.ForLoop(p[2], p[4], p[5])
 
 
 def p_while_loop(p):
@@ -161,6 +179,7 @@ def p_while_loop(p):
 
 def p_range_op(p):
     """rangeoperator : expr ':' expr """
+    p[0] = AST.BinExpr(p[2], p[1], p[3])
 
 
 def p_matrix_initializer(p):

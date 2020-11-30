@@ -12,10 +12,17 @@ class IntNum(Node):
         self.type = "IntNum"
 
 class FloatNum(Node):
-
     def __init__(self, value):
         self.value = value
 
+class String(Node):
+    def __init__(self, string):
+        self.string = string
+
+class Printable(Node):
+    def __init__(self, printable, nxt=None):
+        self.printable = printable
+        self.nxt = nxt
 
 class Variable(Node):
     def __init__(self, name):
@@ -37,6 +44,26 @@ class ReturnStatement(Node):
     def __init__(self, word, value=None):
         self.word = word
         self.value = value
+
+class PrintStatement(Node):
+    def __init__(self, content):
+        self.content = content
+
+class UnaryMinus(Node):
+    def __init__(self, expr):
+        self.expr = expr
+
+class UnaryTranspose(Node):
+    def __init__(self, expr):
+        self.expr = expr
+
+class ForLoop(Node):
+    def __init__(self, var, _range, block):
+        self.var = var
+        self._range = _range
+        self.block = block
+
+
 
 
 # ...

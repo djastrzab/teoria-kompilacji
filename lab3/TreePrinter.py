@@ -12,8 +12,10 @@ class TreePrinter:
 
     @addToClass(AST.Node)
     def printTree(self, indent=0):
-        self.left.printTree()
-        self.right.printTree()
+        if self.left:
+            self.left.printTree()
+        if self.right:
+            self.right.printTree()
 
         #raise Exception("printTree not defined in class " + self.__class__.__name__)
 
@@ -24,6 +26,25 @@ class TreePrinter:
         print("| " * indent + str(self.value))
         #pass
         # fill in the body
+
+    @addToClass(AST.FloatNum)
+    def printTree(self, indent=0):
+        print("| " * indent + str(self.value))
+
+    @addToClass(AST.String)
+    def printTree(self, indent=0):
+        print("| " * indent + self.string)
+
+    @addToClass(AST.PrintStatement)
+    def printTree(self, indent=0):
+        print("| " * indent + "PRINT")
+        self.content.printTree(indent + 1)
+
+    @addToClass(AST.Printable)
+    def printTree(self, indent=0):
+        self.printable.printTree(indent)
+        if self.nxt:
+            self.nxt.printTree(indent)
 
     @addToClass(AST.Variable)
     def printTree(self, indent=0):
@@ -44,6 +65,23 @@ class TreePrinter:
     def printTree(self, indent=0):
         print("| " * indent + self.word)
         self.value.printTree(indent + 1)
+
+    @addToClass(AST.UnaryMinus)
+    def printTree(self, indent=0):
+        print("| " * indent + '-')
+        self.expr.printTree(indent + 1)
+
+    @addToClass(AST.UnaryTranspose)
+    def printTree(self, indent=0):
+        print("| " * indent + "TRANSPOSE")
+        self.expr.printTree(indent + 1)
+
+    @addToClass(AST.ForLoop)
+    def printTree(self, indent=0):
+        print("| " * indent + "FOR")
+        print("| " * (indent + 1) + self.var)
+        self._range.printTree(indent + 1)
+        self.block.printTree(indent + 1)
 
 
     @addToClass(AST.Error)
