@@ -39,12 +39,12 @@ def p_more_statements(p):
     """morestatements : statement
                     |  statement morestatements
                     | '{' morestatements '}'"""
-    if(len(p)==2):
-        p[0]=p[1]
-    elif(len(p)==3):
-        p[0]= (p[1],p[2])
+    if len(p) == 2:
+        p[0] = p[1]
+    elif len(p) == 3:
+        p[0] = (p[1], p[2])
     else:
-        p[0]=p[2]
+        p[0] = p[2]
 
 
 def p_statement(p):
@@ -62,6 +62,10 @@ def p_statement(p):
 def p_return_statement(p):
     """returnstatement : RETURN 
                         | RETURN expr"""
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[1], p[2])
 
 
 def p_print_statement(p):
@@ -118,16 +122,23 @@ def p_expr_bin(p):
             | expr LEQ expr
             | expr GEQ expr
             """
-    if len(p) == 4:                 # trzeba bedzie to porozdzielac na mniejsze pod funkcje, bo nawiasy tez podchodza pod tego if'a
-        p[0] = AST.BinExpr(p[2], p[1], p[3])
-    else:   p[0] = AST.IntNum(p[1])
+    if len(p)==5:
+        p[0] = AST.MatWord(p[1], p[3])
+    elif len(p) == 4:  # trzeba bedzie to porozdzielac na mniejsze pod funkcje, bo nawiasy tez podchodza pod tego if'a
+        if p[1] == '(' or p[1] == '[' or p[1] == '{':
+            p[0] = p[2]
+        else:
+            p[0] = AST.BinExpr(p[2], p[1], p[3])
 
+    else:
+        p[0] = AST.IntNum(p[1])
 
 
 def p_special_matrix_word(p):
     """specialmatrixword : ZEROS
                             | ONES
                             | EYE"""
+    p[0] = p[1]
 
 
 def p_if_statement(p):

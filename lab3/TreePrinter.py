@@ -33,6 +33,11 @@ class TreePrinter:
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
+    @addToClass(AST.MatWord)
+    def printTree(self, indent=0):
+        print("| " * indent + self.word)
+        self.value.printTree(indent + 1)
+
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):

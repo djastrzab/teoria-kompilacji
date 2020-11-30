@@ -7,7 +7,7 @@ class Node:
 class IntNum(Node):
     def __init__(self, value):
         self.value = value
-        self.type="IntNum"
+        self.type = "IntNum"
 
 class FloatNum(Node):
 
@@ -25,6 +25,11 @@ class BinExpr(Node):
         self.op = op
         self.left = left
         self.right = right
+
+class MatWord(Node):
+    def __init__(self, word, value):
+        self.word = word
+        self.value = value
 
 
 # ...
