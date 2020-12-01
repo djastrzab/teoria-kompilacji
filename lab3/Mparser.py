@@ -165,7 +165,7 @@ def p_special_matrix_word(p):
 def p_if_statement(p):
     """ifstatement : IF '(' expr ')' morestatements %prec IFX
                     | IF '(' expr ')' morestatements ELSE morestatements"""
-    if len(p) > 5:
+    if len(p) > 6:
         p[0] = AST.IfElse(p[3], p[5], p[7])
     else:
         p[0] = AST.IfElse(p[3], p[5])
