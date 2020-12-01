@@ -83,6 +83,21 @@ class TreePrinter:
         self._range.printTree(indent + 1)
         self.block.printTree(indent + 1)
 
+    @addToClass(AST.WhileLoop)
+    def printTree(self, indent=0):
+        print("| " * indent + "WHILE")
+        self.condition.printTree(indent + 1)
+        self.operations.printTree(indent + 1)
+
+    @addToClass(AST.BreakInstruction)
+    def printTree(self, indent=0):
+        print("| " * indent + 'break')
+
+
+    @addToClass(AST.ContinueInstruction)
+    def printTree(self, indent=0):
+        print("| " * indent + 'continue')
+
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):

@@ -3,6 +3,20 @@ y = zeros(5);
 print "N==10";
 print k[j[1,4]*3,2+3], "meow2";
 
-for i = 1:N
-  for j = i:M
+
+
+for i = 1:N {
+  for j = i:M{
     print i, j;
+   }
+}
+x=1;
+
+while ( n > 0 )
+    i += 1;
+    break;
+    continue;
+
+return 0;
+
+

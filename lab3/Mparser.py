@@ -56,7 +56,12 @@ def p_statement(p):
                 | printstatement ';'
                 | BREAK ';'
                 | CONTINUE ';'"""
-    p[0] = p[1]
+    if p[1] == "break":
+        p[0] = AST.BreakInstruction()
+    elif p[1] == "continue":
+        p[0] = AST.ContinueInstruction()
+    else:
+        p[0] = p[1]
 
 
 def p_return_statement(p):
@@ -175,6 +180,7 @@ def p_for_loop(p):
 
 def p_while_loop(p):
     """whileloop : WHILE '(' expr ')' morestatements"""
+    p[0] = AST.WhileLoop(p[3], p[5])
 
 
 def p_range_op(p):

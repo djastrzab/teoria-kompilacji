@@ -63,7 +63,24 @@ class ForLoop(Node):
         self._range = _range
         self.block = block
 
+class WhileLoop(Node):
+    def __init__(self, condition, operations):
+        self.condition = condition
+        self.operations = operations
 
+class IfElse(Node):
+    def __init__(self, iff, _range, block):
+        self.iff = iff
+        self._range = _range
+        self.block = block
+
+class BreakInstruction(Node):
+    def __init__(self):
+        pass
+
+class ContinueInstruction(Node):
+    def __init__(self):
+        pass
 
 
 # ...
