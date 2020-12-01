@@ -13,9 +13,9 @@ class TreePrinter:
     @addToClass(AST.Node)
     def printTree(self, indent=0):
         if self.left:
-            self.left.printTree()
+            self.left.printTree(indent)
         if self.right:
-            self.right.printTree()
+            self.right.printTree(indent)
 
         #raise Exception("printTree not defined in class " + self.__class__.__name__)
 
@@ -88,6 +88,15 @@ class TreePrinter:
         print("| " * indent + "WHILE")
         self.condition.printTree(indent + 1)
         self.operations.printTree(indent + 1)
+
+    @addToClass(AST.IfElse)
+    def printTree(self, indent=0):
+        print("| " * indent + "IF")
+        self.condition.printTree(indent + 1)
+        print("| " * indent + "THEN")
+        self.ifBlock.printTree(indent + 1)
+        print("| " * indent + "ELSE")
+        self.elseBlock.printTree(indent + 1)
 
     @addToClass(AST.BreakInstruction)
     def printTree(self, indent=0):

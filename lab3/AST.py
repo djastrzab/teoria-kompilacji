@@ -69,10 +69,11 @@ class WhileLoop(Node):
         self.operations = operations
 
 class IfElse(Node):
-    def __init__(self, iff, _range, block):
-        self.iff = iff
-        self._range = _range
-        self.block = block
+    def __init__(self, condition, ifBlock, elseBlock):
+        self.condition = condition
+        self.ifBlock = ifBlock
+        self.elseBlock = elseBlock
+
 
 class BreakInstruction(Node):
     def __init__(self):
