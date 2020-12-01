@@ -5,11 +5,10 @@ import scanner
 import ply.yacc as yacc
 
 tokens = scanner.tokens
-
+incorrect_input = False
 symtab = {}
 
 precedence = (
-    # to fill ...
     ("nonassoc", "IFX"),
     ("nonassoc", "ELSE"),
     ("nonassoc", '=', "ASSIGNPLUS", "ASSIGNMINUS", "ASSIGNTIMES", "ASSIGNDIVIDE"),
@@ -18,13 +17,14 @@ precedence = (
     ("left", '*', '/'),
     ("left", "\'"),
     ("right", "UNARY"),
-    # to fill ...
 )
 
 
 def p_error(p):
     if p:
         print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
+        global incorrect_input
+        incorrect_input = True
     else:
         print("Unexpected end of input")
 
@@ -36,16 +36,20 @@ def p_start(p):
 
 
 def p_more_statements(p):
-    """morestatements : statement
-                    |  statement morestatements
-                    | '{' morestatements '}'"""
+    """morestatements : block
+                    |  statement morestatements"""
     if len(p) == 2:
         p[0] = p[1]
-    elif len(p) == 3:
+    else:
         p[0] = AST.Node(p[1], p[2])
+
+def p_block(p):
+    """block : statement
+            | '{' morestatements '}'"""
+    if len(p) == 2:
+        p[0] = p[1]
     else:
         p[0] = p[2]
-
 
 def p_statement(p):
     """statement : ifstatement
@@ -86,11 +90,11 @@ def p_printables(p):
         p[0] = AST.Printable(p[1], p[3])
 
 
-def p_pritable1(p):         # Fajnie by bylo porozdzielac niektore produkcje na takie podfunkcje
+def p_pritable1(p):         
     """printable : expr"""
     p[0] = p[1]
 
-def p_pritable2(p):         # Wtedy nie trzeba kombinowac z niektrorymi if'ami
+def p_pritable2(p):         
     """printable : STRING"""
     p[0] = AST.String(p[1])
 
@@ -117,9 +121,15 @@ def p_expr1(p):
     p[0] = p[1]
 
 def p_expr2(p):
-    """expr :  INTNUMBER
-            | FLOATNUMBER
-            | '-' expr %prec UNARY
+    """expr : INTNUMBER """
+    p[0] = AST.IntNum(p[1])
+
+def p_expr3(p):  
+    """expr : FLOATNUMBER"""
+    p[0] = AST.FloatNum(p[1])
+
+def p_expr4(p):
+    """expr : '-' expr %prec UNARY
             | expr "\'"
             | specialmatrixword '(' expr ')'
             | '(' expr ')' 
@@ -151,9 +161,6 @@ def p_expr2(p):
             p[0] = AST.UnaryMinus(p[2])
         else:
             p[0] = AST.UnaryTranspose(p[1])
-    else:
-        p[0] = AST.IntNum(p[1])     # Chyba sensownie jest porozdzielac to na podfunkcje bo tu nie wychwycimy czy to int czy float
-                                    # Alternatywnie mozna zrobic jeden wezel w drzwie na liczby (int i float)
 
 def p_special_matrix_word(p):
     """specialmatrixword : ZEROS
@@ -163,8 +170,8 @@ def p_special_matrix_word(p):
 
 
 def p_if_statement(p):
-    """ifstatement : IF '(' expr ')' morestatements %prec IFX
-                    | IF '(' expr ')' morestatements ELSE morestatements"""
+    """ifstatement : IF '(' expr ')' block %prec IFX
+                    | IF '(' expr ')' block ELSE block"""
     if len(p) > 6:
         p[0] = AST.IfElse(p[3], p[5], p[7])
     else:
@@ -177,12 +184,12 @@ def p_loop(p):
 
 
 def p_for_loop(p):
-    """forloop : FOR ID '=' rangeoperator morestatements"""
+    """forloop : FOR ID '=' rangeoperator block"""
     p[0] = AST.ForLoop(p[2], p[4], p[5])
 
 
 def p_while_loop(p):
-    """whileloop : WHILE '(' expr ')' morestatements"""
+    """whileloop : WHILE '(' expr ')' block"""
     p[0] = AST.WhileLoop(p[3], p[5])
 
 

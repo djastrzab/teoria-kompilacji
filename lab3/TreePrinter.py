@@ -17,15 +17,9 @@ class TreePrinter:
         if self.right:
             self.right.printTree(indent)
 
-        #raise Exception("printTree not defined in class " + self.__class__.__name__)
-
-
     @addToClass(AST.IntNum)
     def printTree(self, indent=0):
-        # print(self.type,self.value)
         print("| " * indent + str(self.value))
-        #pass
-        # fill in the body
 
     @addToClass(AST.FloatNum)
     def printTree(self, indent=0):
@@ -101,29 +95,23 @@ class TreePrinter:
 
     @addToClass(AST.BreakInstruction)
     def printTree(self, indent=0):
-        print("| " * indent + 'break')
+        print("| " * indent + 'BREAK')
 
     @addToClass(AST.ContinueInstruction)
     def printTree(self, indent=0):
-        print("| " * indent + 'continue')
+        print("| " * indent + 'CONTINUE')
 
     @addToClass(AST.Vector)
     def printTree(self, indent=0):
-        print("| " * indent + 'Vector')
+        print("| " * indent + 'VECTOR')
         self.inside.printTree(indent + 1)
 
     @addToClass(AST.Matrix)
     def printTree(self, indent=0):
-        print("| " * indent + 'Vector')
+        print("| " * indent + 'VECTOR')
         self.inside.printTree(indent + 1)
         self.deepInside.printTree(indent + 1)
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):
-        pass    
-        # fill in the body
-
-
-    # define printTree for other classes
-    # ...
-
+        pass 

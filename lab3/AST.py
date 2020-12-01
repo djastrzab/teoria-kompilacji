@@ -9,7 +9,6 @@ class Node:
 class IntNum(Node):
     def __init__(self, value):
         self.value = value
-        self.type = "IntNum"
 
 class FloatNum(Node):
     def __init__(self, value):
@@ -91,11 +90,6 @@ class BreakInstruction(Node):
 class ContinueInstruction(Node):
     def __init__(self):
         pass
-
-
-# ...
-# fill out missing classes
-# ...
 
 class Error(Node):
     def __init__(self):
