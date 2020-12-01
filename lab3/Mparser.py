@@ -193,12 +193,29 @@ def p_range_op(p):
 
 def p_matrix_initializer(p):
     """matrixinitializer : '[' innerlist  ']'
-                        | matrixinitializer ',' '[' innerlist ']' """
+                        | vector ',' '[' innerlist ']' """
+    if len(p) < 5:
+        p[0] = AST.Vector(p[2])
+    else:
+        p[0] = AST.Matrix(p[1], AST.Vector(p[4]))
+
+
+def p_vector(p):
+    """vector : '[' innerlist  ']'
+              | vector ',' '[' innerlist  ']'"""
+    if len(p) < 5:
+        p[0] = AST.Vector(p[2])
+    else:
+        p[0] = AST.Node(p[1], AST.Vector(p[4]))
 
 
 def p_innerlist(p):
     """innerlist : expr  
                 | innerlist ',' expr"""
+    if len(p) < 3:
+        p[0] = p[1]
+    else:
+        p[0] = AST.Node(p[1], p[3])
 
 
 parser = yacc.yacc()

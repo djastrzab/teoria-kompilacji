@@ -74,6 +74,15 @@ class IfElse(Node):
         self.ifBlock = ifBlock
         self.elseBlock = elseBlock
 
+class Matrix(Node):
+    def __init__(self, inside,deepInside):
+        self.inside = inside
+        self.deepInside = deepInside
+
+class Vector(Node):
+    def __init__(self, inside):
+        self.inside = inside
+
 
 class BreakInstruction(Node):
     def __init__(self):

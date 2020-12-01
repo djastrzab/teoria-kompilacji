@@ -102,11 +102,20 @@ class TreePrinter:
     def printTree(self, indent=0):
         print("| " * indent + 'break')
 
-
     @addToClass(AST.ContinueInstruction)
     def printTree(self, indent=0):
         print("| " * indent + 'continue')
 
+    @addToClass(AST.Vector)
+    def printTree(self, indent=0):
+        print("| " * indent + 'Vector')
+        self.inside.printTree(indent + 1)
+
+    @addToClass(AST.Matrix)
+    def printTree(self, indent=0):
+        print("| " * indent + 'Vector')
+        self.inside.printTree(indent + 1)
+        self.deepInside.printTree(indent + 1)
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):
