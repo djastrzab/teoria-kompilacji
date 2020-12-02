@@ -5,7 +5,6 @@ class Node:
         self.left = left
         self.right = right
 
-
 class IntNum(Node):
     def __init__(self, value):
         self.value = value
@@ -21,12 +20,11 @@ class String(Node):
 class Printable(Node):
     def __init__(self, printable, nxt=None):
         self.printable = printable
-        self.nxt = nxt
+        self.nxt = nxt #plaska lista
 
 class Variable(Node):
     def __init__(self, name):
         self.name = name
-
 
 class BinExpr(Node):
     def __init__(self, op, left, right):

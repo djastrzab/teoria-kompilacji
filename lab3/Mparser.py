@@ -8,7 +8,7 @@ tokens = scanner.tokens
 incorrect_input = False
 symtab = {}
 
-precedence = (
+precedence = ( #brak operatorów macierzowych
     ("nonassoc", "IFX"),
     ("nonassoc", "ELSE"),
     ("nonassoc", '=', "ASSIGNPLUS", "ASSIGNMINUS", "ASSIGNTIMES", "ASSIGNDIVIDE"),
