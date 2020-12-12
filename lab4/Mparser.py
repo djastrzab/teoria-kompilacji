@@ -6,15 +6,15 @@ import ply.yacc as yacc
 
 tokens = scanner.tokens
 incorrect_input = False
-symtab = {}
+
 
 precedence = (
     ("nonassoc", "IFX"),
     ("nonassoc", "ELSE"),
     ("nonassoc", '=', "ASSIGNPLUS", "ASSIGNMINUS", "ASSIGNTIMES", "ASSIGNDIVIDE"),
     ("nonassoc", '<', '>', "EQ", "NEQ", "LEQ", "GEQ"),
-    ("left", '+', '-'),
-    ("left", '*', '/'),
+    ("left", '+', '-', "MPLUS", "MMINUS"),
+    ("left", '*', '/', "MTIMES", "MDIVIDE"),
     ("left", "\'"),
     ("right", "UNARY"),
 )
