@@ -32,13 +32,12 @@ class TreePrinter:
     @addToClass(AST.PrintStatement)
     def printTree(self, indent=0):
         print("| " * indent + "PRINT")
-        self.content.printTree(indent + 1)
+        for c in self.content:
+            c.printTree(indent + 1)
 
     @addToClass(AST.Printable)
     def printTree(self, indent=0):
         self.printable.printTree(indent)
-        if self.nxt:
-            self.nxt.printTree(indent)
 
     @addToClass(AST.Variable)
     def printTree(self, indent=0):
@@ -104,13 +103,16 @@ class TreePrinter:
     @addToClass(AST.Vector)
     def printTree(self, indent=0):
         print("| " * indent + 'VECTOR')
-        self.inside.printTree(indent + 1)
+        for x in self.inside:
+            x.printTree(indent + 1)
 
     @addToClass(AST.Matrix)
     def printTree(self, indent=0):
         print("| " * indent + 'VECTOR')
-        self.inside.printTree(indent + 1)
-        self.deepInside.printTree(indent + 1)
+        for row in self.rows:
+            row.printTree(indent + 1)
+        # self.inside.printTree(indent + 1)
+        # self.deepInside.printTree(indent + 1)
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):
