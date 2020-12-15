@@ -1,4 +1,6 @@
 #!/usr/bin/python
+from collections import defaultdict
+from symtable import Symbol
 
 
 class VariableSymbol(Symbol):
@@ -14,12 +16,14 @@ class SymbolTable(object):
     def __init__(self, parent, name): # parent scope - ???? and symbol table name
         self.parent = parent
         self.last_scope = -1
-        self.scopes = []         # stack of scopes of variables (dicts)
+        self.scopes = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))         # stack of scopes of variables (dicts)
         self.name = name
     #
 
     def put(self, name, symbol): # put variable symbol or fundef under <name> entry
-        self.scopes[last_scope][0][name] = VariableSymbol(name, symbol)
+
+        it = self.last_scope
+        self.scopes[it][0][name] = VariableSymbol(name, symbol)
     #
 
     def get(self, name): # get variable symbol or fundef from <name> entry

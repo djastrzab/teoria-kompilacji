@@ -1,9 +1,12 @@
 #!/usr/bin/python
+from collections import defaultdict
+
+import AST
 import SymbolTable
 
 symtab = SymbolTable.SymbolTable(None, "Symtab")
 
-ttype = defaultdict()
+ttype = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
 
 ttype['+']["int"]["int"] = "int"
 ttype['-']["int"]["int"] = "int"
@@ -34,7 +37,6 @@ ttype["GEQ"]["float"]["int"] = "logic"
 ttype["EQ"]["float"]["int"] = "logic"
 ttype["NEQ"]["float"]["int"] = "logic"
 
-
 ttype['+']["float"]["float"] = "float"
 ttype['-']["float"]["float"] = "float"
 ttype['*']["float"]["float"] = "float"
@@ -43,6 +45,7 @@ ttype["LEQ"]["float"]["float"] = "logic"
 ttype["GEQ"]["float"]["float"] = "logic"
 ttype["EQ"]["float"]["float"] = "logic"
 ttype["NEQ"]["float"]["float"] = "logic"
+
 
 class NodeVisitor(object):
 
@@ -70,6 +73,28 @@ class NodeVisitor(object):
     #        self.visit(child)
 
 
+class Error:
+    errors = {
+        'diff_ty': "diffrent Types in line: ",
+        2: "February",
+        3: "March",
+        4: "April",
+        5: "May",
+        6: "June",
+        7: "July",
+        8: "August",
+        9: "September",
+        10: "October",
+        11: "November",
+        12: "December"}
+
+    def __init__(self, code):
+        self.code = code
+
+    def __str__(self):
+        return self.errors[self.code]
+
+
 class TypeChecker(NodeVisitor):
 
     def visit_Node(self, node):
@@ -86,8 +111,10 @@ class TypeChecker(NodeVisitor):
             return None
         type1 = self.visit(node.left)  # type1 = node.left.accept(self)
         if type1 != type2:
-            #error
-            print("ERROR")
+            # error
+            print(Error('diff_ty'))
+            pass
+
         return ttype[op][type1][type2]
         # ...
         #
@@ -114,6 +141,7 @@ class TypeChecker(NodeVisitor):
         if type1 != "int":
             # error
             print("ERROR")
+
     def visit_ReturnStatement(self, node):
         if node.value:
             self.visit(node.value)
@@ -128,7 +156,7 @@ class TypeChecker(NodeVisitor):
         return self.visit(node.expr)
 
     def visit_UnaryTranspose(self, node):
-        type1 =  self.visit(node.expr)
+        type1 = self.visit(node.expr)
         if "mat" not in type1:
             # error
             print("ERROR")
@@ -165,12 +193,9 @@ class TypeChecker(NodeVisitor):
             symtab.pushScope("else")
             self.visit(node.elseBlock)
             symtab.popScope()
-        
+
     def visit_Matrix(self, node):
-        
+        pass
         ### rekurencja troche problemem
 
-    
 ## chyba bedzie wypadalo przerobic to na listy zamiast rekurencje bo ciezko sledzic dlugosc rekurencjnego vectora
-
-
