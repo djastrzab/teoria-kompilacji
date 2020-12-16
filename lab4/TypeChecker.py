@@ -71,6 +71,10 @@ ttype["GEQ"]["float"]["float"] = "logic"
 ttype["EQ"]["float"]["float"] = "logic"
 ttype["NEQ"]["float"]["float"] = "logic"
 
+ttype['[,]']["int"]["int"] = "int"
+
+
+
 
 castable_operations = ['/', '+', '-', '*', '>', '<', "LEQ", "GEQ", "EQ", "NEQ"]
 castable_matrix_operations = ["MPLUS", "MMINUS", "MTIMES", "MDIVIDE"]
@@ -142,7 +146,7 @@ class TypeChecker(NodeVisitor):
         # requires definition of accept method in class Node
         op = node.op
         type2 = self.visit(node.right)
-        type1 = self.visit(node.left)
+
         if op == '=':
             if hasattr(node.left, 'op'):
                 x=5
@@ -151,14 +155,16 @@ class TypeChecker(NodeVisitor):
                 return None
         elif op.find('[,]') != -1:
             var_name = op.find('[,]')
+            type1 = self.visit(node.left)
             if type1 == type2 and type1 == 'int':
                 var = symtab.get(op[:var_name])
+                op = op[var_name:]
                 if var:
                     if node.left.value > var.type[0] or node.right.value > var.type[1] or node.left.value < 0 or node.right.value < 0:
                         print(Error('wr_mat_arg_values', node.line_no))
                         pass
                     else:
-                        return symtab.get(node.name).type
+                        return ttype[op][type1][type2]
                 else:
                     print(Error('no_var', node.line_no))
                     pass
@@ -167,7 +173,7 @@ class TypeChecker(NodeVisitor):
                 print(Error('wr_mat_arg_types', node.line_no))
                 pass
 
-
+        type1 = self.visit(node.left)
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
