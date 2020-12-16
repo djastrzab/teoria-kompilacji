@@ -91,16 +91,19 @@ class Error:
         'prev_stage_err': "Error found by parser",
         'no_loop_scope_break': "Break outside loop scope",
         'no_loop_scope_cont': "Continue outside loop scope",
-        'ambi_vec_type': "Vector contains diffrent types of elements",
-        'ambi_rows_types': "Matrix contains diffrent types of elements",
+        'ambi_vec_type': "Vector contains different types of elements",
+        'ambi_rows_types': "Matrix contains different types of elements",
         'not_eq_rows': "Matrix contains rows of different sizes",
         'not_matrix': "Wrong matrix initialization (empty row or empty matrix)",
         'not_logic': "Not a logical statement",
         'wrong_for_range': "Incorrect for loop range",
         'wrong_trans': "Trying to transpose non-matrix entity",
         'inv_spec_arg': "Wrong matrix size argument",
-        'no_var' : "Undeclared variable"
-        }
+        'no_var': "Undeclared variable",
+        'wr_mat_arg_types': "Wrong types of matrix arguments (not ints)",
+        'wr_mat_arg_values': "Wrong values of matrix arguments (outside of matrix)"
+
+    }
 
     def __init__(self, code, line):
         self.code = code
@@ -120,11 +123,33 @@ class TypeChecker(NodeVisitor):
         # alternative usage,
         # requires definition of accept method in class Node
         op = node.op
-        type2 = self.visit(node.right)  
+        type2 = self.visit(node.right)
+        type1 = self.visit(node.left)
         if op == '=':
-            symtab.put(node.left.name, type2)
-            return None
-        type1 = self.visit(node.left)  
+            if hasattr(node.left, 'op'):
+                x=5
+            else:
+                symtab.put(node.left.name, type2)
+                return None
+        elif op.find('[,]') != -1:
+            var_name = op.find('[,]')
+            if type1 == type2 and type1 == 'int':
+                var = symtab.get(op[:var_name])
+                if var:
+                    if node.left.value > var.type[0] or node.right.value > var.type[1] or node.left.value < 0 or node.right.value < 0:
+                        print(Error('wr_mat_arg_values', node.line_no))
+                        pass
+                    else:
+                        return symtab.get(node.name).type
+                else:
+                    print(Error('no_var', node.line_no))
+                    pass
+
+            else:
+                print(Error('wr_mat_arg_types', node.line_no))
+                pass
+
+
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
@@ -171,9 +196,6 @@ class TypeChecker(NodeVisitor):
     def visit_PrintStatement(self, node):
         for c in node.content:
             self.visit(c)
-
-    def visit_UnaryMinus(self, node):
-        return self.visit(node.expr)
 
     def visit_UnaryMinus(self, node):
         return self.visit(node.expr)
