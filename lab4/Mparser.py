@@ -50,7 +50,7 @@ def p_block(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = p[2]
+        p[0] = AST.Scope(p[2], line_no=p.lineno(1))
 
 def p_statement(p):
     """statement : ifstatement

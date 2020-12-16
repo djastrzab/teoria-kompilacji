@@ -17,6 +17,10 @@ class TreePrinter:
         if self.right:
             self.right.printTree(indent)
 
+    @addToClass(AST.Scope)
+    def printTree(self, indent=0):
+        self.instructions.printTree(indent)
+
     @addToClass(AST.IntNum)
     def printTree(self, indent=0):
         print("| " * indent + str(self.value))

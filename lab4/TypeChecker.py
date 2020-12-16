@@ -15,69 +15,69 @@ ttype['+']["int"]["int"] = "int"
 ttype['-']["int"]["int"] = "int"
 ttype['*']["int"]["int"] = "int"
 ttype['/']["int"]["int"] = "int"
-ttype["MPLUS"]["int"]["int"] = "int"
-ttype["MMINUS"]["int"]["int"] = "int"
-ttype["MTIMES"]["int"]["int"] = "int"
-ttype["MDIVIDE"]["int"]["int"] = "int"
+ttype[".+"]["int"]["int"] = "int"
+ttype[".-"]["int"]["int"] = "int"
+ttype[".*"]["int"]["int"] = "int"
+ttype["./"]["int"]["int"] = "int"
 ttype['<']["int"]["int"] = "logic"
 ttype['>']["int"]["int"] = "logic"
-ttype["LEQ"]["int"]["int"] = "logic"
-ttype["GEQ"]["int"]["int"] = "logic"
-ttype["EQ"]["int"]["int"] = "logic"
-ttype["NEQ"]["int"]["int"] = "logic"
+ttype["<="]["int"]["int"] = "logic"
+ttype[">="]["int"]["int"] = "logic"
+ttype["=="]["int"]["int"] = "logic"
+ttype["!="]["int"]["int"] = "logic"
 
 ttype['+']["int"]["float"] = "float"
 ttype['-']["int"]["float"] = "float"
 ttype['*']["int"]["float"] = "float"
 ttype['/']["int"]["float"] = "float"
-ttype["MPLUS"]["int"]["float"] = "float"
-ttype["MMINUS"]["int"]["float"] = "float"
-ttype["MTIMES"]["int"]["float"] = "float"
-ttype["MDIVIDE"]["int"]["float"] = "float"
+ttype[".+"]["int"]["float"] = "float"
+ttype[".-"]["int"]["float"] = "float"
+ttype[".*"]["int"]["float"] = "float"
+ttype["./"]["int"]["float"] = "float"
 ttype['<']["int"]["float"] = "logic"
 ttype['>']["int"]["float"] = "logic"
-ttype["LEQ"]["int"]["float"] = "logic"
-ttype["GEQ"]["int"]["float"] = "logic"
-ttype["EQ"]["int"]["float"] = "logic"
-ttype["NEQ"]["int"]["float"] = "logic"
+ttype["<="]["int"]["float"] = "logic"
+ttype[">="]["int"]["float"] = "logic"
+ttype["=="]["int"]["float"] = "logic"
+ttype["!="]["int"]["float"] = "logic"
 
 ttype['+']["float"]["int"] = "float"
 ttype['-']["float"]["int"] = "float"
 ttype['*']["float"]["int"] = "float"
 ttype['/']["float"]["int"] = "float"
-ttype["MPLUS"]["float"]["int"] = "float"
-ttype["MMINUS"]["float"]["int"] = "float"
-ttype["MTIMES"]["float"]["int"] = "float"
-ttype["MDIVIDE"]["float"]["int"] = "float"
+ttype[".+"]["float"]["int"] = "float"
+ttype[".-"]["float"]["int"] = "float"
+ttype[".*"]["float"]["int"] = "float"
+ttype["./"]["float"]["int"] = "float"
 ttype['<']["float"]["int"] = "logic"
 ttype['>']["float"]["int"] = "logic"
-ttype["LEQ"]["float"]["int"] = "logic"
-ttype["GEQ"]["float"]["int"] = "logic"
-ttype["EQ"]["float"]["int"] = "logic"
-ttype["NEQ"]["float"]["int"] = "logic"
+ttype["<="]["float"]["int"] = "logic"
+ttype[">="]["float"]["int"] = "logic"
+ttype["=="]["float"]["int"] = "logic"
+ttype["!="]["float"]["int"] = "logic"
 
 ttype['+']["float"]["float"] = "float"
 ttype['-']["float"]["float"] = "float"
 ttype['*']["float"]["float"] = "float"
 ttype['/']["float"]["float"] = "float"
-ttype["MPLUS"]["float"]["float"] = "float"
-ttype["MMINUS"]["float"]["float"] = "float"
-ttype["MTIMES"]["float"]["float"] = "float"
-ttype["MDIVIDE"]["float"]["float"] = "float"
+ttype[".+"]["float"]["float"] = "float"
+ttype[".-"]["float"]["float"] = "float"
+ttype[".*"]["float"]["float"] = "float"
+ttype["./"]["float"]["float"] = "float"
 ttype['<']["float"]["float"] = "logic"
 ttype['>']["float"]["float"] = "logic"
-ttype["LEQ"]["float"]["float"] = "logic"
-ttype["GEQ"]["float"]["float"] = "logic"
-ttype["EQ"]["float"]["float"] = "logic"
-ttype["NEQ"]["float"]["float"] = "logic"
+ttype["<="]["float"]["float"] = "logic"
+ttype[">="]["float"]["float"] = "logic"
+ttype["=="]["float"]["float"] = "logic"
+ttype["!="]["float"]["float"] = "logic"
 
 ttype['[,]']["int"]["int"] = "int"
 
 
 
 
-castable_operations = ['/', '+', '-', '*', '>', '<', "LEQ", "GEQ", "EQ", "NEQ"]
-castable_matrix_operations = ["MPLUS", "MMINUS", "MTIMES", "MDIVIDE"]
+castable_operations = ['/', '+', '-', '*', '>', '<', ">=", "<=", "==", "!="]
+castable_matrix_operations = [".+", ".-", ".*", "./"]
 castable_types = ["int", "float"]
 
 class NodeVisitor(object):
@@ -139,39 +139,53 @@ class TypeChecker(NodeVisitor):
 
     def visit_Node(self, node):
         self.visit(node.left)
-        self.visit(node.right)
+        self.visit(node.right) 
+
+    def visit_Scope(self, node):
+        symtab.pushScope("scope")
+        self.visit(node.instructions)
 
     def visit_BinExpr(self, node):
         # alternative usage,
         # requires definition of accept method in class Node
         op = node.op
         type2 = self.visit(node.right)
-
+        
         if op == '=':
             if hasattr(node.left, 'op'):
-                x=5
-            else:
-                symtab.put(node.left.name, type2)
+                type1 = self.visit(node.left)
+                if type1 != type2:
+                    # Error
+                    print(Error('diff_ty', node.line_no))
+                    return None
                 return None
-        elif op.find('[,]') != -1:
-            var_name = op.find('[,]')
+            else:
+                if type2:
+                    symtab.put(node.left.name, type2)
+                return None
+
+        
+        if op.find('[,]') != -1:
+            var_idx = op.find('[,]')
             type1 = self.visit(node.left)
+            var_name = op[:var_idx]
+            
+            var_type = symtab.get(var_name).type
+            if not isinstance(var_type, tuple):
+                #error
+                print(Error('no_mat_acccess',node.line_no))
+                return None
+            rows, cols, mat_type = var_type[0], var_type[1], var_type[2]
             if type1 == type2 and type1 == 'int':
-                var = symtab.get(op[:var_name])
-                op = op[var_name:]
-                if var:
-                    if node.left.value > var.type[0] or node.right.value > var.type[1] or node.left.value < 0 or node.right.value < 0:
-                        print(Error('wr_mat_arg_values', node.line_no))
-                        pass
-                    else:
-                        return ttype[op][type1][type2]
+                if node.left.value > rows or node.right.value > cols or node.left.value < 0 or node.right.value < 0:
+                    print(Error('wr_mat_arg_values', node.line_no))
+                    return None
                 else:
-                    print(Error('no_var', node.line_no))
-                    pass
+                    return mat_type
 
             else:
                 print(Error('wr_mat_arg_types', node.line_no))
-                pass
+                return None
 
         type1 = self.visit(node.left)
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
@@ -191,16 +205,18 @@ class TypeChecker(NodeVisitor):
                 return None
             return (rows1, cols1, ttype[op][vals1][vals2])
 
-        if type1 != type2:
-            # error
-            print(Error('diff_ty', node.line_no))
-            return None
-
         if op in castable_matrix_operations:   # matrix op on non-matrix type
             # error 
             print(Error('mat_op_on_non_mat', node.line_no))
             return None
 
+
+        if type1 != type2:
+            # error
+            print(Error('diff_ty', node.line_no))
+            return None
+
+        print(op)
         return ttype[op][type1][type2]
         # ...
         #
@@ -230,7 +246,7 @@ class TypeChecker(NodeVisitor):
         if type1 != "int":
             # error
             print(Error('inv_spec_arg', node.line_no))
-        return (size, size), "int"
+        return (size, size, "int")
 
     def visit_ReturnStatement(self, node):
         if node.value:
