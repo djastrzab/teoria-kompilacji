@@ -140,14 +140,12 @@ class TypeChecker(NodeVisitor):
             if type1 == type2 and type1 == 'int':
                 var = symtab.get(op[:var_name])
                 if var:
-                    if hasattr(node.left, 'op'):
-                        x = 5
-                        if node.left.value > var.type[0] or node.right.value > var.type[1] or node.left.value < 0 or node.right.value < 0:
-                            print(Error('wr_mat_arg_values', node.line_no))
-                            pass
-                        else:
-                            op = op[var_name:]
-                            return ttype[op][type1][type2]
+                    if node.left.value > var.type[0] or node.right.value > var.type[1] or node.left.value < 0 or node.right.value < 0:
+                        print(Error('wr_mat_arg_values', node.line_no))
+                        pass
+                    else:
+                        op = op[var_name:]
+                        return ttype[op][type1][type2]
                 else:
                     print(Error('no_var', node.line_no))
                     pass
