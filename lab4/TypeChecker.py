@@ -56,6 +56,9 @@ ttype["EQ"]["float"]["float"] = "logic"
 ttype["NEQ"]["float"]["float"] = "logic"
 
 
+ttype["[,]"]["int"]["int"] = "int"
+
+
 castable_operations = ['/', '+', '-', '*', '>', '<', "LEQ", "GEQ", "EQ", "NEQ"]
 castable_types = ["int", "float"]
 
@@ -124,7 +127,6 @@ class TypeChecker(NodeVisitor):
         # requires definition of accept method in class Node
         op = node.op
         type2 = self.visit(node.right)
-        type1 = self.visit(node.left)
         if op == '=':
             if hasattr(node.left, 'op'):
                 x=5
@@ -132,7 +134,9 @@ class TypeChecker(NodeVisitor):
                 symtab.put(node.left.name, type2)
                 return None
         elif op.find('[,]') != -1:
+            type1 = self.visit(node.left)
             var_name = op.find('[,]')
+
             if type1 == type2 and type1 == 'int':
                 var = symtab.get(op[:var_name])
                 if var:
@@ -140,7 +144,7 @@ class TypeChecker(NodeVisitor):
                         print(Error('wr_mat_arg_values', node.line_no))
                         pass
                     else:
-                        return symtab.get(node.name).type
+                        return ttype[op][type1][type2]
                 else:
                     print(Error('no_var', node.line_no))
                     pass
@@ -148,8 +152,9 @@ class TypeChecker(NodeVisitor):
             else:
                 print(Error('wr_mat_arg_types', node.line_no))
                 pass
+            op = op[var_name:]
 
-
+        type1 = self.visit(node.left)
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
@@ -166,7 +171,7 @@ class TypeChecker(NodeVisitor):
         var = symtab.get(node.name)
         if var:
             return symtab.get(node.name).type
-        print(Error('no_var',node.line_no))
+        print(Error('no_var', node.line_no))
         return None
 
     def visit_IntNum(self, node):
