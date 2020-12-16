@@ -8,9 +8,6 @@ symtab = SymbolTable.SymbolTable(None, "Symtab")
 
 ttype = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
 
-# TODO: Odwloanie poza zakres (rozszerzenie BinExpr), dodac operacje macierzeowe (do ttype tez fajnie, by dodawac
-#       macierze int do macierze float, ewentulanie poszukac co jeszcze przeoczone 
-
 ttype['+']["int"]["int"] = "int"
 ttype['-']["int"]["int"] = "int"
 ttype['*']["int"]["int"] = "int"
@@ -70,10 +67,6 @@ ttype["<="]["float"]["float"] = "logic"
 ttype[">="]["float"]["float"] = "logic"
 ttype["=="]["float"]["float"] = "logic"
 ttype["!="]["float"]["float"] = "logic"
-
-ttype['[,]']["int"]["int"] = "int"
-
-
 
 
 castable_operations = ['/', '+', '-', '*', '>', '<', ">=", "<=", "==", "!="]
@@ -144,6 +137,7 @@ class TypeChecker(NodeVisitor):
     def visit_Scope(self, node):
         symtab.pushScope("scope")
         self.visit(node.instructions)
+        symtab.popScope()
 
     def visit_BinExpr(self, node):
         # alternative usage,
@@ -177,12 +171,15 @@ class TypeChecker(NodeVisitor):
                 return None
             rows, cols, mat_type = var_type[0], var_type[1], var_type[2]
             if type1 == type2 and type1 == 'int':
-                if node.left.value > rows or node.right.value > cols or node.left.value < 0 or node.right.value < 0:
-                    print(Error('wr_mat_arg_values', node.line_no))
-                    return None
-                else:
-                    return mat_type
-
+                if hasattr(node.left, 'value'):
+                    if node.left.value > rows or node.left.value < 0:
+                        print(Error('wr_mat_arg_values', node.line_no))
+                        return None
+                if hasattr(node.right, 'value'):
+                    if node.right.value > cols or node.right.value < 0:
+                        print(Error('wr_mat_arg_values', node.line_no))
+                        return None
+                return mat_type
             else:
                 print(Error('wr_mat_arg_types', node.line_no))
                 return None
@@ -300,14 +297,14 @@ class TypeChecker(NodeVisitor):
             self.visit(node.elseBlock)
             symtab.popScope()
 
-    def visit_Matrix(self, node):
+    def visit_Matrix(self, node):     
         rows = len(node.rows)
         row_len = len(node.rows[0].inside)
         if rows < 1 or row_len < 1:
             # ERROR
             print(Error('not_matrix', node.line_no))
             return None
-        m_type = self.visit(node.rows[0].inside[0])
+        m_type = self.visit(node.rows[0].inside[0])       # all()
         
         for row in node.rows:
             _, r_len, r_type = self.visit(row)

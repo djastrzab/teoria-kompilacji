@@ -46,7 +46,7 @@ class SymbolTable(object):
         return None
 
     def getParentScope(self):
-        return self.parent #? ???
+        return self.parent
     #
 
     def pushScope(self, name):
