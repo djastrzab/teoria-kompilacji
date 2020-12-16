@@ -171,27 +171,28 @@ class TypeChecker(NodeVisitor):
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
-        if op in castable_matrix_operations:
-            if isinstance(type1, tuple) and isinstance(type2, tuple):
-                rows1, cols1, vals1 = type1[0], type1[1], type1[2]
-                rows2, cols2, vals2 = type2[0], type2[1], type2[2]
-                if not (rows1 == rows2 and cols1 == cols2):
-                    #error
-                    print(Error('wr_mat_sizes_op', node.line_no))
-                    return None
-                if not (op, vals1, vals2) in ttype:
-                    # error
-                    print(Error('diff_ty', node.line_no))
-                    return None
-                return (rows1, cols1, ttype[op][vals1][vals2])
-            else:
+        
+        if isinstance(type1, tuple) and isinstance(type2, tuple):
+            rows1, cols1, vals1 = type1[0], type1[1], type1[2]
+            rows2, cols2, vals2 = type2[0], type2[1], type2[2]
+            if not (rows1 == rows2 and cols1 == cols2):
                 #error
-                print(Error('mat_op_on_non_mat'), node.line_no)
+                print(Error('wr_mat_sizes_op', node.line_no))
                 return None
+            if not (op, vals1, vals2) in ttype:
+                # error
+                print(Error('diff_ty', node.line_no))
+                return None
+            return (rows1, cols1, ttype[op][vals1][vals2])
 
         if type1 != type2:
             # error
             print(Error('diff_ty', node.line_no))
+            return None
+
+        if op in castable_matrix_operations:   # matrix op on non-matrix type
+            # error 
+            print(Error('mat_op_on_non_mat', node.line_no))
             return None
 
         return ttype[op][type1][type2]
