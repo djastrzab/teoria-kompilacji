@@ -15,6 +15,10 @@ ttype['+']["int"]["int"] = "int"
 ttype['-']["int"]["int"] = "int"
 ttype['*']["int"]["int"] = "int"
 ttype['/']["int"]["int"] = "int"
+ttype["MPLUS"]["int"]["int"] = "int"
+ttype["MMINUS"]["int"]["int"] = "int"
+ttype["MTIMES"]["int"]["int"] = "int"
+ttype["MDIVIDE"]["int"]["int"] = "int"
 ttype['<']["int"]["int"] = "logic"
 ttype['>']["int"]["int"] = "logic"
 ttype["LEQ"]["int"]["int"] = "logic"
@@ -26,6 +30,10 @@ ttype['+']["int"]["float"] = "float"
 ttype['-']["int"]["float"] = "float"
 ttype['*']["int"]["float"] = "float"
 ttype['/']["int"]["float"] = "float"
+ttype["MPLUS"]["int"]["float"] = "float"
+ttype["MMINUS"]["int"]["float"] = "float"
+ttype["MTIMES"]["int"]["float"] = "float"
+ttype["MDIVIDE"]["int"]["float"] = "float"
 ttype['<']["int"]["float"] = "logic"
 ttype['>']["int"]["float"] = "logic"
 ttype["LEQ"]["int"]["float"] = "logic"
@@ -37,6 +45,10 @@ ttype['+']["float"]["int"] = "float"
 ttype['-']["float"]["int"] = "float"
 ttype['*']["float"]["int"] = "float"
 ttype['/']["float"]["int"] = "float"
+ttype["MPLUS"]["float"]["int"] = "float"
+ttype["MMINUS"]["float"]["int"] = "float"
+ttype["MTIMES"]["float"]["int"] = "float"
+ttype["MDIVIDE"]["float"]["int"] = "float"
 ttype['<']["float"]["int"] = "logic"
 ttype['>']["float"]["int"] = "logic"
 ttype["LEQ"]["float"]["int"] = "logic"
@@ -48,6 +60,10 @@ ttype['+']["float"]["float"] = "float"
 ttype['-']["float"]["float"] = "float"
 ttype['*']["float"]["float"] = "float"
 ttype['/']["float"]["float"] = "float"
+ttype["MPLUS"]["float"]["float"] = "float"
+ttype["MMINUS"]["float"]["float"] = "float"
+ttype["MTIMES"]["float"]["float"] = "float"
+ttype["MDIVIDE"]["float"]["float"] = "float"
 ttype['<']["float"]["float"] = "logic"
 ttype['>']["float"]["float"] = "logic"
 ttype["LEQ"]["float"]["float"] = "logic"
@@ -57,6 +73,7 @@ ttype["NEQ"]["float"]["float"] = "logic"
 
 
 castable_operations = ['/', '+', '-', '*', '>', '<', "LEQ", "GEQ", "EQ", "NEQ"]
+castable_matrix_operations = ["MPLUS", "MMINUS", "MTIMES", "MDIVIDE"]
 castable_types = ["int", "float"]
 
 class NodeVisitor(object):
@@ -101,9 +118,10 @@ class Error:
         'inv_spec_arg': "Wrong matrix size argument",
         'no_var': "Undeclared variable",
         'wr_mat_arg_types': "Wrong types of matrix arguments (not ints)",
-        'wr_mat_arg_values': "Wrong values of matrix arguments (outside of matrix)"
-
-    }
+        'wr_mat_arg_values': "Wrong values of matrix arguments (outside of matrix)",
+        'wr_mat_sizes_op' : "Wrong sizes of matrices in matrix operation",
+        'mat_op_on_non_mat' : "Matrix operation on non-matrix arguments"
+    }   
 
     def __init__(self, code, line):
         self.code = code
@@ -153,10 +171,28 @@ class TypeChecker(NodeVisitor):
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
+        if op in castable_matrix_operations:
+            if isinstance(type1, tuple) and isinstance(type2, tuple):
+                rows1, cols1, vals1 = type1[0], type1[1], type1[2]
+                rows2, cols2, vals2 = type2[0], type2[1], type2[2]
+                if not (rows1 == rows2 and cols1 == cols2):
+                    #error
+                    print(Error('wr_mat_sizes_op', node.line_no))
+                    return None
+                if not (op, vals1, vals2) in ttype:
+                    # error
+                    print(Error('diff_ty', node.line_no))
+                    return None
+                return (rows1, cols1, ttype[op][vals1][vals2])
+            else:
+                #error
+                print(Error('mat_op_on_non_mat'), node.line_no)
+                return None
+
         if type1 != type2:
             # error
             print(Error('diff_ty', node.line_no))
-            pass
+            return None
 
         return ttype[op][type1][type2]
         # ...
