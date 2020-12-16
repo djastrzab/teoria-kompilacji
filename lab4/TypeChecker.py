@@ -144,6 +144,7 @@ class TypeChecker(NodeVisitor):
                         print(Error('wr_mat_arg_values', node.line_no))
                         pass
                     else:
+                        op = op[var_name:]
                         return ttype[op][type1][type2]
                 else:
                     print(Error('no_var', node.line_no))
