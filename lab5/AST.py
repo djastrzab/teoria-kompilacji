@@ -6,6 +6,11 @@ class Node:
         self.right = right
         self.line_no = line_no
 
+    # def accept(self, obj):
+    #     try{
+    #         obj
+    #     }
+
 
 class IntNum(Node):
     def __init__(self, value, line_no=None):

@@ -22,6 +22,7 @@ ttype["<="]["int"]["int"] = "logic"
 ttype[">="]["int"]["int"] = "logic"
 ttype["=="]["int"]["int"] = "logic"
 ttype["!="]["int"]["int"] = "logic"
+ttype[':']["int"]["int"] = "int"
 
 ttype['+']["int"]["float"] = "float"
 ttype['-']["int"]["float"] = "float"
@@ -208,6 +209,7 @@ class TypeChecker(NodeVisitor):
             return None
 
 
+
         if type1 != type2:
             # error
             print(Error('diff_ty', node.line_no))
@@ -269,7 +271,7 @@ class TypeChecker(NodeVisitor):
         if type1 != "int":
             # error
             print(Error('wrong_for_range', node.line_no))
-        symtab.put(node.var.name, type1)
+        symtab.put(node.var, type1)
         symtab.pushScope("loop")
         self.visit(node.block)
         symtab.popScope()
