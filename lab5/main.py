@@ -25,7 +25,8 @@ if __name__ == '__main__':
     typeChecker = TypeChecker()
     typeChecker.visit(ast)  # or alternatively ast.accept(typeChecker)
 
-    #ast.accept(Interpreter())
+    interpreter = Interpreter.Interpreter()
+    interpreter.interprete(ast)
     # in future
     # ast.accept(OptimizationPass1())
     # ast.accept(OptimizationPass2())

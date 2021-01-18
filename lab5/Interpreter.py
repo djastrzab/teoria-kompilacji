@@ -14,16 +14,28 @@ op_dict = {
 }
 
 class Interpreter(object):
-
+    def interprete(self, ast):
+        print("pooopa1")
+        self.visit(ast)
 
     @on('node')
     def visit(self, node):
+        print("pooopa0")
         pass
+
+    @when(AST.Node)
+    def visit(self, node):
+        print("pooopa2")
+        self.visit(node.left)
+        self.visit(node.right)
+    
 
     @when(AST.BinExpr)
     def visit(self, node):
-        r1 = node.left.accept(self)
-        r2 = node.right.accept(self)
+        print("pooopa3")
+        print(node.op)
+        r1 = self.visit(node.left)
+        r2 = self.visit(node.right)
         print(r1)
         print(r2)
         # try sth smarter than:

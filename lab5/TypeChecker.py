@@ -215,7 +215,6 @@ class TypeChecker(NodeVisitor):
             print(Error('diff_ty', node.line_no))
             return None
 
-        print(op)
         return ttype[op][type1][type2]
         # ...
         #
