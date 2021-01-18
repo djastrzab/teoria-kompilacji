@@ -1,4 +1,5 @@
-
+class NoVarException(Exception):
+    pass
 
 class Memory:
 
@@ -31,7 +32,7 @@ class MemoryStack:
             if self.mem_stack[mem_stack_it].has_key(name):
                 return self.mem_stack[mem_stack_it].get(name)
             mem_stack_it -= 1
-        return None, None
+        raise NoVarException(f"No variable {name} in scope!")
 
     def insert(self, name, value): # inserts into memory stack variable <name> with value <value>
         self.mem_stack[self.size - 1].put(name, value)
