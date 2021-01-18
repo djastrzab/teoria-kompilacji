@@ -1,4 +1,3 @@
-
 import AST
 import SymbolTable
 from Memory import *
@@ -9,18 +8,39 @@ import sys
 sys.setrecursionlimit(10000)
 
 
+def mul(x ,y):       # can be matrix-multiplication
+    return
+    
+def unary_minus(x):  # can be matrix element-wise negation
+    return
+
+# TODO: Need exceptions for variable-based indexes (they are not check in TypeChecker)
 
 
 class Interpreter(object):
     op_dict = {
         '+': lambda x, y: x + y,
         '-': lambda x, y: x - y,
-        '*': lambda x, y: x * y,
+        '*': mul(x, y),
         '/': lambda x, y: x / y,
+        ".+": mat_add(x, y),
+        ".-": mat_sub(x, y),
+        ".*": mat_mul(x, y),
+        "./": mat_div(x, y),
+        "==": lambda x, y: x == y,
+        "!=": lambda x, y: x != y,
+        ">=": lambda x, y: x >= y,
+        "<=": lambda x, y: x <= y,
+        '<': lambda x, y: x < y,
+        '>': lambda x, y: x > y,
         "+=": lambda x, y: self.scopes.set(x, x + y),
         "-=": lambda x, y: self.scopes.set(x, x - y),
         "*=": lambda x, y: self.scopes.set(x, x * y),
-        "/=": lambda x, y: self.scopes.set(x, x / y)
+        "/=": lambda x, y: self.scopes.set(x, x / y),
+        ":": lambda start, stop: range(start, stop),
+        "ZEROES": lambda s: [[0] * s] * s,
+        "ONES": lambda s: [[1] * s] * s,
+        "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)]
     }
 
 
@@ -28,26 +48,22 @@ class Interpreter(object):
         self.scopes = MemoryStack()
 
     def interprete(self, ast):
-        print("pooopa1")
         self.scopes.push(Memory("global"))
         self.visit(ast)
 
     @on('node')
     def visit(self, node):
-        print("pooopa0")
         pass
 
-    @when(AST.Node)
+    @when(AST.Node)     # TODO: Lists are better, gotta change that
     def visit(self, node):
-        print("pooopa2")
         self.visit(node.left)
         self.visit(node.right)
     
 
     @when(AST.BinExpr)
     def visit(self, node):
-        print("pooopa3")
-        print(node.op)
+        # print(node.op)
         r2 = self.visit(node.right)
         if node.op == '=':
             self.scopes.insert(node.left.name, r2)
@@ -83,18 +99,122 @@ class Interpreter(object):
             text += str(r) + " "
         print(text)
         return None
+        
+    @when(AST.Scope)
+    def visit(self, node):
+        r = None
+        try:
+            self.scopes.push(Memory("Scope"))
+            for instruction in node.instructions:
+                r = self.visit(instruction)
+            self.scopes.pop()
+        except ReturnValueException as ret:
+            ret_val = ret.value
+            print(f"Program returned with value: {ret_val}")
+            return ret_val
+        return r
+        
+    @when(AST.MatWord)
+    def visit(self, node):
+        size = self.visit(node.value)
+        return op_dict[node.word](size)
+        
+    @when(AST.ReturnStatement)
+    def visit(self, node):
+        value = self.visit(node.value)
+        raise ReturnValueException(value)
+        
+    @when(AST.UnaryMinus)
+    def visit(self, node):
+        r = self.visit(node.expr)
+        return unary_minus(r)
+        
+    @when(AST.UnaryTranspose)
+    def visit(self, node):
+        prev = self.visit(node.expr)
+        r = []
+        rows = len(r)
+        cols = len(r[0])
+        for col in range(cols):
+            new_row = []
+            for row in range(rows):
+                new_row.append(prev[row][col])
+            r.append(new_row)
+        return r
+    
+    @when(AST.ForLoop)
+    def visit(self, node):
+        r = None
+        iter_list = self.visit(node._range)
+        if len(iter_list) > 0:
+            self.scopes.push(Memory("ForLoop"))
+            self.scopes.insert(node.var, iter_list[0])
+            for i in iter_list:
+                self.scopes.set(node.var, i)
+                try:
+                    r = self.visit(node.operations)
+                except BreakException:
+                    break
+                except ContinueException:
+                    continue
+            self.scopes.pop()
+        return r
 
-    # @when(AST.Assignment)
-    # def visit(self, node):
-    #     a = 1
-    #
-    #
-
-    # simplistic while loop interpretation
     @when(AST.WhileLoop)
     def visit(self, node):
         r = None
-        while node.cond.accept(self):
-            r = node.body.accept(self)
+        cond = self.visit(node.condition)
+        self.scopes.push(Memory("WhileLoop"))
+        while cond:
+            try:
+                cond = self.visit(node.condition)
+                r = self.visit(node.operations)
+            except BreakException:
+                break
+            except ContinueException:
+                continue
+            finally:
+        self.scopes.pop()
         return r
-
+        
+    @when(AST.IfElse)
+    def visit(self, node):
+        r = None
+        cond = self.visit(node.condition)
+        self.scopes.push("IfElse")
+        if cond:
+            r = self.visit(node.ifBlock)
+        else:
+            r = self.visit(node.elseBlock)
+        self.scopes.pop("IfElse")
+        return r
+        
+    @when(AST.Matrix)
+    def visit(self, node):
+        r = []
+        for row in self.visit(node.rows):
+            raw_row = self.visit(row)
+            r.append(raw_row)
+        return r
+        
+    @when(AST.Vector)
+    def visit(self, node):
+        r = []
+        for val in self.visit(node.inside):
+            raw_val = self.visit(val)
+            r.append(raw_row)
+        return r
+        
+        
+    @when(AST.BreakInstruction)
+    def visit(self, node):
+        raise BreakException()
+        
+    @when(AST.ContinueInstruction)
+    def visit(self, node):
+        raise ContinueException()
+        
+        
+    @when(AST.Error)
+    def visit(self, node):
+        raise Exception(f"Compiling failed on previous part of compilation (error in {node.line_no} line)!")
