@@ -228,7 +228,7 @@ class Interpreter(object):
     @when(AST.Matrix)
     def visit(self, node):
         r = []
-        for row in self.visit(node.rows):
+        for row in node.rows:
             raw_row = self.visit(row)
             r.append(raw_row)
         return r
@@ -236,9 +236,9 @@ class Interpreter(object):
     @when(AST.Vector)
     def visit(self, node):
         r = []
-        for val in self.visit(node.inside):
-            raw_val = self.visit(val)
-            r.append(raw_row)
+        for val in node.inside:
+            raw_val = val.value
+            r.append(raw_val)
         return r
         
         
