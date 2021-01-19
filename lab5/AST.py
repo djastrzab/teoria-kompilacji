@@ -15,6 +15,7 @@ class IntNum(Node):
 class Scope(Node):
     def __init__(self, instructions, line_no=None):
         self.instructions = instructions
+        self.special = False
         self.line_no = line_no
 
 class FloatNum(Node):

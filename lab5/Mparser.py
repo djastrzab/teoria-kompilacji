@@ -32,7 +32,8 @@ def p_error(p):
 def p_start(p):
     """start : 
             | morestatements"""
-    p[0] = p[1]
+    if len(p) == 2:
+        p[0] = AST.Scope(p[1], line_no=p.lineno(1))
 
 
 def p_more_statements(p):
@@ -42,13 +43,13 @@ def p_more_statements(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = AST.Node(p[1], p[2])
+        p[0] = [p[1]] + p[2]
 
 def p_block(p):
     """block : statement
             | '{' morestatements '}'"""
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = [p[1]]
     else:
         p[0] = AST.Scope(p[2], line_no=p.lineno(1))
 

@@ -10,45 +10,63 @@ sys.setrecursionlimit(10000)
 
 def mul(x ,y):       # can be matrix-multiplication
     return
+
+def mat_add(x, y):
+    return 
+
+def mat_sub(x, y):
+    return 
+
+def mat_mul(x, y):
+    return 
+
+def mat_div(x, y):
+    return 
     
 def unary_minus(x):  # can be matrix element-wise negation
     return
 
 # TODO: Need exceptions for variable-based indexes (they are not check in TypeChecker)
 
+def compare(x, y):
+    # print(x, "==" ,y)
+    # print(x == y)
+    return x == y
+
+
+assign_op_list = ["+=", "-=", "*=", "/="]
 
 class Interpreter(object):
-    op_dict = {
-        '+': lambda x, y: x + y,
-        '-': lambda x, y: x - y,
-        '*': mul(x, y),
-        '/': lambda x, y: x / y,
-        ".+": mat_add(x, y),
-        ".-": mat_sub(x, y),
-        ".*": mat_mul(x, y),
-        "./": mat_div(x, y),
-        "==": lambda x, y: x == y,
-        "!=": lambda x, y: x != y,
-        ">=": lambda x, y: x >= y,
-        "<=": lambda x, y: x <= y,
-        '<': lambda x, y: x < y,
-        '>': lambda x, y: x > y,
-        "+=": lambda x, y: self.scopes.set(x, x + y),
-        "-=": lambda x, y: self.scopes.set(x, x - y),
-        "*=": lambda x, y: self.scopes.set(x, x * y),
-        "/=": lambda x, y: self.scopes.set(x, x / y),
-        ":": lambda start, stop: range(start, stop),
-        "ZEROES": lambda s: [[0] * s] * s,
-        "ONES": lambda s: [[1] * s] * s,
-        "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)]
-    }
-
-
+    
     def __init__(self):
         self.scopes = MemoryStack()
+        self.op_dict = {
+            '+': lambda x, y: x + y,
+            '-': lambda x, y: x - y,
+            '*': mul,
+            '/': lambda x, y: x / y,
+            ".+": mat_add,
+            ".-": mat_sub,
+            ".*": mat_mul,
+            "./": mat_div,
+            "==": compare,#lambda x, y: x == y,
+            "!=": lambda x, y: x != y,
+            ">=": lambda x, y: x >= y,
+            "<=": lambda x, y: x <= y,
+            '<':  lambda x, y: x < y,
+            '>':  lambda x, y: x > y,
+            "+=": lambda var, x, y: self.scopes.set(var, x + y),
+            "-=": lambda var, x, y: self.scopes.set(var, x - y),
+            "*=": lambda var, x, y: self.scopes.set(var, x * y),
+            "/=": lambda var, x, y: self.scopes.set(var, x / y),
+            ":": lambda start, stop: range(start, stop),
+            "ZEROES": lambda s: [[0] * s] * s,
+            "ONES": lambda s: [[1] * s] * s,
+            "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)]
+        }
 
     def interprete(self, ast):
-        self.scopes.push(Memory("global"))
+        #self.scopes.push(Memory("global"))
         self.visit(ast)
 
     @on('node')
@@ -66,13 +84,16 @@ class Interpreter(object):
         # print(node.op)
         r2 = self.visit(node.right)
         if node.op == '=':
-            self.scopes.insert(node.left.name, r2)
+            self.scopes.set(node.left.name, r2)
             return r2
         r1 = self.visit(node.left)
-        return op_dict[node.op](r1, r2)
+        if node.op in assign_op_list:
+            return self.op_dict[node.op](node.left.name, r1 ,r2)
+        return self.op_dict[node.op](r1, r2)
 
     @when(AST.Variable)
     def visit(self, node):
+        #print(node.name,"->",self.scopes.get(node.name))
         return self.scopes.get(node.name)
 
     @when(AST.IntNum)
@@ -85,7 +106,7 @@ class Interpreter(object):
 
     @when(AST.String)
     def visit(self, node):
-        return node.string
+        return node.string[1:-1]
 
     @when(AST.Printable)
     def visit(self, node):
@@ -104,10 +125,12 @@ class Interpreter(object):
     def visit(self, node):
         r = None
         try:
-            self.scopes.push(Memory("Scope"))
+            if not node.special:
+                self.scopes.push(Memory("Scope"))
             for instruction in node.instructions:
                 r = self.visit(instruction)
-            self.scopes.pop()
+            if not node.special:
+                self.scopes.pop()
         except ReturnValueException as ret:
             ret_val = ret.value
             print(f"Program returned with value: {ret_val}")
@@ -148,16 +171,23 @@ class Interpreter(object):
         iter_list = self.visit(node._range)
         if len(iter_list) > 0:
             self.scopes.push(Memory("ForLoop"))
+            node.block.special = True
             self.scopes.insert(node.var, iter_list[0])
             for i in iter_list:
                 self.scopes.set(node.var, i)
                 try:
-                    r = self.visit(node.operations)
+                    r = self.visit(node.block)
+                    # for mem in self.scopes.mem_stack:
+                    #     print(mem.var_dict)
+                    # print("---")
                 except BreakException:
                     break
                 except ContinueException:
                     continue
-            self.scopes.pop()
+            dropped_scope = self.scopes.pop()
+            while dropped_scope.name != "ForLoop":
+                dropped_scope = self.scopes.pop()
+            
         return r
 
     @when(AST.WhileLoop)
@@ -165,28 +195,34 @@ class Interpreter(object):
         r = None
         cond = self.visit(node.condition)
         self.scopes.push(Memory("WhileLoop"))
+        node.operations.special = True
         while cond:
             try:
-                cond = self.visit(node.condition)
                 r = self.visit(node.operations)
+                cond = self.visit(node.condition)
             except BreakException:
                 break
             except ContinueException:
                 continue
-            finally:
-        self.scopes.pop()
+        dropped_scope = self.scopes.pop()
+        while dropped_scope.name != "WhileLoop":
+            dropped_scope = self.scopes.pop()
         return r
         
     @when(AST.IfElse)
     def visit(self, node):
         r = None
         cond = self.visit(node.condition)
-        self.scopes.push("IfElse")
+        node.ifBlock.special = True
+        if node.elseBlock:
+            node.elseBlock.special = True
+        self.scopes.push(Memory("IfElse"))
         if cond:
             r = self.visit(node.ifBlock)
-        else:
+        elif node.elseBlock:
             r = self.visit(node.elseBlock)
-        self.scopes.pop("IfElse")
+        self.scopes.pop()
+        
         return r
         
     @when(AST.Matrix)
