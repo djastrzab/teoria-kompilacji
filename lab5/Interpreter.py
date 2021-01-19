@@ -26,6 +26,10 @@ def mat_div(x, y):
 def unary_minus(x):  # can be matrix element-wise negation
     return
 
+def mat_el(var,r,c):
+    return
+
+
 # TODO: Need exceptions for variable-based indexes (they are not check in TypeChecker)
 
 def compare(x, y):
@@ -62,7 +66,8 @@ class Interpreter(object):
             ":": lambda start, stop: range(start, stop),
             "ZEROES": lambda s: [[0] * s] * s,
             "ONES": lambda s: [[1] * s] * s,
-            "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)]
+            "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)],
+            "[,]": lambda s,x,y:12312
         }
 
     def interprete(self, ast):
@@ -89,6 +94,9 @@ class Interpreter(object):
         r1 = self.visit(node.left)
         if node.op in assign_op_list:
             return self.op_dict[node.op](node.left.name, r1 ,r2)
+        if(node.op.find("[,]")>0):
+            trim=node.op.find("[,]")
+            return self.scopes.get(node.op[:trim])[r1][r2]
         return self.op_dict[node.op](r1, r2)
 
     @when(AST.Variable)
@@ -140,7 +148,7 @@ class Interpreter(object):
     @when(AST.MatWord)
     def visit(self, node):
         size = self.visit(node.value)
-        return op_dict[node.word](size)
+        return self.op_dict[node.word](size)
         
     @when(AST.ReturnStatement)
     def visit(self, node):
