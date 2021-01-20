@@ -8,34 +8,45 @@ import sys
 sys.setrecursionlimit(10000)
 
 
-def mul(x ,y):       # can be matrix-multiplication
-    return
+def mul(x, y):       # can be matrix-multiplication
+    if isinstance(x,list):
+        if not (len(x[0]) == len(y)):
+            raise Exception("Wrong Matrix sizes")
+        return [[sum(a*b for a,b in zip(x_row,y_col)) for y_col in zip(*y)] for x_row in x]
+
+    else:
+        return x*y;
+
 
 def mat_add(x, y):
-    return 
+    if not (len(x) == len(y) and len(x[0]) == len(y[0])):
+        raise Exception("Wrong Matrix sizes")
+    return [[x[i][j] + y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
 
 def mat_sub(x, y):
-    return 
+    if not (len(x) == len(y) and len(x[0]) == len(y[0])):
+        raise Exception("Wrong Matrix sizes")
+    return [[x[i][j] - y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
 
 def mat_mul(x, y):
-    return 
+    if not (len(x) == len(y) and len(x[0]) == len(y[0])):
+        raise Exception("Wrong Matrix sizes")
+    return [[x[i][j] * y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
 
 def mat_div(x, y):
-    return 
+    if not (len(x) == len(y) and len(x[0]) == len(y[0])):
+        raise Exception("Wrong Matrix sizes")
+    return [[x[i][j] / y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
     
 def unary_minus(x):  # can be matrix element-wise negation
-    return
+    if isinstance(x, list):
+        return [[x[i][j] *(-1) for j in range(len(x[0]))] for i in range(len(x))]
+    else:
+        return x*(-1)
 
-def mat_el(var,r,c):
-    return
 
 
 # TODO: Need exceptions for variable-based indexes (they are not check in TypeChecker)
-
-def compare(x, y):
-    # print(x, "==" ,y)
-    # print(x == y)
-    return x == y
 
 
 assign_op_list = ["+=", "-=", "*=", "/="]
@@ -53,7 +64,7 @@ class Interpreter(object):
             ".-": mat_sub,
             ".*": mat_mul,
             "./": mat_div,
-            "==": compare,#lambda x, y: x == y,
+            "==": lambda x, y: x == y,
             "!=": lambda x, y: x != y,
             ">=": lambda x, y: x >= y,
             "<=": lambda x, y: x <= y,
@@ -64,10 +75,9 @@ class Interpreter(object):
             "*=": lambda var, x, y: self.scopes.set(var, x * y),
             "/=": lambda var, x, y: self.scopes.set(var, x / y),
             ":": lambda start, stop: range(start, stop),
-            "ZEROES": lambda s: [[0] * s] * s,
-            "ONES": lambda s: [[1] * s] * s,
-            "EYE": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)],
-            "[,]": lambda s,x,y:12312
+            "zeros": lambda s: [[0 for j in range(s)] for i in range(s)],
+            "ones": lambda s: [[1 for j in range(s)] for i in range(s)],
+            "eye": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)],
         }
 
     def interprete(self, ast):
@@ -89,13 +99,21 @@ class Interpreter(object):
         # print(node.op)
         r2 = self.visit(node.right)
         if node.op == '=':
-            self.scopes.set(node.left.name, r2)
-            return r2
+            if hasattr(node.left, 'op'):
+                trim = node.left.op.find("[,]")
+                row = self.visit(node.left.left)
+                col = self.visit(node.left.right)
+                matrix = self.scopes.get(node.left.op[:trim])
+                matrix[row][col] = r2
+                return r2
+            else:
+                self.scopes.set(node.left.name, r2)
+                return r2
         r1 = self.visit(node.left)
         if node.op in assign_op_list:
             return self.op_dict[node.op](node.left.name, r1 ,r2)
-        if(node.op.find("[,]")>0):
-            trim=node.op.find("[,]")
+        if node.op.find("[,]") > 0 :
+            trim = node.op.find("[,]")
             return self.scopes.get(node.op[:trim])[r1][r2]
         return self.op_dict[node.op](r1, r2)
 
@@ -164,8 +182,8 @@ class Interpreter(object):
     def visit(self, node):
         prev = self.visit(node.expr)
         r = []
-        rows = len(r)
-        cols = len(r[0])
+        rows = len(prev)
+        cols = len(prev[0])
         for col in range(cols):
             new_row = []
             for row in range(rows):
@@ -179,12 +197,16 @@ class Interpreter(object):
         iter_list = self.visit(node._range)
         if len(iter_list) > 0:
             self.scopes.push(Memory("ForLoop"))
-            node.block.special = True
+            if hasattr(node.block, 'special'):
+                node.block.special = True
             self.scopes.insert(node.var, iter_list[0])
             for i in iter_list:
                 self.scopes.set(node.var, i)
                 try:
-                    r = self.visit(node.block)
+                    if isinstance(node.block,list):
+                        r = self.visit(node.block[0])
+                    else:
+                        r = self.visit(node.block)
                     # for mem in self.scopes.mem_stack:
                     #     print(mem.var_dict)
                     # print("---")

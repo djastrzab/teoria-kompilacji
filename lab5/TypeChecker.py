@@ -69,6 +69,8 @@ ttype[">="]["float"]["float"] = "logic"
 ttype["=="]["float"]["float"] = "logic"
 ttype["!="]["float"]["float"] = "logic"
 
+ttype['*']["str"]["int"] = "str"
+
 
 castable_operations = ['/', '+', '-', '*', '>', '<', ">=", "<=", "==", "!="]
 castable_matrix_operations = [".+", ".-", ".*", "./"]
@@ -189,15 +191,25 @@ class TypeChecker(NodeVisitor):
         if op in castable_operations and type1 in castable_types and type2 in castable_types:
             return ttype[op][type1][type2]
 
-        
         if isinstance(type1, tuple) and isinstance(type2, tuple):
             rows1, cols1, vals1 = type1[0], type1[1], type1[2]
             rows2, cols2, vals2 = type2[0], type2[1], type2[2]
+            if op == '*':
+                if cols1 != rows2:
+                    # error
+                    print(Error('wr_mat_sizes_op', node.line_no))
+                    return None
+                if op in ttype and vals1 in ttype[op] and vals2 in ttype[op][vals1]:
+                    return (rows1, cols2, ttype[op][vals1][vals2])
+                else:
+                    # error
+                    print(Error('diff_ty', node.line_no))
+                    return None
             if not (rows1 == rows2 and cols1 == cols2):
                 #error
                 print(Error('wr_mat_sizes_op', node.line_no))
                 return None
-            if not (op, vals1, vals2) in ttype:
+            if not(op in ttype and vals1 in ttype[op] and vals2 in ttype[op][vals1]):
                 # error
                 print(Error('diff_ty', node.line_no))
                 return None
@@ -209,11 +221,11 @@ class TypeChecker(NodeVisitor):
             return None
 
 
-
-        if type1 != type2:
-            # error
-            print(Error('diff_ty', node.line_no))
-            return None
+        if not type1 == 'str':
+            if type1 != type2:
+                # error
+                print(Error('diff_ty', node.line_no))
+                return None
 
         return ttype[op][type1][type2]
         # ...

@@ -97,9 +97,7 @@ def p_pritable1(p):
     """printable : expr"""
     p[0] = p[1]
 
-def p_pritable2(p):         
-    """printable : STRING"""
-    p[0] = AST.String(p[1], line_no=p.lineno(1))
+
 
 
 def p_assign_statement(p):
@@ -132,6 +130,10 @@ def p_expr3(p):
     p[0] = AST.FloatNum(p[1], line_no=p.lineno(1))
 
 def p_expr4(p):
+    """expr : STRING"""
+    p[0] = AST.String(p[1], line_no=p.lineno(1))
+
+def p_expr5(p):
     """expr : '-' expr %prec UNARY
             | expr "\'"
             | specialmatrixword '(' expr ')'
