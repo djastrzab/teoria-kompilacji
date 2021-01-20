@@ -5,7 +5,7 @@ import AST
 import SymbolTable
 
 symtab = SymbolTable.SymbolTable(None, "Symtab")
-
+typo = False
 ttype = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
 
 ttype['+']["int"]["int"] = "int"
@@ -126,12 +126,15 @@ class Error:
     def __init__(self, code, line):
         self.code = code
         self.line = line
+        global typo
+        typo = True
 
     def __str__(self):
         return f'{self.errors[self.code]} in line {self.line}'
 
 
 class TypeChecker(NodeVisitor):
+
 
     def visit_Node(self, node):
         self.visit(node.left)
