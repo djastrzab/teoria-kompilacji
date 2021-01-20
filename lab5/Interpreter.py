@@ -1,58 +1,58 @@
 import AST
-import SymbolTable
 from Memory import *
-from Exceptions import  *
+from Exceptions import *
 from visit import *
 import sys
 
 sys.setrecursionlimit(10000)
 
 
-def mul(x, y):       # can be matrix-multiplication
-    if isinstance(x,list):
+def mul(x, y):  # can be matrix-multiplication
+    if isinstance(x, list):
         if not (len(x[0]) == len(y)):
             raise Exception("Wrong Matrix sizes")
-        return [[sum(a*b for a,b in zip(x_row,y_col)) for y_col in zip(*y)] for x_row in x]
+        return [[sum(a * b for a, b in zip(x_row, y_col)) for y_col in zip(*y)] for x_row in x]
 
     else:
-        return x*y;
+        return x * y
 
 
 def mat_add(x, y):
     if not (len(x) == len(y) and len(x[0]) == len(y[0])):
         raise Exception("Wrong Matrix sizes")
-    return [[x[i][j] + y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
+    return [[x[i][j] + y[i][j] for j in range(len(x[0]))] for i in range(len(x))]
+
 
 def mat_sub(x, y):
     if not (len(x) == len(y) and len(x[0]) == len(y[0])):
         raise Exception("Wrong Matrix sizes")
-    return [[x[i][j] - y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
+    return [[x[i][j] - y[i][j] for j in range(len(x[0]))] for i in range(len(x))]
+
 
 def mat_mul(x, y):
     if not (len(x) == len(y) and len(x[0]) == len(y[0])):
         raise Exception("Wrong Matrix sizes")
-    return [[x[i][j] * y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
+    return [[x[i][j] * y[i][j] for j in range(len(x[0]))] for i in range(len(x))]
+
 
 def mat_div(x, y):
     if not (len(x) == len(y) and len(x[0]) == len(y[0])):
         raise Exception("Wrong Matrix sizes")
-    return [[x[i][j] / y[i][j]  for j in range(len(x[0]))] for i in range(len(x))]
-    
+    return [[x[i][j] / y[i][j] for j in range(len(x[0]))] for i in range(len(x))]
+
+
 def unary_minus(x):  # can be matrix element-wise negation
     if isinstance(x, list):
-        return [[x[i][j] *(-1) for j in range(len(x[0]))] for i in range(len(x))]
+        return [[x[i][j] * (-1) for j in range(len(x[0]))] for i in range(len(x))]
     else:
-        return x*(-1)
-
-
-
-# TODO: Need exceptions for variable-based indexes (they are not check in TypeChecker)
+        return x * (-1)
 
 
 assign_op_list = ["+=", "-=", "*=", "/="]
 
+
 class Interpreter(object):
-    
+
     def __init__(self):
         self.scopes = MemoryStack()
         self.op_dict = {
@@ -68,8 +68,8 @@ class Interpreter(object):
             "!=": lambda x, y: x != y,
             ">=": lambda x, y: x >= y,
             "<=": lambda x, y: x <= y,
-            '<':  lambda x, y: x < y,
-            '>':  lambda x, y: x > y,
+            '<': lambda x, y: x < y,
+            '>': lambda x, y: x > y,
             "+=": lambda var, x, y: self.scopes.set(var, x + y),
             "-=": lambda var, x, y: self.scopes.set(var, x - y),
             "*=": lambda var, x, y: self.scopes.set(var, x * y),
@@ -80,19 +80,18 @@ class Interpreter(object):
             "eye": lambda s: [[1 if i == j else 0 for j in range(s)] for i in range(s)],
         }
 
-    def interprete(self, ast):
-        #self.scopes.push(Memory("global"))
+    def interpret(self, ast):
+        # self.scopes.push(Memory("global"))
         self.visit(ast)
 
     @on('node')
     def visit(self, node):
         pass
 
-    @when(AST.Node)     # TODO: Lists are better, gotta change that
+    @when(AST.Node)
     def visit(self, node):
         self.visit(node.left)
         self.visit(node.right)
-    
 
     @when(AST.BinExpr)
     def visit(self, node):
@@ -111,15 +110,15 @@ class Interpreter(object):
                 return r2
         r1 = self.visit(node.left)
         if node.op in assign_op_list:
-            return self.op_dict[node.op](node.left.name, r1 ,r2)
-        if node.op.find("[,]") > 0 :
+            return self.op_dict[node.op](node.left.name, r1, r2)
+        if node.op.find("[,]") > 0:
             trim = node.op.find("[,]")
             return self.scopes.get(node.op[:trim])[r1][r2]
         return self.op_dict[node.op](r1, r2)
 
     @when(AST.Variable)
     def visit(self, node):
-        #print(node.name,"->",self.scopes.get(node.name))
+        # print(node.name,"->",self.scopes.get(node.name))
         return self.scopes.get(node.name)
 
     @when(AST.IntNum)
@@ -146,7 +145,7 @@ class Interpreter(object):
             text += str(r) + " "
         print(text)
         return None
-        
+
     @when(AST.Scope)
     def visit(self, node):
         r = None
@@ -162,22 +161,22 @@ class Interpreter(object):
             print(f"Program returned with value: {ret_val}")
             return ret_val
         return r
-        
+
     @when(AST.MatWord)
     def visit(self, node):
         size = self.visit(node.value)
         return self.op_dict[node.word](size)
-        
+
     @when(AST.ReturnStatement)
     def visit(self, node):
         value = self.visit(node.value)
         raise ReturnValueException(value)
-        
+
     @when(AST.UnaryMinus)
     def visit(self, node):
         r = self.visit(node.expr)
         return unary_minus(r)
-        
+
     @when(AST.UnaryTranspose)
     def visit(self, node):
         prev = self.visit(node.expr)
@@ -190,7 +189,7 @@ class Interpreter(object):
                 new_row.append(prev[row][col])
             r.append(new_row)
         return r
-    
+
     @when(AST.ForLoop)
     def visit(self, node):
         r = None
@@ -203,7 +202,7 @@ class Interpreter(object):
             for i in iter_list:
                 self.scopes.set(node.var, i)
                 try:
-                    if isinstance(node.block,list):
+                    if isinstance(node.block, list):
                         r = self.visit(node.block[0])
                     else:
                         r = self.visit(node.block)
@@ -217,7 +216,7 @@ class Interpreter(object):
             dropped_scope = self.scopes.pop()
             while dropped_scope.name != "ForLoop":
                 dropped_scope = self.scopes.pop()
-            
+
         return r
 
     @when(AST.WhileLoop)
@@ -241,7 +240,7 @@ class Interpreter(object):
         while dropped_scope.name != "WhileLoop":
             dropped_scope = self.scopes.pop()
         return r
-        
+
     @when(AST.IfElse)
     def visit(self, node):
         r = None
@@ -255,9 +254,9 @@ class Interpreter(object):
         elif node.elseBlock:
             r = self.visit(node.elseBlock)
         self.scopes.pop()
-        
+
         return r
-        
+
     @when(AST.Matrix)
     def visit(self, node):
         r = []
@@ -265,7 +264,7 @@ class Interpreter(object):
             raw_row = self.visit(row)
             r.append(raw_row)
         return r
-        
+
     @when(AST.Vector)
     def visit(self, node):
         r = []
@@ -273,17 +272,15 @@ class Interpreter(object):
             raw_val = val.value
             r.append(raw_val)
         return r
-        
-        
+
     @when(AST.BreakInstruction)
     def visit(self, node):
         raise BreakException()
-        
+
     @when(AST.ContinueInstruction)
     def visit(self, node):
         raise ContinueException()
-        
-        
+
     @when(AST.Error)
     def visit(self, node):
         raise Exception(f"Compiling failed on previous part of compilation (error in {node.line_no} line)!")
