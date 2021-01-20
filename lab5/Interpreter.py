@@ -228,7 +228,10 @@ class Interpreter(object):
         node.operations.special = True
         while cond:
             try:
-                r = self.visit(node.operations)
+                if isinstance(node.operations, list):
+                    r = self.visit(node.operations[0])
+                else:
+                    r = self.visit(node.operations)
                 cond = self.visit(node.condition)
             except BreakException:
                 break
